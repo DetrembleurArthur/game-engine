@@ -21,6 +21,9 @@ namespace ge
         KeyState get_state();
         void reset_state();
         void on(KeyState state, std::function<void()> c);
+        void on_pressed(std::function<void()> c);
+        void on_released(std::function<void()> c);
+        void on_repeated(std::function<void()> c);
         void run();
     };
 }

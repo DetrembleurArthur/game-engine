@@ -5,6 +5,7 @@
 #include <global_events.hpp>
 #include <key_input.hpp>
 #include <mouse_input.hpp>
+#include <controller_events.hpp>
 
 namespace ge
 {

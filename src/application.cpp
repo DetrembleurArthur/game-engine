@@ -40,6 +40,7 @@ void ge::Application::init(const std::string& title, unsigned width, unsigned he
         window = new Window(title, width, height);
         KeyInput::set_window(window->get_pointer());
         MouseInput::set_window(window->get_pointer());
+        ControllerEvents::init();
     }
     else
     {

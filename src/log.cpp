@@ -29,6 +29,9 @@ void ge::log(const std::string &msg, LogLevels level)
         case LogLevels::MOUSE_EVENT:
             level_str = "[MOUSE_EVENT]";
             break;
+        case LogLevels::CONTROLLER_EVENT:
+            level_str = "[CONTROLLER_EVENT]";
+            break;
         default:
             level_str = "[UNKNOWN]";
     }

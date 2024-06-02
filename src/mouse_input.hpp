@@ -24,9 +24,9 @@ namespace ge
 
     enum ButtonState
     {
-        NoState=-1,
-        Released=GLFW_RELEASE,
-        Pressed=GLFW_PRESS
+        NoStateBtn=-1,
+        ReleasedBtn=GLFW_RELEASE,
+        PressedBtn=GLFW_PRESS
     };
 
     class MouseInput

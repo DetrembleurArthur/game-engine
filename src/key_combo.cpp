@@ -64,6 +64,21 @@ void ge::KeyCombo::on(KeyState state, std::function<void()> c)
     }
 }
 
+void ge::KeyCombo::on_pressed(std::function<void()> c)
+{
+    on(KeyState::Pressed, c);
+}
+
+void ge::KeyCombo::on_released(std::function<void()> c)
+{
+    on(KeyState::Realeased, c);
+}
+
+void ge::KeyCombo::on_repeated(std::function<void()> c)
+{
+    on(KeyState::Repeated, c);
+}
+
 void ge::KeyCombo::run()
 {
     KeyState state = get_state();
