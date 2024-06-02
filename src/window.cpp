@@ -8,6 +8,8 @@ ge::Window::Window(const std::string &title, unsigned width, unsigned height)
     {
         log("window creation success");
         WindowEvents::init(window);
+        KeyEvents::init(window);
+        MouseEvents::init(window);
     }
     else
     {
@@ -42,11 +44,6 @@ void ge::Window::clear()
 void ge::Window::swap()
 {
     glfwSwapBuffers(window);
-}
-
-void ge::Window::poll_events()
-{
-    glfwPollEvents();
 }
 
 bool ge::Window::is_created() const
@@ -96,6 +93,15 @@ void ge::Window::set_title(const std::string &title)
     glfwSetWindowTitle(window, title.c_str());
 }
 
+void ge::Window::set_opacity(float opacity)
+{
+    if(opacity < 0)
+        opacity = 0;
+    else if (opacity > 1.0)
+        opacity = 1.0;
+    glfwSetWindowOpacity(window, opacity);
+}
+
 glm::uvec2 ge::Window::get_size()
 {
     int w, h;
@@ -141,6 +147,91 @@ std::string ge::Window::get_title()
     return std::string(glfwGetWindowTitle(window));
 }
 
+float ge::Window::get_opacity()
+{
+    return glfwGetWindowOpacity(window);
+}
+
+ge::Monitor ge::Window::get_monitor()
+{
+    return ge::Monitor(glfwGetWindowMonitor(window));
+}
+
+bool ge::Window::is_iconified()
+{
+    return glfwGetWindowAttrib(window, GLFW_ICONIFIED);
+}
+
+bool ge::Window::is_maximized()
+{
+    return glfwGetWindowAttrib(window, GLFW_MAXIMIZED);
+}
+
+bool ge::Window::is_visible()
+{
+    return glfwGetWindowAttrib(window, GLFW_VISIBLE);
+}
+
+bool ge::Window::is_focused()
+{
+    return glfwGetWindowAttrib(window, GLFW_FOCUSED);
+}
+
+bool ge::Window::is_frame_buffer_transparent()
+{
+    return glfwGetWindowAttrib(window, GLFW_TRANSPARENT_FRAMEBUFFER);
+}
+
+void ge::Window::iconify()
+{
+    glfwIconifyWindow(window);
+}
+
+void ge::Window::restore()
+{
+    glfwRestoreWindow(window);
+}
+
+void ge::Window::maximize()
+{
+    glfwMaximizeWindow(window);
+}
+
+void ge::Window::hide()
+{
+    glfwHideWindow(window);
+}
+
+void ge::Window::show()
+{
+    glfwShowWindow(window);
+}
+
+void ge::Window::focus()
+{
+    glfwFocusWindow(window);
+}
+
+void ge::Window::request_attention()
+{
+    glfwRequestWindowAttention(window);
+}
+
+void ge::Window::decorated(bool value)
+{
+    glfwSetWindowAttrib(window, GLFW_DECORATED, value);
+}
+
+void ge::Window::resizeable(bool value)
+{
+    glfwSetWindowAttrib(window, GLFW_RESIZABLE, value);
+}
+
+void ge::Window::floated(bool value)
+{
+    glfwSetWindowAttrib(window, GLFW_FLOATING, value);
+}
+
 void ge::Window::set_icon(const std::string &icon_path)
 {
     if(icon_path.empty())
@@ -148,8 +239,10 @@ void ge::Window::set_icon(const std::string &icon_path)
         glfwSetWindowIcon(window, 0, nullptr);
     }
     else
-    { //https://www.glfw.org/docs/latest/window_guide.html => Section: Window icon
-        glfwSetWindowIcon(window, 1, load_icon)
+    {
+        Image image(icon_path);
+        image.load();
+        glfwSetWindowIcon(window, 1, &image.get());
     }
 }
 

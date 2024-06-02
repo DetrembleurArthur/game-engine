@@ -13,7 +13,9 @@ namespace ge
         ERROR,
         GLFW_ERROR,
         GLOBAL_EVENT,
-        WIN_EVENT
+        WIN_EVENT,
+        KEY_EVENT,
+        MOUSE_EVENT
     };
 
     void log(const std::string& msg, LogLevels level=LogLevels::INFO);

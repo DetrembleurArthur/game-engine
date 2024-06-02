@@ -14,6 +14,7 @@ ge::Application::Application(void (*hint_callback)()) : hint_callback(hint_callb
 
 ge::Application::~Application()
 {
+    MouseInput::destroy_cursor();
     if(window)
     {
         delete window;
@@ -37,6 +38,8 @@ void ge::Application::init(const std::string& title, unsigned width, unsigned he
         log("hints configuration");
         hint_callback();
         window = new Window(title, width, height);
+        KeyInput::set_window(window->get_pointer());
+        MouseInput::set_window(window->get_pointer());
     }
     else
     {
@@ -46,6 +49,7 @@ void ge::Application::init(const std::string& title, unsigned width, unsigned he
 
 void ge::Application::run()
 {
+    window->make_current();
     if(is_initialized() && window->is_created())
     {
         log("running");
@@ -53,7 +57,7 @@ void ge::Application::run()
         {
             window->clear();
             window->swap();
-            window->poll_events();
+            events_policy_callback();
         }
     }
     else
@@ -65,6 +69,21 @@ void ge::Application::run()
 bool ge::Application::is_initialized() const
 {
     return initialized;
+}
+
+void ge::Application::poll_events_policy()
+{
+    events_policy_callback = glfwPollEvents;
+}
+
+void ge::Application::wait_events_policy()
+{
+    events_policy_callback = glfwWaitEvents;
+}
+
+void ge::Application::post_empty_event()
+{
+    glfwPostEmptyEvent();
 }
 
 ge::Window &ge::Application::get_window()

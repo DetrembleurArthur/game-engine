@@ -45,6 +45,8 @@
         "ctime": "cpp",
         "functional": "cpp",
         "iterator": "cpp",
-        "iomanip": "cpp"
+        "iomanip": "cpp",
+        "codecvt": "cpp",
+        "map": "cpp"
     }
 }
