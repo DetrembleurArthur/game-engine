@@ -16,7 +16,8 @@ namespace ge
         WIN_EVENT,
         KEY_EVENT,
         MOUSE_EVENT,
-        CONTROLLER_EVENT
+        CONTROLLER_EVENT,
+        CLIPBOARD
     };
 
     void log(const std::string& msg, LogLevels level=LogLevels::INFO);

@@ -1,5 +1,6 @@
-#include <GLFW/glfw3.h>
-#include <log.hpp>
+#ifndef __GE_GLOBAL_EVENTS_HPP__
+#define __GE_GLOBAL_EVENTS_HPP__
+
 #include <monitor.hpp>
 
 namespace ge
@@ -16,3 +17,5 @@ namespace ge
         static void on_monitor_disconnected(void (*c)(Monitor& monitor));
     };
 }
+
+#endif

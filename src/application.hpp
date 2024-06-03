@@ -2,10 +2,7 @@
 #define __GE_APPLICATION_HPP__
 #include <iostream>
 #include <window.hpp>
-#include <global_events.hpp>
-#include <key_input.hpp>
-#include <mouse_input.hpp>
-#include <controller_events.hpp>
+
 
 namespace ge
 {
@@ -15,6 +12,7 @@ namespace ge
         static Application *app;
         bool initialized=false;
         ge::Window *window=nullptr;
+        int target_fps=30;
         void (*events_policy_callback)()=glfwPollEvents;
         void (*hint_callback)();
     public:
@@ -27,6 +25,8 @@ namespace ge
         void wait_events_policy();
         void post_empty_event();
         ge::Window& get_window();
+        void set_target_fps(int fps=30);
+        int get_fps();
         static Application& get();
     };
 }

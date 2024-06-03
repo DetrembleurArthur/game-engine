@@ -1,9 +1,7 @@
 #ifndef __GE_KEY_EVENTS_HPP__
 #define __GE_KEY_EVENTS_HPP__
-#include <key_input.hpp>
 #include <functional>
 #include <key_combo.hpp>
-#include <log.hpp>
 
 namespace ge
 {

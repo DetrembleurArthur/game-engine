@@ -1,10 +1,7 @@
 #ifndef __GE_CONTROLLER_EVENTS_HPP__
 #define __GE_CONTROLLER_EVENTS_HPP__
 #include <functional>
-#include <GLFW/glfw3.h>
-#include <log.hpp>
-#include <glm/glm.hpp>
-#include <controller_input.hpp>
+
 
 namespace ge
 {

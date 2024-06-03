@@ -3,7 +3,6 @@
 #include <key_input.hpp>
 #include <vector>
 #include <functional>
-#include <log.hpp>
 
 namespace ge
 {

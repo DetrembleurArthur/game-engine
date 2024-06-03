@@ -1,4 +1,6 @@
 #include "global_events.hpp"
+#include <GLFW/glfw3.h>
+#include <log.hpp>
 
 void (*ge::GlobalEvents::on_monitor_connected_callback)(ge::Monitor& monitor)=nullptr;
 void (*ge::GlobalEvents::on_monitor_disconnected_callback)(ge::Monitor& monitor)=nullptr;

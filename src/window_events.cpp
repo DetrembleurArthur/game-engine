@@ -11,6 +11,7 @@ std::function<void()> ge::WindowEvents::on_window_minimized_callback;
 std::function<void()> ge::WindowEvents::on_window_focused_callback;
 std::function<void()> ge::WindowEvents::on_window_unfocused_callback;
 std::function<void()> ge::WindowEvents::on_window_refreshed_callback;
+std::function<void(std::vector<std::string>)> ge::WindowEvents::on_window_drop_callback;
 
 void ge::WindowEvents::set_on_window_size_changed(GLFWwindow *win, int width, int height)
 {
@@ -122,6 +123,22 @@ void ge::WindowEvents::set_on_window_refreshed_changed(GLFWwindow *win)
     }
 }
 
+void ge::WindowEvents::set_on_window_drop(GLFWwindow *win, int count, const char **paths)
+{
+    log("drop " + std::to_string(count) + " elements", LogLevels::WIN_EVENT);
+    std::vector<std::string> paths_vector;
+    for(int i = 0; i < count; i++)
+    {
+        std::string&& element = std::string(paths[i]);
+        paths_vector.push_back(element);
+        log("[" + std::to_string(i+1) + "] -> " + element, LogLevels::WIN_EVENT);
+    }
+    if(WindowEvents::on_window_drop_callback)
+    {
+        WindowEvents::on_window_drop_callback(paths_vector);
+    }
+}
+
 void ge::WindowEvents::init(GLFWwindow *window)
 {
     log("initializing window events");
@@ -133,6 +150,7 @@ void ge::WindowEvents::init(GLFWwindow *window)
     glfwSetWindowMaximizeCallback(window, WindowEvents::set_on_window_maximize_changed);
     glfwSetWindowFocusCallback(window, WindowEvents::set_on_window_focus_changed);
     glfwSetWindowRefreshCallback(window, WindowEvents::set_on_window_refreshed_changed);
+    glfwSetDropCallback(window, WindowEvents::set_on_window_drop);
 }
 
 void ge::WindowEvents::on_window_size_changed(std::function<void(const glm::vec2&)> c)
@@ -188,4 +206,9 @@ void ge::WindowEvents::on_window_unfocused(std::function<void()> c)
 void ge::WindowEvents::on_window_refreshed(std::function<void()> c)
 {
     WindowEvents::on_window_refreshed_callback = c;
+}
+
+void ge::WindowEvents::on_window_drop(std::function<void(std::vector<std::string>)> c)
+{
+    WindowEvents::on_window_drop_callback = c;
 }

@@ -1,4 +1,8 @@
 #include "controller_events.hpp"
+#include <GLFW/glfw3.h>
+#include <log.hpp>
+#include <glm/glm.hpp>
+#include <controller_input.hpp>
 
 std::function<void(int jid)> ge::ControllerEvents::on_joystick_connected_callback;
 std::function<void(int jid)> ge::ControllerEvents::on_joystick_disconnected_callback;

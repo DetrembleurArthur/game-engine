@@ -1,4 +1,10 @@
 #include <application.hpp>
+#include <global_events.hpp>
+#include <key_input.hpp>
+#include <mouse_input.hpp>
+#include <controller_events.hpp>
+#include <timing.hpp>
+#include <thread>
 
 ge::Application *ge::Application::app=nullptr;
 
@@ -54,11 +60,24 @@ void ge::Application::run()
     if(is_initialized() && window->is_created())
     {
         log("running");
+        double dt = 1.0/(target_fps == 0 ? 60 : target_fps);
+        double t0 = Timing::get_sec();
+        double t1 = 0.0;
         while(!window->must_be_closed())
         {
             window->clear();
             window->swap();
             events_policy_callback();
+            t1 = Timing::get_sec();
+            dt = t1 - t0;
+            if(dt < 1.0 / target_fps)
+            {
+                std::this_thread::sleep_for(std::chrono::duration<double>(1.0 / target_fps - dt));
+                t1 += 1.0 / target_fps - dt;
+                dt = t1 - t0;
+                Timing::set_delta(dt);
+            }
+            t0 = t1;
         }
     }
     else
@@ -90,6 +109,16 @@ void ge::Application::post_empty_event()
 ge::Window &ge::Application::get_window()
 {
     return *window;
+}
+
+void ge::Application::set_target_fps(int fps)
+{
+    this->target_fps = fps;
+}
+
+int ge::Application::get_fps()
+{
+    return 1.0/ge::Timing::get_delta();
 }
 
 ge::Application &ge::Application::get()

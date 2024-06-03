@@ -1,4 +1,5 @@
 #include "image.hpp"
+#include <stb_image.h>
 
 
 ge::Image::Image(const std::string &filename, bool load) : filename(filename)

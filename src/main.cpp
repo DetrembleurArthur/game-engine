@@ -1,8 +1,6 @@
-#include <application.hpp>
-#include <key_input.hpp>
+#include <ge.hpp>
 
 
-//NOW https://www.glfw.org/docs/latest/input_guide.html (time input)
 int main(int argc, char const *argv[])
 {
 	ge::Application app([]() {
@@ -10,6 +8,9 @@ int main(int argc, char const *argv[])
 	});
 	app.init("Test app");
 	app.get_window().set_icon("./res/images/ge-logo.png");
+	app.set_target_fps(60);
+	ge::Clipboard::set("Hello world !");
+	ge::Clipboard::get();
 
 	ge::Controller *controller=&ge::ControllerInput::get();
 	ge::ControllerEvents::on_joystick_connected([&controller](int jid) {

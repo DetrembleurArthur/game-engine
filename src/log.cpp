@@ -32,6 +32,9 @@ void ge::log(const std::string &msg, LogLevels level)
         case LogLevels::CONTROLLER_EVENT:
             level_str = "[CONTROLLER_EVENT]";
             break;
+        case LogLevels::CLIPBOARD:
+            level_str = "[CLIPBOARD]";
+            break;
         default:
             level_str = "[UNKNOWN]";
     }

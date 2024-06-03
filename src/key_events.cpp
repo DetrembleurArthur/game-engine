@@ -1,4 +1,6 @@
 #include "key_events.hpp"
+#include <key_input.hpp>
+#include <log.hpp>
 #include <codecvt>
 #include <locale>
 

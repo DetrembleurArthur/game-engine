@@ -1,4 +1,6 @@
 #include "key_combo.hpp"
+#include <log.hpp>
+
 
 ge::KeyCombo::KeyCombo()
 {
