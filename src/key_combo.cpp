@@ -34,6 +34,7 @@ ge::KeyState ge::KeyCombo::get_state()
         }
         tmp_state = key_state;
     }
+
     if(tmp_state == KeyState::Pressed || tmp_state == KeyState::Repeated)
     {
         pressed = true;
@@ -90,4 +91,21 @@ void ge::KeyCombo::run()
         if(callback)
             callback();
     }
+}
+
+bool ge::KeyCombo::is_pressed(bool ignore_repeated)
+{
+    if(ignore_repeated)
+        return state == KeyState::Pressed || state == KeyState::Repeated;
+    return state == KeyState::Pressed;
+}
+
+bool ge::KeyCombo::is_released()
+{
+    return state == KeyState::Realeased;
+}
+
+bool ge::KeyCombo::is_repeated()
+{
+    return state == KeyState::Repeated;
 }

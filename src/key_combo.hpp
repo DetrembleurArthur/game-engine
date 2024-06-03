@@ -24,6 +24,9 @@ namespace ge
         void on_released(std::function<void()> c);
         void on_repeated(std::function<void()> c);
         void run();
+        bool is_pressed(bool continuous=false);
+        bool is_released();
+        bool is_repeated();
     };
 }
 

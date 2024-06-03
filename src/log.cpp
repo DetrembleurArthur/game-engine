@@ -35,6 +35,9 @@ void ge::log(const std::string &msg, LogLevels level)
         case LogLevels::CLIPBOARD:
             level_str = "[CLIPBOARD]";
             break;
+        case LogLevels::SCENE:
+            level_str = "[SCENE]";
+            break;
         default:
             level_str = "[UNKNOWN]";
     }

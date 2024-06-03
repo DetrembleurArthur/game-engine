@@ -20,6 +20,7 @@ ge::Application::Application(void (*hint_callback)()) : hint_callback(hint_callb
 
 ge::Application::~Application()
 {
+    scene_manager.delete_scenes();
     MouseInput::destroy_cursor();
     if(window)
     {
@@ -32,6 +33,7 @@ ge::Application::~Application()
 void ge::Application::init(const std::string& title, unsigned width, unsigned height)
 {
     log("initializing");
+    log("GLFW version: " + std::string(glfwGetVersionString()));
     initialized = glfwInit();
     if(initialized)
     {
@@ -66,6 +68,14 @@ void ge::Application::run()
         while(!window->must_be_closed())
         {
             window->clear();
+
+            Scene *current_scene = scene_manager.get_current();
+            if(current_scene)
+            {
+                current_scene->update(dt);
+                current_scene->draw(dt);
+            }
+
             window->swap();
             events_policy_callback();
             t1 = Timing::get_sec();
@@ -109,6 +119,11 @@ void ge::Application::post_empty_event()
 ge::Window &ge::Application::get_window()
 {
     return *window;
+}
+
+ge::SceneManager &ge::Application::get_scene_manager()
+{
+    return scene_manager;
 }
 
 void ge::Application::set_target_fps(int fps)

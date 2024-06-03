@@ -2,6 +2,7 @@
 #define __GE_APPLICATION_HPP__
 #include <iostream>
 #include <window.hpp>
+#include <scene_manager.hpp>
 
 
 namespace ge
@@ -15,6 +16,7 @@ namespace ge
         int target_fps=30;
         void (*events_policy_callback)()=glfwPollEvents;
         void (*hint_callback)();
+        SceneManager scene_manager;
     public:
         Application(void (*hint_callback)()=[](){ge::log("default hints");});
         ~Application();
@@ -25,6 +27,7 @@ namespace ge
         void wait_events_policy();
         void post_empty_event();
         ge::Window& get_window();
+        ge::SceneManager& get_scene_manager();
         void set_target_fps(int fps=30);
         int get_fps();
         static Application& get();

@@ -15,4 +15,6 @@
 #include <mouse_input.hpp>
 #include <timing.hpp>
 #include <clipboard.hpp>
+#include <scene.hpp>
+#include <scene_manager.hpp>
 #endif
