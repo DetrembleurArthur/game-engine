@@ -18,7 +18,8 @@ namespace ge
         MOUSE_EVENT,
         CONTROLLER_EVENT,
         CLIPBOARD,
-        SCENE
+        SCENE,
+        SHADER
     };
 
     void log(const std::string& msg, LogLevels level=LogLevels::INFO);

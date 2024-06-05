@@ -23,6 +23,7 @@ ge::Application::~Application()
 {
     scene_manager.delete_scenes();
     MouseInput::destroy_cursor();
+    Shader::unload_default_shaders();
     if(window)
     {
         delete window;
@@ -42,7 +43,7 @@ void ge::Application::init(const std::string& title, unsigned width, unsigned he
         GlobalEvents::error_callback([](int err, const char *desc) {
             log(std::string(desc) + " (" + std::to_string(err) + ")", LogLevels::GLFW_ERROR);
         });
-        log("initialization success");
+        log("glfw initialization success");
         log("current monitor is '" + ge::Monitor::get_primary_monitor().get_name() + "'");
         log("hints configuration");
         hint_callback();
@@ -50,17 +51,32 @@ void ge::Application::init(const std::string& title, unsigned width, unsigned he
         KeyInput::set_window(window->get_pointer());
         MouseInput::set_window(window->get_pointer());
         ControllerEvents::init();
+        window->make_current();
     }
     else
     {
-        log("initialization failed", LogLevels::ERROR);
+        log("glfw initialization failed", LogLevels::ERROR);
+    }
+    glewExperimental = GL_TRUE;
+    auto code = glewInit();
+    if(code == GLEW_OK)
+    {
+        log("glew initialization success");
+        glEnable(GL_BLEND);
+        glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+        glEnable(GL_MULTISAMPLE);
+        Shader::load_default_shaders();
+    }
+    else
+    {
+        log("glew initialization failed", LogLevels::ERROR);
+        fprintf(stderr, "Error: %s\n", glewGetErrorString(code));
     }
 }
 
 
 void ge::Application::run()
 {
-    window->make_current();
     if(is_initialized() && window->is_created())
     {
         log("running");
@@ -134,6 +150,7 @@ void ge::Application::set_target_fps(int fps)
 {
     this->target_fps = fps;
 }
+
 
 int ge::Application::get_fps()
 {

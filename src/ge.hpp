@@ -18,4 +18,7 @@
 #include <scene.hpp>
 #include <scene_manager.hpp>
 #include <colors.hpp>
+#include <shader.hpp>
+#include <vertex_buffer.hpp>
+#include <renderer.hpp>
 #endif

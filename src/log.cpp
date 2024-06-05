@@ -38,6 +38,9 @@ void ge::log(const std::string &msg, LogLevels level)
         case LogLevels::SCENE:
             level_str = "[SCENE]";
             break;
+        case LogLevels::SHADER:
+            level_str = "[SHADER]";
+            break;
         default:
             level_str = "[UNKNOWN]";
     }
