@@ -9,6 +9,7 @@
 #include <image.hpp>
 #include <key_events.hpp>
 #include <mouse_events.hpp>
+#include <glm/glm.hpp>
 
 namespace ge
 {
@@ -16,6 +17,7 @@ namespace ge
     {
     private:
         GLFWwindow *window=nullptr;
+        glm::vec3 clear_color;
     public:
         Window(const std::string& title="Untitled", unsigned width=640, unsigned height=480);
         ~Window();
@@ -41,6 +43,7 @@ namespace ge
         std::string get_title();
         float get_opacity();
         Monitor get_monitor();
+        glm::vec3& get_clear_color();
         bool is_iconified();
         bool is_maximized();
         bool is_visible();
@@ -49,6 +52,8 @@ namespace ge
         void iconify();
         void restore();
         void maximize();
+        void fullscreen();
+        void windowed();
         void hide();
         void show();
         void focus();
@@ -57,6 +62,7 @@ namespace ge
         void resizeable(bool value=true);
         void floated(bool value=true);
         void set_icon(const std::string& icon_path="");
+        void set_clear_color(glm::vec3 color);
         static void hint_resizable(bool value=true);
         static void hint_visible(bool value=true);
         static void hint_decorated(bool value=true);

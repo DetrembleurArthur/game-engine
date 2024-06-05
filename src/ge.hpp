@@ -17,4 +17,5 @@
 #include <clipboard.hpp>
 #include <scene.hpp>
 #include <scene_manager.hpp>
+#include <colors.hpp>
 #endif

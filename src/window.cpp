@@ -1,6 +1,6 @@
 #include "window.hpp"
 
-ge::Window::Window(const std::string &title, unsigned width, unsigned height)
+ge::Window::Window(const std::string &title, unsigned width, unsigned height) : clear_color(0, 0.5 , 1.0)
 {
     log("window creation: " + title + " (" + std::to_string(width) + "x" + std::to_string(height) + ")");
     window = glfwCreateWindow(width, height, title.c_str(), nullptr, nullptr);
@@ -38,6 +38,7 @@ bool ge::Window::must_be_closed() const
 
 void ge::Window::clear()
 {
+    glClearColor(clear_color.r, clear_color.g, clear_color.b, 1.0);
     glClear(GL_COLOR_BUFFER_BIT);
 }
 
@@ -157,6 +158,11 @@ ge::Monitor ge::Window::get_monitor()
     return ge::Monitor(glfwGetWindowMonitor(window));
 }
 
+glm::vec3 &ge::Window::get_clear_color()
+{
+    return clear_color;
+}
+
 bool ge::Window::is_iconified()
 {
     return glfwGetWindowAttrib(window, GLFW_ICONIFIED);
@@ -195,6 +201,17 @@ void ge::Window::restore()
 void ge::Window::maximize()
 {
     glfwMaximizeWindow(window);
+}
+
+void ge::Window::fullscreen()
+{
+    Monitor monitor = Monitor::get_primary_monitor();
+    set_monitor(monitor);
+}
+
+void ge::Window::windowed()
+{
+    glfwSetWindowMonitor(window, nullptr, 0, 0, GLFW_DONT_CARE, GLFW_DONT_CARE, GLFW_DONT_CARE);
 }
 
 void ge::Window::hide()
@@ -244,6 +261,11 @@ void ge::Window::set_icon(const std::string &icon_path)
         image.load();
         glfwSetWindowIcon(window, 1, &image.get());
     }
+}
+
+void ge::Window::set_clear_color(glm::vec3 color)
+{
+    clear_color = color;
 }
 
 void ge::Window::hint_resizable(bool value)

@@ -15,10 +15,22 @@ namespace ge
         std::vector<unsigned char> hats;
     public:
         struct {
-            unsigned char a;
-            unsigned char b;
-            unsigned char x;
-            unsigned char y;
+            union {
+                unsigned char a;
+                unsigned char cross;
+            };
+            union {
+                unsigned char b;
+                unsigned char circle;
+            };
+            union {
+                unsigned char x;
+                unsigned char square;
+            };
+            union {
+                unsigned char y;
+                unsigned char triangle;
+            };
             unsigned char lb;
             unsigned char rb;
             unsigned char select;

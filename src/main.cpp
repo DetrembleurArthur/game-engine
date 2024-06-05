@@ -12,6 +12,7 @@ public:
 			.combine(GLFW_KEY_A)
 			.on_released([](){ge::Application::get().get_window().close();}));
 		ge::Application::get().set_controller_update_state(false);
+		//ge::Application::get().get_window().set_clear_color(ge::Colors::RED);
 	}
 
 	void destroy() override
