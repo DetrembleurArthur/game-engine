@@ -17,6 +17,7 @@ namespace ge
         void (*events_policy_callback)()=glfwPollEvents;
         void (*hint_callback)();
         SceneManager scene_manager;
+        bool enable_controller_update=false;
     public:
         Application(void (*hint_callback)()=[](){ge::log("default hints");});
         ~Application();
@@ -30,6 +31,7 @@ namespace ge
         ge::SceneManager& get_scene_manager();
         void set_target_fps(int fps=30);
         int get_fps();
+        void set_controller_update_state(bool value=true);
         static Application& get();
     };
 }

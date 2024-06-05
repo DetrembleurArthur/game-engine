@@ -24,8 +24,8 @@ namespace ge
             unsigned char select;
             unsigned char start;
             unsigned char guide;
-            unsigned char lt;
-            unsigned char rt;
+            unsigned char lclick;
+            unsigned char rclick;
             unsigned char up;
             unsigned char right;
             unsigned char down;

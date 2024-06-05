@@ -59,27 +59,28 @@ void ge::KeyCombo::reset_state()
     state = KeyState::NoState;
 }
 
-void ge::KeyCombo::on(KeyState state, std::function<void()> c)
+ge::KeyCombo& ge::KeyCombo::on(KeyState state, std::function<void()> c)
 {
     if(state > KeyState::NoState)
     {
         callbacks[state] = c;
     }
+    return *this;
 }
 
-void ge::KeyCombo::on_pressed(std::function<void()> c)
+ge::KeyCombo& ge::KeyCombo::on_pressed(std::function<void()> c)
 {
-    on(KeyState::Pressed, c);
+    return on(KeyState::Pressed, c);
 }
 
-void ge::KeyCombo::on_released(std::function<void()> c)
+ge::KeyCombo& ge::KeyCombo::on_released(std::function<void()> c)
 {
-    on(KeyState::Realeased, c);
+    return on(KeyState::Realeased, c);
 }
 
-void ge::KeyCombo::on_repeated(std::function<void()> c)
+ge::KeyCombo& ge::KeyCombo::on_repeated(std::function<void()> c)
 {
-    on(KeyState::Repeated, c);
+    return on(KeyState::Repeated, c);
 }
 
 void ge::KeyCombo::run()

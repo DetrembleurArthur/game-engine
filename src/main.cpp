@@ -5,11 +5,13 @@ class MyScene : public ge::Scene
 {
 public:
 	using ge::Scene::Scene;
-	ge::KeyCombo kc;
 
 	void init() override
 	{
-		kc.combine(GLFW_KEY_SPACE);
+		ge::KeyEvents::add_combo(ge::KeyCombo()
+			.combine(GLFW_KEY_A)
+			.on_released([](){ge::Application::get().get_window().close();}));
+		ge::Application::get().set_controller_update_state(false);
 	}
 
 	void destroy() override
@@ -29,19 +31,7 @@ public:
 
 	void update(double dt) override
 	{
-		kc.get_state();
-		if(kc.is_pressed())
-		{
-			std::cout << "pressed" << std::endl;
-		}
-		if(kc.is_released())
-		{
-			std::cout << "released" << std::endl;
-		}
-		if(kc.is_repeated())
-		{
-			std::cout << "repeated" << std::endl;
-		}
+		
 	}
 
 	void draw(double dt) override

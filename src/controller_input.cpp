@@ -1,4 +1,5 @@
 #include "controller_input.hpp"
+#include <iostream>
 
 std::unordered_map<int, ge::Controller> ge::ControllerInput::controllers;
 
@@ -46,7 +47,8 @@ void ge::ControllerInput::update_controllers()
 {
     for (auto it = ControllerInput::controllers.begin(); it != ControllerInput::controllers.end(); ++it)
     {
-        it->second.update_gamepad();
+        if(it->second.is_gamepad())
+            it->second.update_gamepad();
     }
 }
 

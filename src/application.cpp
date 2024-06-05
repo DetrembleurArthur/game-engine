@@ -3,6 +3,7 @@
 #include <key_input.hpp>
 #include <mouse_input.hpp>
 #include <controller_events.hpp>
+#include <controller_input.hpp>
 #include <timing.hpp>
 #include <thread>
 
@@ -56,6 +57,7 @@ void ge::Application::init(const std::string& title, unsigned width, unsigned he
     }
 }
 
+
 void ge::Application::run()
 {
     window->make_current();
@@ -72,6 +74,8 @@ void ge::Application::run()
             Scene *current_scene = scene_manager.get_current();
             if(current_scene)
             {
+                if(enable_controller_update)
+                    ControllerInput::update_controllers();
                 current_scene->update(dt);
                 current_scene->draw(dt);
             }
@@ -134,6 +138,11 @@ void ge::Application::set_target_fps(int fps)
 int ge::Application::get_fps()
 {
     return 1.0/ge::Timing::get_delta();
+}
+
+void ge::Application::set_controller_update_state(bool value)
+{
+    enable_controller_update = value;
 }
 
 ge::Application &ge::Application::get()

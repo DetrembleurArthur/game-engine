@@ -19,10 +19,10 @@ namespace ge
         KeyCombo& combine(int key);
         KeyState get_state();
         void reset_state();
-        void on(KeyState state, std::function<void()> c);
-        void on_pressed(std::function<void()> c);
-        void on_released(std::function<void()> c);
-        void on_repeated(std::function<void()> c);
+        ge::KeyCombo& on(KeyState state, std::function<void()> c);
+        ge::KeyCombo& on_pressed(std::function<void()> c);
+        ge::KeyCombo& on_released(std::function<void()> c);
+        ge::KeyCombo& on_repeated(std::function<void()> c);
         void run();
         bool is_pressed(bool continuous=false);
         bool is_released();
