@@ -36,7 +36,7 @@ namespace ge
         glm::vec4 get_viewport();
         static Application& get();
         void adapt_viewport();
-        void resize(float width, float height);
+        void resize(float width=-1, float height=-1);
     };
 }
 

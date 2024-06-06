@@ -82,6 +82,7 @@ void ge::Application::init(const std::string& title, unsigned width, unsigned he
         glEnable(GL_BLEND);
         glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
         glEnable(GL_MULTISAMPLE);
+        glEnable(GL_LINE_SMOOTH);
         Shader::load_default_shaders();
     }
     else
@@ -199,6 +200,9 @@ void ge::Application::adapt_viewport()
 
 void ge::Application::resize(float width, float height)
 {
+    auto&& size = window->get_size();
+    width = width > 0 ? width : size.x;
+    height = height > 0 ? height : size.y;
     window->set_size(glm::uvec2(width, height));
     adapt_viewport();
 }

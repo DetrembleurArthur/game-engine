@@ -12,8 +12,6 @@ namespace ge
         std::string name;
         Camera2D *camera = nullptr;
         Renderer *renderer = nullptr;
-        Mesh *bg_mesh=nullptr;
-        Transform *bg_transform=nullptr;
     public:
         Scene(const std::string& name);
         virtual ~Scene();

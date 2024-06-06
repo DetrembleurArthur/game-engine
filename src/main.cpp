@@ -8,6 +8,7 @@ public:
 
 	ge::Mesh *vbuffer;
 	ge::Transform tr;
+	int points = 3;
 
 	void init() override
 	{
@@ -15,16 +16,16 @@ public:
 			.combine(GLFW_KEY_A)
 			.on_released([](){ge::Application::get().get_window().close();}));
 		ge::Application::get().set_controller_update_state(false);
-		//ge::Application::get().get_window().set_aspect_ratio(16, 9);
 
 
-		vbuffer = ge::Mesh::create_rect();
+		vbuffer = ge::Mesh::create_circle(points);
 
 		vbuffer->set_color(ge::Colors::BLUE);
-		tr.set_size(100, 100);
+		tr.set_size(200, 200);
 
 		//tr.set_tl_origin();
 		tr.set_position(50, 50);
+
 	}
 
 	void destroy() override
@@ -35,8 +36,8 @@ public:
 	void load() override
 	{
 		//ge::Application::get().get_window().set_clear_color(ge::Colors::GRAY);
+		ge::Application::get().resize(1400, 900);
 
-		ge::Application::get().resize(1000, 800);
 		
 
 	}
@@ -48,14 +49,22 @@ public:
 
 	void update(double dt) override
 	{
+		if(ge::KeyInput::is_pressed(GLFW_KEY_SPACE))
+		{
+			delete vbuffer;
+			vbuffer = ge::Mesh::create_circle(++points);
+			vbuffer->as_line_loop();
+			vbuffer->set_weight(9);
+			vbuffer->set_color(ge::Colors::BLUE);
+		}
 		tr.set_center_position(ge::MouseInput::get_position(*camera));
+
 		
 	}
 
 	void draw(double dt) override
 	{
 		renderer->begin();
-		renderer->draw(dt, *bg_mesh, *bg_transform);
 		renderer->draw(dt, *vbuffer, tr);
 		renderer->end();
 	}

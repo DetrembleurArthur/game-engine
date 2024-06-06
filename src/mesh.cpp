@@ -60,9 +60,12 @@ void ge::Mesh::set_dynamic(bool value)
 
 void ge::Mesh::draw()
 {
+    if(weight)
+        glLineWidth(weight);
     bind();
     glDrawElements(primitive, elements_number, GL_UNSIGNED_INT, 0);
     unbind();
+
 }
 
 void ge::Mesh::as_triangles()
@@ -103,6 +106,11 @@ void ge::Mesh::as_triangle_fan()
 void ge::Mesh::set_color(const glm::vec4 &color)
 {
     this->color = color;
+}
+
+void ge::Mesh::set_weight(int weight)
+{
+    this->weight = weight;
 }
 
 ge::Mesh *ge::Mesh::create_rect()
@@ -150,7 +158,7 @@ ge::Mesh *ge::Mesh::create_circle(int points)
     elements[element_offset++] = points;
     elements[element_offset++] = 1;
     Mesh *mesh = new Mesh();
-    mesh->fill((points + 1) * 3, vertices, points * 3, elements);
+    mesh->fill((points + 1) * 3 * 4, vertices, points * 3 * 4, elements); // *4 because it is in number of bytes
     delete[] vertices;
     delete[] elements;
     return mesh;

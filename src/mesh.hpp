@@ -16,6 +16,7 @@ namespace ge
         size_t elements_number=0;
         int primitive=GL_TRIANGLES;
         glm::vec4 color;
+        int weight=0;
     public:
         Mesh();
         virtual ~Mesh();
@@ -34,6 +35,7 @@ namespace ge
         void as_triangle_strip();
         void as_triangle_fan();
         void set_color(const glm::vec4& color);
+        void set_weight(int weight);
         static Mesh *create_rect();
         static Mesh *create_circle(int points=3);
     };
