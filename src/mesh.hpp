@@ -34,6 +34,8 @@ namespace ge
         void as_triangle_strip();
         void as_triangle_fan();
         void set_color(const glm::vec4& color);
+        static Mesh *create_rect();
+        static Mesh *create_circle(int points=3);
     };
 }
 

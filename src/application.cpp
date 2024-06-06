@@ -188,3 +188,17 @@ ge::Application &ge::Application::get()
 {
     return *ge::Application::app;
 }
+
+void ge::Application::adapt_viewport()
+{
+    glViewport(0, 0, window->get_size().x, window->get_size().y);
+    viewport = glm::vec4(0, 0, window->get_size().x, window->get_size().y);
+    window->reset_vp_aspect_ratio();
+    get_scene_manager().get_current()->get_camera()->update_ortho();
+}
+
+void ge::Application::resize(float width, float height)
+{
+    window->set_size(glm::uvec2(width, height));
+    adapt_viewport();
+}

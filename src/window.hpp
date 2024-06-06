@@ -33,6 +33,7 @@ namespace ge
         void set_size(glm::uvec2 size);
         void set_limits(int min_width=GLFW_DONT_CARE, int min_height=GLFW_DONT_CARE, int max_width=GLFW_DONT_CARE, int max_height=GLFW_DONT_CARE);
         void set_aspect_ratio(int num=GLFW_DONT_CARE, int den=GLFW_DONT_CARE);
+        void reset_vp_aspect_ratio();
         void set_position(glm::vec2 position);
         void set_title(const std::string& title);
         void set_opacity(float opacity);

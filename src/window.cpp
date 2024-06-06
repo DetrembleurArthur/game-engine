@@ -6,6 +6,7 @@ ge::Window::Window(const std::string &title, unsigned width, unsigned height) : 
     window = glfwCreateWindow(width, height, title.c_str(), nullptr, nullptr);
     if(is_created())
     {
+        aspect_ratio = width / (float)height;
         log("window creation success");
         WindowEvents::init(window);
         KeyEvents::init(window);
@@ -70,7 +71,6 @@ void ge::Window::set_monitor(Monitor &monitor)
 
 void ge::Window::set_size(glm::uvec2 size)
 {
-    aspect_ratio = size.x / (float)size.y;
     glfwSetWindowSize(window, size.x, size.y);
 }
 
@@ -89,6 +89,11 @@ void ge::Window::set_aspect_ratio(int num, int den)
     }
     aspect_ratio = num / (float)den;
     glfwSetWindowAspectRatio(window, num, den);
+}
+
+void ge::Window::reset_vp_aspect_ratio()
+{
+    aspect_ratio = get_size().x / (float)get_size().y;
 }
 
 void ge::Window::set_position(glm::vec2 position)

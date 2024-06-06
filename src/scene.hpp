@@ -1,6 +1,7 @@
 #ifndef __GE_SCENE_HPP__
 #define __GE_SCENE_HPP__
 #include <string>
+#include <mesh.hpp>
 #include <renderer.hpp>
 
 namespace ge
@@ -11,6 +12,8 @@ namespace ge
         std::string name;
         Camera2D *camera = nullptr;
         Renderer *renderer = nullptr;
+        Mesh *bg_mesh=nullptr;
+        Transform *bg_transform=nullptr;
     public:
         Scene(const std::string& name);
         virtual ~Scene();
@@ -26,6 +29,7 @@ namespace ge
         virtual void draw(double dt) = 0;
         void set_renderer(ge::Renderer *renderer);
         std::string get_name();
+        Camera2D *get_camera();
     };
 }
 

@@ -35,6 +35,8 @@ namespace ge
         void set_controller_update_state(bool value=true);
         glm::vec4 get_viewport();
         static Application& get();
+        void adapt_viewport();
+        void resize(float width, float height);
     };
 }
 

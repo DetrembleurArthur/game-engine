@@ -1,4 +1,6 @@
 #include "mesh.hpp"
+#include <cmath>
+#include <iostream>
 
 ge::Mesh::Mesh() : color(0, 0, 0, 1)
 {
@@ -101,4 +103,55 @@ void ge::Mesh::as_triangle_fan()
 void ge::Mesh::set_color(const glm::vec4 &color)
 {
     this->color = color;
+}
+
+ge::Mesh *ge::Mesh::create_rect()
+{
+    float vertices[] = {
+        0, 0, 0,
+        0, 1, 0,
+        1, 1, 0,
+        1, 0, 0
+    };
+    unsigned elements[] = {
+        0, 1, 2,
+        0, 2, 3
+    };
+    Mesh *mesh = new Mesh();
+    mesh->fill(sizeof(vertices), vertices, sizeof(elements), elements);
+    return mesh;
+}
+
+ge::Mesh *ge::Mesh::create_circle(int points)
+{
+    points = points > 3 ? points : 3;
+    float angle = glm::radians(360.0 / points);
+    float *vertices = new float[(points + 1) * 3]; //x, y, z
+    vertices[0] = 0.5; // center.x
+    vertices[1] = 0.5; // center.y
+    vertices[2] = 0;
+    int vertex_offset = 3;
+    for(int i = 0; i < points; i++)
+    {
+        vertices[vertex_offset++] = vertices[0] + (0.5 * std::sin(angle * i));
+        vertices[vertex_offset++] = vertices[1] + (-0.5 * std::cos(angle * i));
+        std::cout << vertices[vertex_offset-2] << ", " << vertices[vertex_offset-1] << std::endl;
+        vertices[vertex_offset++] = 0;
+    }
+    unsigned *elements = new unsigned[points * 3];
+    int element_offset = 0;
+    for(int i = 0; i < points - 1; i++)
+    {
+        elements[element_offset++] = 0;
+        elements[element_offset++] = i + 1;
+        elements[element_offset++] = i + 2;
+    }
+    elements[element_offset++] = 0;
+    elements[element_offset++] = points;
+    elements[element_offset++] = 1;
+    Mesh *mesh = new Mesh();
+    mesh->fill((points + 1) * 3, vertices, points * 3, elements);
+    delete[] vertices;
+    delete[] elements;
+    return mesh;
 }

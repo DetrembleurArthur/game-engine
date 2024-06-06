@@ -6,10 +6,7 @@
 
 ge::Camera2D::Camera2D() : Camera2D(Ortho())
 {
-    ortho.left = 0;
-    ortho.right = Application::get().get_window().get_size().x;
-    ortho.bottom = Application::get().get_window().get_size().y;
-    ortho.up = 0;
+    update_ortho();
     log("camera setup: " + std::to_string(ortho.left) + " " + std::to_string(ortho.right) + " " + std::to_string(ortho.bottom) + " " + std::to_string(ortho.up));
 }
 
@@ -23,6 +20,15 @@ ge::Camera2D::~Camera2D()
 
 }
 
+void ge::Camera2D::update_ortho()
+{
+    ortho.left = Application::get().get_viewport().x;
+    ortho.right = Application::get().get_viewport().z;
+    ortho.bottom = Application::get().get_viewport().w;
+    ortho.up = Application::get().get_viewport().y;
+    log("camera update: " + std::to_string(ortho.left) + " " + std::to_string(ortho.right) + " " + std::to_string(ortho.bottom) + " " + std::to_string(ortho.up));
+}
+
 void ge::Camera2D::update_view()
 {
     view = glm::identity<glm::mat4>();
@@ -32,12 +38,20 @@ void ge::Camera2D::update_view()
     glm::vec3 scale_center(position.x + ortho.right / 2, position.y + ortho.bottom / 2, 0);
     view = glm::translate(view, scale_center);
     view = glm::scale(view, zoom);
+    view = glm::rotate(view, glm::radians(rotation), glm::vec3(0, 0, 1));
+
     view = glm::translate(view, -scale_center);
+
 }
 
 void ge::Camera2D::focus(glm::vec2 focus_position)
 {
     position = focus_position - glm::vec2(ortho.right / 2, ortho.bottom / 2);
+}
+
+void ge::Camera2D::set_rotation(float angle)
+{
+    rotation = angle;
 }
 
 glm::mat4 &ge::Camera2D::get_projection()
@@ -58,6 +72,11 @@ glm::vec2 &ge::Camera2D::get_position()
 glm::vec3 &ge::Camera2D::get_zoom()
 {
     return zoom;
+}
+
+float ge::Camera2D::get_rotation()
+{
+    return rotation;
 }
 
 void ge::Camera2D::update_projection()
