@@ -9,6 +9,7 @@ namespace ge
     {
     protected:
         std::string name;
+        Camera2D *camera = nullptr;
         Renderer *renderer = nullptr;
     public:
         Scene(const std::string& name);

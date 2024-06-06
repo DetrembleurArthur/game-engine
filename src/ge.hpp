@@ -21,4 +21,6 @@
 #include <shader.hpp>
 #include <vertex_buffer.hpp>
 #include <renderer.hpp>
+#include <camera2D.hpp>
+#include <transform.hpp>
 #endif

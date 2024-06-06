@@ -24,6 +24,9 @@ namespace ge
         void use();
         void unuse();
         void set_uniform_color(const glm::vec4& color, const std::string& var_name="uColor");
+        void set_uniform_model(const glm::mat4& model, const std::string& var_name="uModel");
+        void set_uniform_view(const glm::mat4& view, const std::string& var_name="uView");
+        void set_uniform_projection(const glm::mat4& projection, const std::string& var_name="uProjection");
     };
 }
 

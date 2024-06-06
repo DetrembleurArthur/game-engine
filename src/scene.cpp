@@ -2,7 +2,7 @@
 #include <log.hpp>
 #include <shader.hpp>
 
-ge::Scene::Scene(const std::string& name) : name(name), renderer(new Renderer(ge::Shader::DEFAULT))
+ge::Scene::Scene(const std::string& name) : name(name), camera(new Camera2D()), renderer(new Renderer(ge::Shader::DEFAULT, camera))
 {
 }
 

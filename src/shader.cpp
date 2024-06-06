@@ -2,6 +2,7 @@
 #include <log.hpp>
 #include <fstream>
 #include <sstream>
+#include <glm/gtc/type_ptr.hpp>
 
 ge::Shader *ge::Shader::DEFAULT = nullptr;
 
@@ -141,4 +142,22 @@ void ge::Shader::set_uniform_color(const glm::vec4 &color, const std::string &va
 {
     int loc = glGetUniformLocation(program, var_name.c_str());
     glUniform4fv(loc, 1, &color[0]);
+}
+
+void ge::Shader::set_uniform_model(const glm::mat4 &model, const std::string &var_name)
+{
+    int loc = glGetUniformLocation(program, var_name.c_str());
+    glUniformMatrix4fv(loc, 1, false, glm::value_ptr(model));
+}
+
+void ge::Shader::set_uniform_view(const glm::mat4 &view, const std::string &var_name)
+{
+    int loc = glGetUniformLocation(program, var_name.c_str());
+    glUniformMatrix4fv(loc, 1, false, glm::value_ptr(view));
+}
+
+void ge::Shader::set_uniform_projection(const glm::mat4 &projection, const std::string &var_name)
+{
+    int loc = glGetUniformLocation(program, var_name.c_str());
+    glUniformMatrix4fv(loc, 1, false, glm::value_ptr(projection));
 }

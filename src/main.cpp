@@ -7,7 +7,7 @@ public:
 	using ge::Scene::Scene;
 
 	ge::VertexBuffer vbuffer;
-	ge::VertexBuffer vbuffer2;
+	ge::Transform tr;
 
 	void init() override
 	{
@@ -23,23 +23,19 @@ public:
 			1, 1, 0.0f,
 			1,  0, 0.0f
 		};
-		float vertices2[] = {
-			 0.5f,  0.5f, 0.0f,  // top right
-         0.5f, -0.5f, 0.0f,  // bottom right
-        -0.5f, -0.5f, 0.0f,  // bottom left
-        -0.5f,  0.5f, 0.0f   // top left 
-		};
+		
 		unsigned elements[] = {
 			0, 1, 2,
 			0, 2, 3
 		};
 		vbuffer.fill(sizeof(vertices), vertices, sizeof(elements), elements);
-		vbuffer2.fill(sizeof(vertices2), vertices2, sizeof(elements), elements);
 
 		vbuffer.set_color(ge::Colors::BLUE);
-		vbuffer2.set_color(ge::Colors::GREEN);
+		tr.set_size(100, 200);
 
-		
+		tr.set_center_origin();
+		tr.set_position(200, 200);
+		std::cout << tr.get_width() << " " << tr.get_height() << std::endl;
 	}
 
 	void destroy() override
@@ -61,14 +57,14 @@ public:
 
 	void update(double dt) override
 	{
-		
+		//tr.set_br_position(ge::MouseInput::get_position());
+		//camera->get_position().x += 100 * dt;
 	}
 
 	void draw(double dt) override
 	{
 		renderer->begin();
-		renderer->draw(dt, vbuffer);
-		renderer->draw(dt, vbuffer2);
+		renderer->draw(dt, vbuffer, tr);
 		renderer->end();
 	}
 };
