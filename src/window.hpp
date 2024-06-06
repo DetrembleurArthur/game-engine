@@ -18,9 +18,11 @@ namespace ge
     private:
         GLFWwindow *window=nullptr;
         glm::vec3 clear_color;
+        float aspect_ratio=1.0f;
     public:
         Window(const std::string& title="Untitled", unsigned width=640, unsigned height=480);
         ~Window();
+        float get_aspect_ratio() const;
         void make_current();
         bool must_be_closed() const;
         void clear();

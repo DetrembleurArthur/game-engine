@@ -15,6 +15,8 @@ public:
 			.combine(GLFW_KEY_A)
 			.on_released([](){ge::Application::get().get_window().close();}));
 		ge::Application::get().set_controller_update_state(false);
+		//ge::Application::get().get_window().set_aspect_ratio(16, 9);
+		ge::Application::get().get_window().set_size(glm::uvec2(1400, 800));
 
 
 		float vertices[] = {
@@ -31,10 +33,10 @@ public:
 		vbuffer.fill(sizeof(vertices), vertices, sizeof(elements), elements);
 
 		vbuffer.set_color(ge::Colors::BLUE);
-		tr.set_size(100, 200);
+		tr.set_size(100, 150);
 
-		tr.set_center_origin();
-		tr.set_position(200, 200);
+		tr.set_tl_origin();
+		tr.set_position(0, 0);
 		std::cout << tr.get_width() << " " << tr.get_height() << std::endl;
 	}
 
@@ -45,7 +47,7 @@ public:
 
 	void load() override
 	{
-		ge::Application::get().get_window().set_clear_color(ge::Colors::RED);
+		//ge::Application::get().get_window().set_clear_color(ge::Colors::GRAY);
 		
 
 	}
@@ -57,8 +59,10 @@ public:
 
 	void update(double dt) override
 	{
-		//tr.set_br_position(ge::MouseInput::get_position());
+		tr.set_center_position(ge::MouseInput::get_position(*camera));
 		//camera->get_position().x += 100 * dt;
+		//tr.set_rotation(tr.get_rotation() + 10 * dt);
+		
 	}
 
 	void draw(double dt) override

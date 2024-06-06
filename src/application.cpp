@@ -6,6 +6,7 @@
 #include <controller_input.hpp>
 #include <timing.hpp>
 #include <thread>
+#include <colors.hpp>
 
 ge::Application *ge::Application::app=nullptr;
 
@@ -48,10 +49,26 @@ void ge::Application::init(const std::string& title, unsigned width, unsigned he
         log("hints configuration");
         hint_callback();
         window = new Window(title, width, height);
+        window->set_clear_color(ge::Colors::BLACK);
         KeyInput::set_window(window->get_pointer());
         MouseInput::set_window(window->get_pointer());
         ControllerEvents::init();
         window->make_current();
+        viewport = glm::vec4(0, 0, window->get_size().x, window->get_size().y);
+        WindowEvents::on_window_frame_buffer_size_changed([this](const glm::vec2& size){
+            int aspect_width = size.x;
+            int aspect_height = aspect_width / get_window().get_aspect_ratio();
+            if(aspect_height > size.y)
+            {
+                aspect_height = size.y;
+                aspect_width = aspect_height * get_window().get_aspect_ratio();
+            }
+            int vpx = size.x / 2 - aspect_width / 2.0;
+            int vpy = size.y / 2 - aspect_height / 2.0;
+            std::cout << vpx << " " << vpy << " " << aspect_width << " " << aspect_height << " " << get_window().get_aspect_ratio() << std::endl;
+            glViewport(vpx, vpy, aspect_width, aspect_height);
+            viewport = glm::vec4(vpx, vpy, aspect_width, aspect_height);
+        });
     }
     else
     {
@@ -160,6 +177,11 @@ int ge::Application::get_fps()
 void ge::Application::set_controller_update_state(bool value)
 {
     enable_controller_update = value;
+}
+
+glm::vec4 ge::Application::get_viewport()
+{
+    return viewport;
 }
 
 ge::Application &ge::Application::get()

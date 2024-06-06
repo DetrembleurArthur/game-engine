@@ -1,4 +1,5 @@
 #include "mouse_input.hpp"
+#include <utils.hpp>
 
 GLFWwindow * ge::MouseInput::window = nullptr;
 GLFWcursor *ge::MouseInput::cursor = nullptr;
@@ -18,6 +19,12 @@ glm::vec2 ge::MouseInput::get_position()
     double x, y;
     glfwGetCursorPos(window, &x, &y);
     return glm::vec2(x, y);
+}
+
+glm::vec2 ge::MouseInput::get_position(Camera2D &camera)
+{
+    glm::vec2 mp = get_position();
+    return ge::utils::screen_to_world(mp, camera);
 }
 
 void ge::MouseInput::hide()

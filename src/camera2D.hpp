@@ -23,6 +23,7 @@ namespace ge
     public:
         Camera2D();
         Camera2D(const Ortho& ortho);
+        ~Camera2D();
         void update_projection();
         void update_view();
         void focus(glm::vec2 focus_position);

@@ -9,6 +9,8 @@ ge::Scene::Scene(const std::string& name) : name(name), camera(new Camera2D()), 
 ge::Scene::~Scene()
 {
     set_renderer(nullptr);
+    if(camera)
+        delete camera;
 }
 
 void ge::Scene::set_renderer(ge::Renderer *renderer)

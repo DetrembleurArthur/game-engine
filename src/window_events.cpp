@@ -26,10 +26,9 @@ void ge::WindowEvents::set_on_window_size_changed(GLFWwindow *win, int width, in
 void ge::WindowEvents::set_on_window_frame_buffer_size_changed(GLFWwindow *win, int width, int height)
 {
     log("frame buffer size changed: " + std::to_string(width) + "x" + std::to_string(height), LogLevels::WIN_EVENT);
-    if(WindowEvents::on_window_size_changed_callback)
+    if(WindowEvents::on_window_frame_buffer_size_changed_callback)
     {
         glm::vec2 size(width, height);
-        glViewport(0, 0, width, height);
         WindowEvents::on_window_frame_buffer_size_changed_callback(size);
     }
 }

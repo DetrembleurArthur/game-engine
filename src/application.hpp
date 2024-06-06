@@ -18,6 +18,7 @@ namespace ge
         void (*hint_callback)();
         SceneManager scene_manager;
         bool enable_controller_update=false;
+        glm::vec4 viewport;
     public:
         Application(void (*hint_callback)()=[](){ge::log("default hints");});
         ~Application();
@@ -32,6 +33,7 @@ namespace ge
         void set_target_fps(int fps=30);
         int get_fps();
         void set_controller_update_state(bool value=true);
+        glm::vec4 get_viewport();
         static Application& get();
     };
 }

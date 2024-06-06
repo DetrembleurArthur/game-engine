@@ -2,6 +2,7 @@
 #include <application.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
+#include <log.hpp>
 
 ge::Camera2D::Camera2D() : Camera2D(Ortho())
 {
@@ -9,11 +10,17 @@ ge::Camera2D::Camera2D() : Camera2D(Ortho())
     ortho.right = Application::get().get_window().get_size().x;
     ortho.bottom = Application::get().get_window().get_size().y;
     ortho.up = 0;
+    log("camera setup: " + std::to_string(ortho.left) + " " + std::to_string(ortho.right) + " " + std::to_string(ortho.bottom) + " " + std::to_string(ortho.up));
 }
 
 ge::Camera2D::Camera2D(const Ortho &ortho) : zoom(1, 1, 1), ortho(ortho), projection(1), view(1)
 {
-    
+}
+
+ge::Camera2D::~Camera2D()
+{
+    log("destroy camera");
+
 }
 
 void ge::Camera2D::update_view()

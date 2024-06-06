@@ -23,4 +23,5 @@
 #include <renderer.hpp>
 #include <camera2D.hpp>
 #include <transform.hpp>
+#include <utils.hpp>
 #endif

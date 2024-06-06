@@ -2,6 +2,7 @@
 #define __GE_MOUSE_INPUT_HPP__
 #include <GLFW/glfw3.h>
 #include <glm/glm.hpp>
+#include <camera2D.hpp>
 #include <image.hpp>
 #include <unordered_map>
 
@@ -38,6 +39,7 @@ namespace ge
     public:
         static void set_window(GLFWwindow *window);
         static glm::vec2 get_position();
+        static glm::vec2 get_position(Camera2D& camera);
         static void hide();
         static void lock();
         static void normal();

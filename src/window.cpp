@@ -26,6 +26,11 @@ ge::Window::~Window()
     }
 }
 
+float ge::Window::get_aspect_ratio() const
+{
+    return aspect_ratio;
+}
+
 void ge::Window::make_current()
 {
     glfwMakeContextCurrent(window);
@@ -65,6 +70,7 @@ void ge::Window::set_monitor(Monitor &monitor)
 
 void ge::Window::set_size(glm::uvec2 size)
 {
+    aspect_ratio = size.x / (float)size.y;
     glfwSetWindowSize(window, size.x, size.y);
 }
 
@@ -81,6 +87,7 @@ void ge::Window::set_aspect_ratio(int num, int den)
         num = size.x;
         den = size.y;
     }
+    aspect_ratio = num / (float)den;
     glfwSetWindowAspectRatio(window, num, den);
 }
 
