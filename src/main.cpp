@@ -6,7 +6,7 @@ class MyScene : public ge::Scene
 public:
 	using ge::Scene::Scene;
 
-	ge::VertexBuffer vbuffer;
+	ge::Mesh vbuffer;
 	ge::Transform tr;
 
 	void init() override

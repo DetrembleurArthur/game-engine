@@ -1,12 +1,12 @@
-#ifndef __GE_VERTEX_BUFFER_HPP__
-#define __GE_VERTEX_BUFFER_HPP__
+#ifndef __GE_MESH_HPP__
+#define __GE_MESH_HPP__
 #include <GL/glew.h>
 #include <glm/glm.hpp>
 
 
 namespace ge
 {
-    class VertexBuffer
+    class Mesh
     {
     protected:
         unsigned vao=0;
@@ -17,8 +17,8 @@ namespace ge
         int primitive=GL_TRIANGLES;
         glm::vec4 color;
     public:
-        VertexBuffer();
-        virtual ~VertexBuffer();
+        Mesh();
+        virtual ~Mesh();
         glm::vec4& get_color();
         void bind();
         void unbind();

@@ -14,7 +14,7 @@ void ge::Renderer::end()
     shader->unuse();
 }
 
-void ge::Renderer::draw(float dt, VertexBuffer &vb, Transform& tr)
+void ge::Renderer::draw(float dt, Mesh &vb, Transform& tr)
 {
     shader->set_uniform_color(vb.get_color());
     shader->set_uniform_model(tr.get_model());
