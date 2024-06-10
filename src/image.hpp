@@ -1,6 +1,7 @@
 #ifndef __GE_IMAGE_HPP__
 #define __GE_IMAGE_HPP__
 #include <string>
+#include <GL/glew.h>
 #include <GLFW/glfw3.h>
 #include <log.hpp>
 

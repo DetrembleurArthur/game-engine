@@ -1,6 +1,5 @@
 #ifndef __GE_MOUSE_INPUT_HPP__
 #define __GE_MOUSE_INPUT_HPP__
-#include <GLFW/glfw3.h>
 #include <glm/glm.hpp>
 #include <camera2D.hpp>
 #include <image.hpp>

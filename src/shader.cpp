@@ -161,3 +161,15 @@ void ge::Shader::set_uniform_projection(const glm::mat4 &projection, const std::
     int loc = glGetUniformLocation(program, var_name.c_str());
     glUniformMatrix4fv(loc, 1, false, glm::value_ptr(projection));
 }
+
+void ge::Shader::set_uniform_enable_texture(bool value, const std::string &var_name)
+{
+    int loc = glGetUniformLocation(program, var_name.c_str());
+    glUniform1i(loc, value);
+}
+
+void ge::Shader::set_uniform_texture(int value, const std::string &var_name)
+{
+    int loc = glGetUniformLocation(program, var_name.c_str());
+    glUniform1i(loc, value);
+}

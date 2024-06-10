@@ -14,7 +14,7 @@ void ge::Renderer::end()
     shader->unuse();
 }
 
-void ge::Renderer::draw(float dt, Mesh &vb, Transform& tr)
+void ge::Renderer::draw(float dt, Mesh &vb, Transform& tr, Texture *texture)
 {
     shader->set_uniform_color(vb.get_color());
     shader->set_uniform_model(tr.get_model());
@@ -24,6 +24,13 @@ void ge::Renderer::draw(float dt, Mesh &vb, Transform& tr)
         camera->update_view();
         shader->set_uniform_view(camera->get_view());
         shader->set_uniform_projection(camera->get_projection());
+        shader->set_uniform_enable_texture(texture && vb.is_textured());
+        if(texture)
+        {
+            texture->active();
+            texture->bind();
+            shader->set_uniform_texture();
+        }
     }
     vb.draw();
 }

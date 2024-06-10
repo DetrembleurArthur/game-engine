@@ -17,6 +17,7 @@ namespace ge
         int primitive=GL_TRIANGLES;
         glm::vec4 color;
         int weight=0;
+        bool textured=false;
     public:
         Mesh();
         virtual ~Mesh();
@@ -24,7 +25,7 @@ namespace ge
         void bind();
         void unbind();
         void create();
-        void fill(size_t vsize, float *vertices, size_t esize, unsigned *elements);
+        void fill(size_t vsize, float *vertices, size_t esize, unsigned *elements, bool textured=false);
         void set_dynamic(bool value=true);
         void draw();
         void as_triangles();
@@ -36,8 +37,9 @@ namespace ge
         void as_triangle_fan();
         void set_color(const glm::vec4& color);
         void set_weight(int weight);
-        static Mesh *create_rect();
-        static Mesh *create_circle(int points=3);
+        bool is_textured() const;
+        static Mesh *create_rect(bool textured=false);
+        static Mesh *create_circle(int points=3, bool textured=false);
     };
 }
 

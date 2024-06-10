@@ -3,6 +3,7 @@
 #include <string>
 #include <mesh.hpp>
 #include <renderer.hpp>
+#include <texture_manager.hpp>
 
 namespace ge
 {
@@ -12,6 +13,7 @@ namespace ge
         std::string name;
         Camera2D *camera = nullptr;
         Renderer *renderer = nullptr;
+        TextureManager *textures = nullptr;
     public:
         Scene(const std::string& name);
         virtual ~Scene();

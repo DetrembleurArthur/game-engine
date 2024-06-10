@@ -4,6 +4,7 @@
 #include <mesh.hpp>
 #include <camera2D.hpp>
 #include <transform.hpp>
+#include <texture.hpp>
 
 namespace ge
 {
@@ -16,7 +17,7 @@ namespace ge
         Renderer(Shader *shader, Camera2D *camera);
         void begin();
         void end();
-        void draw(float dt, Mesh& vb, Transform& tr);
+        void draw(float dt, Mesh& vb, Transform& tr, Texture *texture=nullptr);
         void set_camera(Camera2D *camera);
     };
 }

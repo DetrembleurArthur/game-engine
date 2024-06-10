@@ -19,7 +19,8 @@ namespace ge
         CONTROLLER_EVENT,
         CLIPBOARD,
         SCENE,
-        SHADER
+        SHADER,
+        TEXTURE
     };
 
     void log(const std::string& msg, LogLevels level=LogLevels::INFO);

@@ -65,9 +65,9 @@ void ge::Application::init(const std::string& title, unsigned width, unsigned he
             }
             int vpx = size.x / 2 - aspect_width / 2.0;
             int vpy = size.y / 2 - aspect_height / 2.0;
-            std::cout << vpx << " " << vpy << " " << aspect_width << " " << aspect_height << " " << get_window().get_aspect_ratio() << std::endl;
             glViewport(vpx, vpy, aspect_width, aspect_height);
             viewport = glm::vec4(vpx, vpy, aspect_width, aspect_height);
+            //window->swap();
         });
     }
     else
@@ -98,7 +98,9 @@ void ge::Application::run()
     if(is_initialized() && window->is_created())
     {
         log("running");
-        double dt = 1.0/(target_fps == 0 ? 60 : target_fps);
+        if(target_fps <= 0)
+            target_fps = 60;
+        double dt = 1.0/target_fps;
         double t0 = Timing::get_sec();
         double t1 = 0.0;
         while(!window->must_be_closed())

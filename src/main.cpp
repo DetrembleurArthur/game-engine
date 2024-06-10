@@ -18,13 +18,14 @@ public:
 		ge::Application::get().set_controller_update_state(false);
 
 
-		vbuffer = ge::Mesh::create_circle(points);
+		vbuffer = ge::Mesh::create_rect(true);
 
-		vbuffer->set_color(ge::Colors::BLUE);
-		tr.set_size(200, 200);
+		vbuffer->set_color(ge::Colors::LIME);
+		tr.set_size(50, 50);
+		tr.set_position(0, ge::Application::get().get_window().get_size().y/2);
 
-		//tr.set_tl_origin();
-		tr.set_position(50, 50);
+
+		textures->load("./res/images/ge-logo.png", "logo");
 
 	}
 
@@ -37,6 +38,7 @@ public:
 	{
 		//ge::Application::get().get_window().set_clear_color(ge::Colors::GRAY);
 		ge::Application::get().resize(1400, 900);
+		ge::Application::get().get_window().set_clear_color(ge::Colors::SILVER);
 
 		
 
@@ -49,15 +51,8 @@ public:
 
 	void update(double dt) override
 	{
-		if(ge::KeyInput::is_pressed(GLFW_KEY_SPACE))
-		{
-			delete vbuffer;
-			vbuffer = ge::Mesh::create_circle(++points);
-			vbuffer->as_line_loop();
-			vbuffer->set_weight(9);
-			vbuffer->set_color(ge::Colors::BLUE);
-		}
-		tr.set_center_position(ge::MouseInput::get_position(*camera));
+		
+		tr.set_position(ge::MouseInput::get_position(*camera).x, ge::MouseInput::get_position(*camera).y);
 
 		
 	}
@@ -65,7 +60,7 @@ public:
 	void draw(double dt) override
 	{
 		renderer->begin();
-		renderer->draw(dt, *vbuffer, tr);
+		renderer->draw(dt, *vbuffer, tr, textures->get("logo"));
 		renderer->end();
 	}
 };
@@ -78,7 +73,7 @@ int main(int argc, char const *argv[])
 	});
 	app.init("Test app", 1400, 800);
 	app.get_window().set_icon("./res/images/ge-logo.png");
-	app.set_target_fps(60);
+	app.set_target_fps(120);
 	
 	app.get_scene_manager().create<MyScene>("arthur");
 	app.get_scene_manager().set_current("arthur");
