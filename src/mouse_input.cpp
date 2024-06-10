@@ -27,6 +27,11 @@ glm::vec2 ge::MouseInput::get_position(Camera2D &camera)
     return ge::utils::screen_to_world(mp, camera);
 }
 
+glm::vec2 ge::MouseInput::get_position(Camera2D *camera)
+{
+    return ge::MouseInput::get_position(*camera);
+}
+
 void ge::MouseInput::hide()
 {
     glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_HIDDEN);

@@ -6,9 +6,9 @@ class MyScene : public ge::Scene
 public:
 	using ge::Scene::Scene;
 
-	ge::Mesh *vbuffer;
-	ge::Transform tr;
-	int points = 3;
+
+	ge::GameObject *go;
+	ge::GameObject *bg;
 
 	void init() override
 	{
@@ -18,27 +18,47 @@ public:
 		ge::Application::get().set_controller_update_state(false);
 
 
-		vbuffer = ge::Mesh::create_rect(true);
-
-		vbuffer->set_color(ge::Colors::LIME);
-		tr.set_size(50, 50);
-		tr.set_position(0, ge::Application::get().get_window().get_size().y/2);
-
 
 		textures->load("./res/images/ge-logo.png", "logo");
+
+		go = new ge::GameObject();
+		go->get_transform().set_center_origin();
+		go->as_rect(textures->get("logo"));
+		go->set_color(ge::Colors::LIME);
+		go->get_transform().set_size(100, 100);
+		ge::CallbackComponent& cc = go->create_component<ge::CallbackComponent>();
+		cc.set([&](float dt){
+			auto mp = ge::MouseInput::get_position(get_camera());
+			go->get_transform().set_position(mp.x, mp.y);
+			go->get_transform().set_rotation(go->get_transform().get_rotation() + 45 * dt);
+		});
+
+		bg = new ge::GameObject();
+		
+		bg->get_transform().set_tl_position(glm::vec2(0, 0));
+		bg->set_color(ge::Colors::SILVER);
+
+		add(bg);
+		add(go);
+
+
+		
 
 	}
 
 	void destroy() override
 	{
-		delete vbuffer;
+		
 	}
 
 	void load() override
 	{
 		//ge::Application::get().get_window().set_clear_color(ge::Colors::GRAY);
 		ge::Application::get().resize(1400, 900);
-		ge::Application::get().get_window().set_clear_color(ge::Colors::SILVER);
+		ge::Application::get().get_window().set_clear_color(ge::Colors::BLACK);
+		auto size = ge::Application::get().get_window().get_size();
+
+		bg->as_rect(size.x, size.y);
 
 		
 
@@ -49,20 +69,6 @@ public:
 		
 	}
 
-	void update(double dt) override
-	{
-		
-		tr.set_position(ge::MouseInput::get_position(*camera).x, ge::MouseInput::get_position(*camera).y);
-
-		
-	}
-
-	void draw(double dt) override
-	{
-		renderer->begin();
-		renderer->draw(dt, *vbuffer, tr, textures->get("logo"));
-		renderer->end();
-	}
 };
 
 

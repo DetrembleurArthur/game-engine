@@ -16,17 +16,17 @@ ge::Texture::~Texture()
     glDeleteTextures(1, &id);
 }
 
-void ge::Texture::bind()
+void ge::Texture::bind() const
 {
     glBindTexture(GL_TEXTURE_2D, id);
 }
 
-void ge::Texture::unbind()
+void ge::Texture::unbind() const
 {
     glBindTexture(GL_TEXTURE_2D, 0);
 }
 
-void ge::Texture::active()
+void ge::Texture::active() const
 {
     glActiveTexture(GL_TEXTURE0);
 }
@@ -75,6 +75,16 @@ void ge::Texture::enable_clamp_to_edge()
 void ge::Texture::enable_clamp_to_border()
 {
     enable_wrap_param(GL_CLAMP_TO_BORDER);
+}
+
+glm::uvec2 ge::Texture::get_size() const
+{
+    bind();
+    int width, height;
+    glGetTexLevelParameteriv(GL_TEXTURE_2D, 0, GL_TEXTURE_WIDTH, &width);
+    glGetTexLevelParameteriv(GL_TEXTURE_2D, 0, GL_TEXTURE_HEIGHT, &height);
+    unbind();
+    return glm::uvec2(width, height);
 }
 
 ge::Texture *ge::Texture::load(const std::string &filename, bool rgb)

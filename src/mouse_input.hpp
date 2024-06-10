@@ -39,6 +39,7 @@ namespace ge
         static void set_window(GLFWwindow *window);
         static glm::vec2 get_position();
         static glm::vec2 get_position(Camera2D& camera);
+        static glm::vec2 get_position(Camera2D* camera);
         static void hide();
         static void lock();
         static void normal();

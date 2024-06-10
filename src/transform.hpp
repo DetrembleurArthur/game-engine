@@ -21,6 +21,7 @@ namespace ge
         float get_width();
         float get_height();
         void set_position(float x, float y);
+        void set_position(glm::ivec2 pos);
         void set_x(float x);
         void set_y(float y);
         glm::vec2 get_position();

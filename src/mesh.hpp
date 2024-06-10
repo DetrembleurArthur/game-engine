@@ -15,13 +15,11 @@ namespace ge
         int draw_policy=GL_STATIC_DRAW;
         size_t elements_number=0;
         int primitive=GL_TRIANGLES;
-        glm::vec4 color;
         int weight=0;
         bool textured=false;
     public:
         Mesh();
         virtual ~Mesh();
-        glm::vec4& get_color();
         void bind();
         void unbind();
         void create();
@@ -35,7 +33,6 @@ namespace ge
         void as_line_loop();
         void as_triangle_strip();
         void as_triangle_fan();
-        void set_color(const glm::vec4& color);
         void set_weight(int weight);
         bool is_textured() const;
         static Mesh *create_rect(bool textured=false);

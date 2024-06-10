@@ -67,7 +67,21 @@ void ge::Application::init(const std::string& title, unsigned width, unsigned he
             int vpy = size.y / 2 - aspect_height / 2.0;
             glViewport(vpx, vpy, aspect_width, aspect_height);
             viewport = glm::vec4(vpx, vpy, aspect_width, aspect_height);
-            //window->swap();
+
+            /* CHANGE IT !!! */
+            /*window->clear();
+
+            Scene *current_scene = scene_manager.get_current();
+            if(current_scene)
+            {
+                if(enable_controller_update)
+                    ControllerInput::update_controllers();
+                current_scene->update(0.16);
+                current_scene->draw(0.16);
+            }
+
+            window->swap();
+            events_policy_callback();*/
         });
     }
     else

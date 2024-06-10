@@ -59,6 +59,11 @@ void ge::Transform::set_position(float x, float y)
     position.y = y;
 }
 
+void ge::Transform::set_position(glm::ivec2 pos)
+{
+    set_position(pos.x, pos.y);
+}
+
 void ge::Transform::set_x(float x)
 {
     position.x = x;

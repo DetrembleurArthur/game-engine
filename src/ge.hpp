@@ -24,4 +24,7 @@
 #include <camera2D.hpp>
 #include <transform.hpp>
 #include <utils.hpp>
+#include <game_object.hpp>
+#include <component.hpp>
+#include <callback_component.hpp>
 #endif

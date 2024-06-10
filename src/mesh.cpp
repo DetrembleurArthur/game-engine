@@ -3,7 +3,7 @@
 #include <cmath>
 #include <iostream>
 
-ge::Mesh::Mesh() : color(0, 0, 0, 1)
+ge::Mesh::Mesh()
 {
     create();
 }
@@ -20,10 +20,6 @@ ge::Mesh::~Mesh()
     glDeleteBuffers(1, &ebo);
 }
 
-glm::vec4 &ge::Mesh::get_color()
-{
-    return color;
-}
 
 void ge::Mesh::bind()
 {
@@ -115,10 +111,6 @@ void ge::Mesh::as_triangle_fan()
     primitive = GL_TRIANGLE_FAN;
 }
 
-void ge::Mesh::set_color(const glm::vec4 &color)
-{
-    this->color = color;
-}
 
 void ge::Mesh::set_weight(int weight)
 {

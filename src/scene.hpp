@@ -4,9 +4,16 @@
 #include <mesh.hpp>
 #include <renderer.hpp>
 #include <texture_manager.hpp>
+#include <vector>
+#include <game_object.hpp>
 
 namespace ge
 {
+    struct GoInfos
+    {
+        bool removable=true;
+    };
+
     class Scene
     {
     protected:
@@ -14,6 +21,7 @@ namespace ge
         Camera2D *camera = nullptr;
         Renderer *renderer = nullptr;
         TextureManager *textures = nullptr;
+        std::vector<std::pair<GameObject *, GoInfos>> game_objects;
     public:
         Scene(const std::string& name);
         virtual ~Scene();
@@ -25,11 +33,13 @@ namespace ge
         virtual void load() = 0;
         // call at scene switching
         virtual void unload() = 0;
-        virtual void update(double dt) = 0;
-        virtual void draw(double dt) = 0;
+        virtual void update(double dt);
+        virtual void draw(double dt);
         void set_renderer(ge::Renderer *renderer);
         std::string get_name();
         Camera2D *get_camera();
+        void add(GameObject& go, GoInfos infos={false});
+        void add(GameObject* go, GoInfos infos={true});
     };
 }
 
