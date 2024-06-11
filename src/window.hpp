@@ -4,11 +4,8 @@
 #include <GLFW/glfw3.h>
 #include <string>
 #include <monitor.hpp>
-#include <window_events.hpp>
 #include <log.hpp>
 #include <image.hpp>
-#include <key_events.hpp>
-#include <mouse_events.hpp>
 #include <glm/glm.hpp>
 
 namespace ge

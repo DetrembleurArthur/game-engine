@@ -8,9 +8,6 @@ ge::Window::Window(const std::string &title, unsigned width, unsigned height) : 
     {
         aspect_ratio = width / (float)height;
         log("window creation success");
-        WindowEvents::init(window);
-        KeyEvents::init(window);
-        MouseEvents::init(window);
     }
     else
     {

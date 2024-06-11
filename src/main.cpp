@@ -29,7 +29,7 @@ public:
 		ge::CallbackComponent& cc = go->create_component<ge::CallbackComponent>();
 		cc.set([&](float dt){
 			auto mp = ge::MouseInput::get_position(get_camera());
-			go->get_transform().set_position(mp.x, mp.y);
+			go->get_transform().set_position(mp);
 			go->get_transform().set_rotation(go->get_transform().get_rotation() + 45 * dt);
 		});
 

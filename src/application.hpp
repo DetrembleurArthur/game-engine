@@ -19,6 +19,8 @@ namespace ge
         SceneManager scene_manager;
         bool enable_controller_update=false;
         glm::vec4 viewport;
+        std::pair<float, float> loop_times;
+        void loop();
     public:
         Application(void (*hint_callback)()=[](){ge::log("default hints");});
         ~Application();

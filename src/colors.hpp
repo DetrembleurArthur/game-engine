@@ -27,6 +27,7 @@ namespace ge
         const Color MAROON(0.5f, 0.0f, 0.0f, 1.0f);
         const Color SILVER(0.75f, 0.75f, 0.75f, 1.0f);
         const Color GOLD(1.0f, 0.84f, 0.0f, 1.0f);
+        const Color TRANSPARENT(0, 0, 0, 0);
     }
 }
 

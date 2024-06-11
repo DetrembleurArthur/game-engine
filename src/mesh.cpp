@@ -3,6 +3,36 @@
 #include <cmath>
 #include <iostream>
 
+ge::MeshLayer ge::MeshLayer::DEFAULT_LAYERS[2] = {
+    { // positions
+        .elements=3,
+        .type=GL_FLOAT,
+        .size=sizeof(float)
+    },
+    { // tex
+        .elements=2,
+        .type=GL_FLOAT,
+        .size=sizeof(float)
+    },
+};
+
+float ge::Mesh::RECT_VERTICES[12] = {
+        0, 0, 0,
+        0, 1, 0,
+        1, 1, 0,
+        1, 0, 0
+};
+float ge::Mesh::RECT_TEX_VERTICES[20] = {
+        0, 0, 0, 0, 0,
+        0, 1, 0, 0, 1,
+        1, 1, 0, 1, 1,
+        1, 0, 0, 1, 0
+};
+unsigned ge::Mesh::RECT_ELEMENTS[6] = {
+        0, 1, 2,
+        0, 2, 3
+};
+
 ge::Mesh::Mesh()
 {
     create();
@@ -11,9 +41,8 @@ ge::Mesh::Mesh()
 ge::Mesh::~Mesh()
 {
     bind();
-    glDisableVertexAttribArray(0);
-    if(textured)
-        glDisableVertexAttribArray(1);
+    for(int i = 0; i < attributes; i++)
+        glDisableVertexAttribArray(i);
     unbind();
     glDeleteVertexArrays(1, &vao);
     glDeleteBuffers(1, &vbo);
@@ -38,24 +67,32 @@ void ge::Mesh::create()
     glGenBuffers(1, &ebo);
 }
 
-void ge::Mesh::fill(size_t vsize, float *vertices, size_t esize, unsigned *elements, bool textured)
+
+
+void ge::Mesh::fill(MeshAttribute *attributes, size_t esize, unsigned *elements, bool textured)
 {
+    size_t vertex_size = 0U;
+    for(int i = 0; i < attributes->layers; i++)
+    {
+        vertex_size += attributes->layers_ref[i].elements * attributes->layers_ref[i].size;
+    }
     bind();
     glBindBuffer(GL_ARRAY_BUFFER, vbo);
-    glBufferData(GL_ARRAY_BUFFER, vsize, vertices, draw_policy);
+    glBufferData(GL_ARRAY_BUFFER, attributes->vertices_bytes, attributes->vertices, draw_policy);
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ebo);
     glBufferData(GL_ELEMENT_ARRAY_BUFFER, esize, elements, draw_policy);
-    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, (3 + 2 * textured) * sizeof(float), (void*)0);
-    glEnableVertexAttribArray(0);
-    this->textured = textured;
-    if(textured)
+    long long offset = 0;
+    for(int i = 0; i < attributes->layers; i++)
     {
-        glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, (3 + 2) * sizeof(float), (void *)(3 * sizeof(float)));
-        glEnableVertexAttribArray(1);
+        glVertexAttribPointer(i, attributes->layers_ref[i].elements, attributes->layers_ref[i].type, GL_FALSE, vertex_size, (void*)offset);
+        glEnableVertexAttribArray(i);
+        offset += attributes->layers_ref[i].elements * attributes->layers_ref[i].size;
     }
     unbind();
     glBindVertexArray(0);
     elements_number = esize;
+    this->textured = textured;
+    this->attributes = attributes->layers;
 }
 
 void ge::Mesh::set_dynamic(bool value)
@@ -68,9 +105,8 @@ void ge::Mesh::draw()
     if(weight)
         glLineWidth(weight);
     bind();
-    glEnableVertexAttribArray(0);
-    if(textured)
-        glEnableVertexAttribArray(1);
+    for(int i = 0; i < attributes; i++)
+        glEnableVertexAttribArray(i);
     glDrawElements(primitive, elements_number, GL_UNSIGNED_INT, 0);
     unbind();
 
@@ -124,27 +160,14 @@ bool ge::Mesh::is_textured() const
 
 ge::Mesh *ge::Mesh::create_rect(bool textured)
 {
-    float vertices[] = {
-        0, 0, 0,
-        0, 1, 0,
-        1, 1, 0,
-        1, 0, 0
-    };
-    float tex_vertices[] = {
-        0, 0, 0, 0, 0,
-        0, 1, 0, 0, 1,
-        1, 1, 0, 1, 1,
-        1, 0, 0, 1, 0
-    };
-    unsigned elements[] = {
-        0, 1, 2,
-        0, 2, 3
+    MeshAttribute ma = {
+        .layers_ref=MeshLayer::DEFAULT_LAYERS,
+        .layers=1 + textured,
+        .vertices=textured ? Mesh::RECT_TEX_VERTICES : Mesh::RECT_VERTICES,
+        .vertices_bytes=textured ? sizeof(Mesh::RECT_TEX_VERTICES) : sizeof(Mesh::RECT_VERTICES)
     };
     Mesh *mesh = new Mesh();
-    if(textured)
-        mesh->fill(sizeof(tex_vertices), tex_vertices, sizeof(elements), elements, textured);
-    else
-        mesh->fill(sizeof(vertices), vertices, sizeof(elements), elements, textured);
+    mesh->fill(&ma, sizeof(Mesh::RECT_ELEMENTS), Mesh::RECT_ELEMENTS, textured);
     return mesh;
 }
 
@@ -152,13 +175,16 @@ ge::Mesh *ge::Mesh::create_circle(int points, bool textured)
 {
     points = points > 3 ? points : 3;
     float angle = glm::radians(360.0 / points);
-    float *vertices = new float[(points + 1) * 5]; //x, y, z, tx, ty
-    vertices[0] = 0.5; // center.x
-    vertices[1] = 0.5; // center.y
-    vertices[2] = 0;
-    vertices[3] = 0.5;
-    vertices[4] = 0.5;
-    int vertex_offset = 5;
+    float *vertices = new float[(points + 1) * (3 + 2 * textured)]; //x, y, z, tx, ty
+    int vertex_offset = 0;
+    vertices[vertex_offset++] = 0.5; // center.x
+    vertices[vertex_offset++] = 0.5; // center.y
+    vertices[vertex_offset++] = 0;
+    if(textured)
+    {
+        vertices[vertex_offset++] = 0.5;
+        vertices[vertex_offset++] = 0.5;
+    }
     for(int i = 0; i < points; i++)
     {
         auto x = vertices[0] + (0.5 * std::sin(angle * i));
@@ -166,8 +192,11 @@ ge::Mesh *ge::Mesh::create_circle(int points, bool textured)
         vertices[vertex_offset++] = x;
         vertices[vertex_offset++] = y;
         vertices[vertex_offset++] = 0;
-        vertices[vertex_offset++] = x;
-        vertices[vertex_offset++] = y;
+        if(textured)
+        {
+            vertices[vertex_offset++] = x;
+            vertices[vertex_offset++] = y;
+        }
     }
     unsigned *elements = new unsigned[points * 3];
     int element_offset = 0;
@@ -180,8 +209,14 @@ ge::Mesh *ge::Mesh::create_circle(int points, bool textured)
     elements[element_offset++] = 0;
     elements[element_offset++] = points;
     elements[element_offset++] = 1;
+    MeshAttribute ma = {
+        .layers_ref=MeshLayer::DEFAULT_LAYERS,
+        .layers=1 + textured,
+        .vertices=vertices,
+        .vertices_bytes=(points + 1) * (3 + 2 * textured) * sizeof(float)
+    };
     Mesh *mesh = new Mesh();
-    mesh->fill((points + 1) * 5 * 4, vertices, points * 3 * 4, elements, textured); // *4 because it is in number of bytes
+    mesh->fill(&ma, points * 3 * 4, elements, textured); // *4 because it is in number of bytes
     delete[] vertices;
     delete[] elements;
     return mesh;

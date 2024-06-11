@@ -7,8 +7,38 @@
 #include <timing.hpp>
 #include <thread>
 #include <colors.hpp>
+#include <window_events.hpp>
+#include <mouse_events.hpp>
+#include <key_events.hpp>
+
 
 ge::Application *ge::Application::app=nullptr;
+
+void ge::Application::loop()
+{
+    float dt = Timing::get_delta();
+    window->clear();
+    Scene *current_scene = scene_manager.get_current();
+    if(current_scene)
+    {
+        if(enable_controller_update)
+            ControllerInput::update_controllers();
+        current_scene->update(dt);
+        current_scene->draw(dt);
+    }
+    window->swap();
+    events_policy_callback();
+    loop_times.second = Timing::get_sec();
+    dt = loop_times.second - loop_times.first;
+    if(dt < 1.0 / target_fps)
+    {
+        std::this_thread::sleep_for(std::chrono::duration<double>(1.0 / target_fps - dt));
+        loop_times.second += 1.0 / target_fps - dt;
+        dt = loop_times.second - loop_times.first;
+        Timing::set_delta(dt);
+    }
+    loop_times.first = loop_times.second;
+}
 
 ge::Application::Application(void (*hint_callback)()) : hint_callback(hint_callback)
 {
@@ -49,6 +79,9 @@ void ge::Application::init(const std::string& title, unsigned width, unsigned he
         log("hints configuration");
         hint_callback();
         window = new Window(title, width, height);
+        WindowEvents::init(window->get_pointer());
+        KeyEvents::init(window->get_pointer());
+        MouseEvents::init(window->get_pointer());
         window->set_clear_color(ge::Colors::BLACK);
         KeyInput::set_window(window->get_pointer());
         MouseInput::set_window(window->get_pointer());
@@ -67,21 +100,7 @@ void ge::Application::init(const std::string& title, unsigned width, unsigned he
             int vpy = size.y / 2 - aspect_height / 2.0;
             glViewport(vpx, vpy, aspect_width, aspect_height);
             viewport = glm::vec4(vpx, vpy, aspect_width, aspect_height);
-
-            /* CHANGE IT !!! */
-            /*window->clear();
-
-            Scene *current_scene = scene_manager.get_current();
-            if(current_scene)
-            {
-                if(enable_controller_update)
-                    ControllerInput::update_controllers();
-                current_scene->update(0.16);
-                current_scene->draw(0.16);
-            }
-
-            window->swap();
-            events_policy_callback();*/
+            loop();
         });
     }
     else
@@ -114,34 +133,12 @@ void ge::Application::run()
         log("running");
         if(target_fps <= 0)
             target_fps = 60;
-        double dt = 1.0/target_fps;
-        double t0 = Timing::get_sec();
-        double t1 = 0.0;
+        Timing::set_delta(1.0/target_fps);
+        loop_times.first = Timing::get_sec();
+        loop_times.second = 0.0;
         while(!window->must_be_closed())
         {
-            window->clear();
-
-            Scene *current_scene = scene_manager.get_current();
-            if(current_scene)
-            {
-                if(enable_controller_update)
-                    ControllerInput::update_controllers();
-                current_scene->update(dt);
-                current_scene->draw(dt);
-            }
-
-            window->swap();
-            events_policy_callback();
-            t1 = Timing::get_sec();
-            dt = t1 - t0;
-            if(dt < 1.0 / target_fps)
-            {
-                std::this_thread::sleep_for(std::chrono::duration<double>(1.0 / target_fps - dt));
-                t1 += 1.0 / target_fps - dt;
-                dt = t1 - t0;
-                Timing::set_delta(dt);
-            }
-            t0 = t1;
+            loop();
         }
     }
     else
