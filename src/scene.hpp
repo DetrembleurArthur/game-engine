@@ -11,7 +11,7 @@ namespace ge
 {
     struct GoInfos
     {
-        bool removable=true;
+        bool freeable=true;
     };
 
     class Scene
@@ -22,6 +22,7 @@ namespace ge
         Renderer *renderer = nullptr;
         TextureManager *textures = nullptr;
         std::vector<std::pair<GameObject *, GoInfos>> game_objects;
+        bool enable_go_kill=false;
     public:
         Scene(const std::string& name);
         virtual ~Scene();
@@ -36,6 +37,8 @@ namespace ge
         virtual void update(double dt);
         virtual void draw(double dt);
         void set_renderer(ge::Renderer *renderer);
+        void kill(GameObject& go);
+        void kill(GameObject* go=nullptr);
         std::string get_name();
         Camera2D *get_camera();
         void add(GameObject& go, GoInfos infos={false});

@@ -9,6 +9,12 @@
 
 namespace ge
 {
+    struct GOFlags
+    {
+        bool disabled: 1;
+        bool killed : 1;
+    };
+
     class GameObject
     {
     private:
@@ -17,6 +23,7 @@ namespace ge
         const Texture *texture=nullptr;
         Transform transform;
         std::vector<Component *> components;
+        GOFlags flags;
     public:
         GameObject();
         virtual ~GameObject();
@@ -31,6 +38,7 @@ namespace ge
         Transform& get_transform();
         virtual void update(float dt);
         bool drawable();
+        GOFlags& get_flags();
         template <typename T> T& create_component()
         {
             static_assert(std::is_base_of<Component, T>::value, "T must be derived from Component");

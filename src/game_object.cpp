@@ -1,6 +1,6 @@
 #include "game_object.hpp"
 
-ge::GameObject::GameObject() : color(1, 1, 1, 1)
+ge::GameObject::GameObject() : color(1, 1, 1, 1), flags({false, false})
 {
 
 }
@@ -94,11 +94,14 @@ ge::Transform &ge::GameObject::get_transform()
 
 void ge::GameObject::update(float dt)
 {
-    for(Component *c : components)
+    if(!flags.disabled)
     {
-        if(dynamic_cast<UpdatableComponent *>(c))
+        for(Component *c : components)
         {
-            dynamic_cast<UpdatableComponent *>(c)->update(dt);
+            if(dynamic_cast<UpdatableComponent *>(c))
+            {
+                dynamic_cast<UpdatableComponent *>(c)->update(dt);
+            }
         }
     }
 }
@@ -106,4 +109,9 @@ void ge::GameObject::update(float dt)
 bool ge::GameObject::drawable()
 {
     return mesh;
+}
+
+ge::GOFlags &ge::GameObject::get_flags()
+{
+    return flags;
 }

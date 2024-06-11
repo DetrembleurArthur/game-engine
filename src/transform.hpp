@@ -11,6 +11,8 @@ namespace ge
         glm::vec3 size;
         glm::vec3 rotation;
         glm::vec3 origin;
+        glm::mat4 model;
+        bool dirty=true;
     public:
         Transform();
         glm::mat4 get_model();
@@ -49,6 +51,8 @@ namespace ge
         float get_rotation();
         void set_rotation(float angle);
         float get_distance(glm::vec2 target);
+        void set_dirty(bool value=true);
+        bool is_dirty() const;
     };
 }
 

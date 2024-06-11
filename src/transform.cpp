@@ -2,20 +2,25 @@
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
 #include <cmath>
+#include <log.hpp>
 
-ge::Transform::Transform() : size(1, 1, 1), position(0, 0, 0), rotation(0, 0, 0), origin(0, 0, 0)
+ge::Transform::Transform() : size(1, 1, 1), position(0, 0, 0), rotation(0, 0, 0), origin(0, 0, 0), model(glm::identity<glm::mat4>())
 {
 }
 
 glm::mat4 ge::Transform::get_model()
 {
-    glm::mat4 model = glm::identity<glm::mat4>();
-    model = glm::translate(model, position);
-    model = glm::rotate(model, glm::radians(rotation.x), glm::vec3(1, 0, 0));
-    model = glm::rotate(model, glm::radians(rotation.y), glm::vec3(0, 1, 0));
-    model = glm::rotate(model, glm::radians(rotation.z), glm::vec3(0, 0, 1));
-    model = glm::translate(model, -origin);
-    model = glm::scale(model, size);
+    if(dirty)
+    {
+        model = glm::identity<glm::mat4>();
+        model = glm::translate(model, position);
+        model = glm::rotate(model, glm::radians(rotation.x), glm::vec3(1, 0, 0));
+        model = glm::rotate(model, glm::radians(rotation.y), glm::vec3(0, 1, 0));
+        model = glm::rotate(model, glm::radians(rotation.z), glm::vec3(0, 0, 1));
+        model = glm::translate(model, -origin);
+        model = glm::scale(model, size);
+        dirty = false;
+    }
     return model;
 }
 
@@ -26,6 +31,7 @@ void ge::Transform::set_size(float width, float height)
     origin = origin * glm::vec3(width / size.x, height / size.y, 1);
     size.x = width;
     size.y = height;
+    dirty = true;
 }
 
 void ge::Transform::set_width(float width)
@@ -57,6 +63,7 @@ void ge::Transform::set_position(float x, float y)
 {
     position.x = x;
     position.y = y;
+    dirty = true;
 }
 
 void ge::Transform::set_position(glm::ivec2 pos)
@@ -94,6 +101,7 @@ void ge::Transform::set_origin(float x, float y)
     origin.x = x;
     origin.y = y;
     origin.z = 0;
+    dirty = true;
 }
 
 void ge::Transform::set_tl_origin()
@@ -197,9 +205,20 @@ float ge::Transform::get_rotation()
 void ge::Transform::set_rotation(float angle)
 {
     rotation.z = angle;
+    dirty = true;
 }
 
 float ge::Transform::get_distance(glm::vec2 target)
 {
     return glm::distance(get_center_position(), target);
+}
+
+void ge::Transform::set_dirty(bool value)
+{
+    dirty = value;
+}
+
+bool ge::Transform::is_dirty() const
+{
+    return dirty;
 }
