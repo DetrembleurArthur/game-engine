@@ -66,7 +66,7 @@ void ge::Transform::set_position(float x, float y)
     dirty = true;
 }
 
-void ge::Transform::set_position(glm::ivec2 pos)
+void ge::Transform::set_position(glm::vec2 pos)
 {
     set_position(pos.x, pos.y);
 }
@@ -202,9 +202,54 @@ float ge::Transform::get_rotation()
     return rotation.z;
 }
 
+glm::vec2 ge::Transform::get_direction(glm::vec2 target)
+{
+    return glm::normalize(target - glm::vec2(position));
+}
+
 void ge::Transform::set_rotation(float angle)
 {
     rotation.z = angle;
+    dirty = true;
+}
+
+// rotation around target by angle degreess (based on the position of the object)
+void ge::Transform::set_relative_angle(glm::vec2 target, float angle)
+{
+    angle = glm::radians(angle);
+    glm::vec2 pos = glm::vec2(position) - target;
+    pos = glm::vec2(pos.x * cos(angle) - pos.y * sin(angle), pos.x * sin(angle) + pos.y * cos(angle));
+    pos += target;
+    position.x = pos.x;
+    position.y = pos.y;
+    dirty = true;
+}
+
+// rotation around target by angle degreess at a certain distance (based on the position of the object)
+void ge::Transform::set_relative_angle(glm::vec2 target, float angle, float distance)
+{
+    angle = glm::radians(angle);
+    std::cout << "angle: " << angle << std::endl;
+    glm::vec2 pos = glm::vec2(position) - target;
+    pos = glm::normalize(pos)*glm::vec2(distance,distance);
+    pos = glm::vec2(pos.x * cos(angle) - pos.y * sin(angle), pos.x * sin(angle) + pos.y * cos(angle));
+    pos += target;
+    position.x = pos.x;
+    position.y = pos.y;
+    dirty = true;
+}
+
+// set object position at "angle" degrees of the target at "distance" pixels
+void ge::Transform::set_angle(glm::vec2 target, float angle, float distance)
+{
+    // based on dist = sqrt(2x^2)
+    angle = glm::radians(angle-45);
+    distance = (distance * sqrtf(2.0)) / 2;
+    glm::vec2 pos = glm::vec2(distance, distance);
+    pos = glm::vec2(pos.x * cos(angle) - pos.y * sin(angle), pos.x * sin(angle) + pos.y * cos(angle));
+    pos += target;
+    position.x = pos.x;
+    position.y = pos.y;
     dirty = true;
 }
 

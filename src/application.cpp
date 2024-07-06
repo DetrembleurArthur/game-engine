@@ -30,13 +30,13 @@ void ge::Application::loop()
     events_policy_callback();
     loop_times.second = Timing::get_sec();
     dt = loop_times.second - loop_times.first;
-    if(dt < 1.0 / target_fps)
+    if(target_fps > 0 && dt < 1.0 / target_fps)
     {
         std::this_thread::sleep_for(std::chrono::duration<double>(1.0 / target_fps - dt));
         loop_times.second += 1.0 / target_fps - dt;
         dt = loop_times.second - loop_times.first;
-        Timing::set_delta(dt);
     }
+    Timing::set_delta(dt);
     loop_times.first = loop_times.second;
 }
 
@@ -131,9 +131,10 @@ void ge::Application::run()
     if(is_initialized() && window->is_created())
     {
         log("running");
-        if(target_fps <= 0)
-            target_fps = 60;
-        Timing::set_delta(1.0/target_fps);
+        if(target_fps > 0)
+        {
+            Timing::set_delta(1.0/target_fps);
+        }
         loop_times.first = Timing::get_sec();
         loop_times.second = 0.0;
         while(!window->must_be_closed())

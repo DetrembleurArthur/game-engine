@@ -1,6 +1,6 @@
 CPP = g++
 SRC = ./src/
-SOURCES = main.cpp callback_component.cpp component.cpp game_object.cpp texture_manager.cpp texture.cpp utils.cpp transform.cpp camera2D.cpp renderer.cpp shader.cpp mesh.cpp colors.cpp application.cpp window.cpp log.cpp global_events.cpp monitor.cpp window_events.cpp image.cpp stb_image.cpp key_events.cpp key_input.cpp key_combo.cpp mouse_events.cpp mouse_input.cpp controller_input.cpp controller_events.cpp timing.cpp clipboard.cpp scene.cpp scene_manager.cpp
+SOURCES = main.cpp move_component.cpp callback_component.cpp component.cpp game_object.cpp texture_manager.cpp texture.cpp utils.cpp transform.cpp camera2D.cpp renderer.cpp shader.cpp mesh.cpp colors.cpp application.cpp window.cpp log.cpp global_events.cpp monitor.cpp window_events.cpp image.cpp stb_image.cpp key_events.cpp key_input.cpp key_combo.cpp mouse_events.cpp mouse_input.cpp controller_input.cpp controller_events.cpp timing.cpp clipboard.cpp scene.cpp scene_manager.cpp
 OBJECTS = $(SOURCES:.cpp=.o)
 CFLAGS=
 LIBS=-L ./libs/glfw-3.4/lib-mingw-w64 -L ./libs/glew-2.1.0/lib/Release/x64 -L ./libs/glm/lib -lglfw3 -lglew32 -lopengl32 -lglm -lgdi32

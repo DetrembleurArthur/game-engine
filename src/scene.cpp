@@ -4,25 +4,32 @@
 #include <application.hpp>
 #include <algorithm>
 
-ge::Scene::Scene(const std::string& name) : name(name), camera(new Camera2D()), renderer(new Renderer(ge::Shader::DEFAULT, camera)), textures(new TextureManager())
+ge::Scene::Scene(const std::string& name, int layers_number) : name(name), camera(new Camera2D()), renderer(new Renderer(ge::Shader::DEFAULT, camera)), textures(new TextureManager())
 {
-    
+    for(int i = 0; i < layers_number; i++)
+    {
+        layers.push_back(Layer());
+    }
 }
 
 ge::Scene::~Scene()
 {
-    for(std::pair<GameObject *, GoInfos>& go : game_objects)
+    for(Layer& layer : layers)
     {
-        if(go.second.freeable)
+        for(std::pair<GameObject *, GoInfos>& go : layer.first)
         {
-            if(go.first)
+            if(go.second.freeable)
             {
-                delete go.first;
-                go.first = nullptr;
+                if(go.first)
+                {
+                    delete go.first;
+                    go.first = nullptr;
+                }
             }
         }
+        layer.first.clear();
     }
-    game_objects.clear();
+    layers.clear();
     set_renderer(nullptr);
     if(camera)
         delete camera;
@@ -32,30 +39,36 @@ ge::Scene::~Scene()
 
 void ge::Scene::update(double dt)
 {
-    if(enable_go_kill)
+    for(Layer& layer : layers)
     {
-        game_objects.erase(std::remove_if(game_objects.begin(), game_objects.end(), [](std::pair<GameObject *, GoInfos>& go) {
-            bool to_kill = go.first->get_flags().killed;
-            if(to_kill && go.second.freeable)
-                delete go.first;
-            return to_kill;
-        }));
-        enable_go_kill = false;
-    }
-    for(std::pair<GameObject *, GoInfos>& go : game_objects)
-    {
-        go.first->update(dt);
+        if(layer.second.kill_enabled)
+        {
+            layer.first.erase(std::remove_if(layer.first.begin(), layer.first.end(), [](std::pair<GameObject *, GoInfos>& go) {
+                bool to_kill = go.first->get_flags().killed;
+                if(to_kill && go.second.freeable)
+                    delete go.first;
+                return to_kill;
+            }));
+            layer.second.kill_enabled = false;
+        }
+        for(std::pair<GameObject *, GoInfos>& go : layer.first)
+        {
+            go.first->update(dt);
+        }
     }
 }
 
 void ge::Scene::draw(double dt)
 {
     renderer->begin();
-    for(std::pair<GameObject *, GoInfos>& go : game_objects)
+    for(Layer& layer : layers)
     {
-        GameObject *ptr = go.first;
-        if(ptr->drawable())
-            renderer->draw(dt, *ptr);
+        for(std::pair<GameObject *, GoInfos>& go : layer.first)
+        {
+            GameObject *ptr = go.first;
+            if(ptr->drawable())
+                renderer->draw(dt, *ptr);
+        }
     }
     renderer->end();
 }
@@ -70,17 +83,17 @@ void ge::Scene::set_renderer(ge::Renderer *renderer)
     this->renderer = renderer;
 }
 
-void ge::Scene::kill(GameObject &go)
+void ge::Scene::kill(GameObject &go, int layer_id)
 {
-    enable_go_kill = go.get_flags().killed = true;
+    layers[layer_id].second.kill_enabled = go.get_flags().killed = true;
 }
 
-void ge::Scene::kill(GameObject *go)
+void ge::Scene::kill(GameObject *go, int layer_id)
 {
     if(go)
         kill(*go);
     else
-        enable_go_kill = true;
+        layers[layer_id].second.kill_enabled = true;
 }
 
 std::string ge::Scene::get_name()
@@ -93,13 +106,14 @@ ge::Camera2D *ge::Scene::get_camera()
     return camera;
 }
 
-void ge::Scene::add(GameObject& go, GoInfos infos)
+void ge::Scene::add(GameObject& go, int layer_id, GoInfos infos)
 {
-    game_objects.push_back(std::pair<GameObject *, GoInfos>(&go, infos));
+    if(layers.size() > layer_id)
+        layers[layer_id].first.push_back(std::pair<GameObject *, GoInfos>(&go, infos));
 }
 
-void ge::Scene::add(GameObject *go, GoInfos infos)
+void ge::Scene::add(GameObject *go, int layer_id, GoInfos infos)
 {
     if(go)
-        add(*go, infos);
+        add(*go, layer_id, infos);
 }

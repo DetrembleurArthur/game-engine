@@ -7,7 +7,7 @@ namespace ge
     class GameObject;
     class Component
     {
-    private:
+    protected:
         GameObject *owner=nullptr;
     public:
         Component(GameObject *owner);

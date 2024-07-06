@@ -23,7 +23,7 @@ namespace ge
         float get_width();
         float get_height();
         void set_position(float x, float y);
-        void set_position(glm::ivec2 pos);
+        void set_position(glm::vec2 pos);
         void set_x(float x);
         void set_y(float y);
         glm::vec2 get_position();
@@ -49,7 +49,11 @@ namespace ge
         void set_center_position(glm::vec2 position);
         float get_angle(glm::vec2 target);
         float get_rotation();
+        glm::vec2 get_direction(glm::vec2 target);
         void set_rotation(float angle);
+        void set_relative_angle(glm::vec2 target, float angle);
+        void set_relative_angle(glm::vec2 target, float angle, float distance);
+        void set_angle(glm::vec2 target, float angle, float distance);
         float get_distance(glm::vec2 target);
         void set_dirty(bool value=true);
         bool is_dirty() const;

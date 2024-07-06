@@ -27,4 +27,5 @@
 #include <game_object.hpp>
 #include <component.hpp>
 #include <callback_component.hpp>
+#include <move_component.hpp>
 #endif

@@ -1,6 +1,10 @@
 #include <ge.hpp>
 
+/*
 
+dist = sqrt(2x^2)
+
+*/
 class MyScene : public ge::Scene
 {
 public:
@@ -26,14 +30,16 @@ public:
 		go->as_rect(textures->get("logo"));
 		go->set_color(ge::Colors::LIME);
 		go->get_transform().set_size(100, 100);
+		go->get_transform().set_position(300, 300);
+		ge::MoveComponent& mc = go->create_component<ge::MoveComponent>();
+		mc.angle_speed = 90;
+		mc.angle_accel = 20;
 		ge::CallbackComponent& cc = go->create_component<ge::CallbackComponent>();
 		cc.set([&](float dt){
 			auto mp = ge::MouseInput::get_position(get_camera());
-			go->get_transform().set_position(mp);
-			go->get_transform().set_rotation(go->get_transform().get_rotation() + 45 * dt);
-			std::cout << go->get_transform().get_rotation() << std::endl;
-			if(go->get_transform().get_rotation() > 200)
-				kill(*go);
+			//mc.toward(mp, glm::vec2(100));
+			//go->get_transform().set_relative_angle(mp, 45*dt, 200);
+			mc.around(mp, 50);
 		});
 
 		bg = new ge::GameObject();
@@ -41,8 +47,8 @@ public:
 		bg->get_transform().set_tl_position(glm::vec2(0, 0));
 		bg->set_color(ge::Colors::SILVER);
 
-		add(bg);
-		add(go);
+		add(bg, ge::Layers::BG);
+		add(go, ge::Layers::MAIN);
 
 
 		
@@ -82,7 +88,7 @@ int main(int argc, char const *argv[])
 	});
 	app.init("Test app", 1400, 800);
 	app.get_window().set_icon("./res/images/ge-logo.png");
-	app.set_target_fps(120);
+	app.set_target_fps(0);
 	
 	app.get_scene_manager().create<MyScene>("arthur");
 	app.get_scene_manager().set_current("arthur");
