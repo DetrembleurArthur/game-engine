@@ -28,4 +28,6 @@
 #include <component.hpp>
 #include <callback_component.hpp>
 #include <move_component.hpp>
+#include <events.hpp>
+#include <events_components.hpp>
 #endif

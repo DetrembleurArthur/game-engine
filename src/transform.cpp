@@ -267,3 +267,9 @@ bool ge::Transform::is_dirty() const
 {
     return dirty;
 }
+
+bool ge::Transform::contains(glm::vec2 point)
+{
+    auto&& tl = get_tl_position();
+    return point.x >= tl.x && point.x <= tl.x + size.x and point.y >= tl.y && point.y <= tl.y + size.y;
+}

@@ -18,7 +18,7 @@ public:
 	{
 		ge::KeyEvents::add_combo(ge::KeyCombo()
 			.combine(GLFW_KEY_A)
-			.on_released([](){ge::Application::get().get_window().close();}));
+			.on_released([this](){app.get_window().close();}));
 		ge::Application::get().set_controller_update_state(false);
 
 
@@ -29,17 +29,17 @@ public:
 		go->get_transform().set_center_origin();
 		go->as_rect(textures->get("logo"));
 		go->set_color(ge::Colors::LIME);
-		go->get_transform().set_size(100, 100);
-		go->get_transform().set_position(300, 300);
-		ge::MoveComponent& mc = go->create_component<ge::MoveComponent>();
-		mc.angle_speed = 90;
-		mc.angle_accel = 20;
-		ge::CallbackComponent& cc = go->create_component<ge::CallbackComponent>();
-		cc.set([&](float dt){
-			auto mp = ge::MouseInput::get_position(get_camera());
-			//mc.toward(mp, glm::vec2(100));
-			//go->get_transform().set_relative_angle(mp, 45*dt, 200);
-			mc.around(mp, 50);
+		ge::Transform& tr = *go;
+		tr.set_size(100, 100);
+
+		auto&& size = app.get_window().get_size();
+		tr.set_position(size.x/2, size.y/2);
+
+
+		auto& ec = go->create_component<ge::EventsComponent>();
+		ec.on_mouse_hover([this](auto *event) {
+			get_camera()->get_position().x += 10;
+			bg->get_transform().set_position(get_camera()->get_position());
 		});
 
 		bg = new ge::GameObject();
@@ -63,11 +63,14 @@ public:
 	void load() override
 	{
 		//ge::Application::get().get_window().set_clear_color(ge::Colors::GRAY);
-		ge::Application::get().resize(1400, 900);
-		ge::Application::get().get_window().set_clear_color(ge::Colors::BLACK);
-		auto size = ge::Application::get().get_window().get_size();
+		app.resize(1400, 900);
+		app.get_window().set_clear_color(ge::Colors::BLACK);
+		auto size = app.get_window().get_size();
 
 		bg->as_rect(size.x, size.y);
+
+
+		
 
 		
 

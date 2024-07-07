@@ -57,6 +57,7 @@ namespace ge
         float get_distance(glm::vec2 target);
         void set_dirty(bool value=true);
         bool is_dirty() const;
+        bool contains(glm::vec2 point);
     };
 }
 

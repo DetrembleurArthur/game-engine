@@ -9,6 +9,7 @@
 
 namespace ge
 {
+    class Application;
     enum Layers
     {
         BG=0,
@@ -31,6 +32,7 @@ namespace ge
     class Scene
     {
     protected:
+        Application& app;
         std::string name;
         Camera2D *camera = nullptr;
         Renderer *renderer = nullptr;

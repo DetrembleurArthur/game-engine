@@ -115,3 +115,8 @@ ge::GOFlags &ge::GameObject::get_flags()
 {
     return flags;
 }
+
+ge::GameObject::operator Transform &()
+{
+    return transform;
+}

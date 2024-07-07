@@ -39,6 +39,7 @@ namespace ge
         virtual void update(float dt);
         bool drawable();
         GOFlags& get_flags();
+        operator Transform&();
         template <typename T> T& create_component()
         {
             static_assert(std::is_base_of<Component, T>::value, "T must be derived from Component");

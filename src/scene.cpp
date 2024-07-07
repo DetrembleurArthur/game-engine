@@ -1,10 +1,11 @@
 #include "scene.hpp"
 #include <log.hpp>
 #include <shader.hpp>
-#include <application.hpp>
 #include <algorithm>
+#include <application.hpp>
 
-ge::Scene::Scene(const std::string& name, int layers_number) : name(name), camera(new Camera2D()), renderer(new Renderer(ge::Shader::DEFAULT, camera)), textures(new TextureManager())
+
+ge::Scene::Scene(const std::string& name, int layers_number) : app(ge::Application::get()), name(name), camera(new Camera2D()), renderer(new Renderer(ge::Shader::DEFAULT, camera)), textures(new TextureManager())
 {
     for(int i = 0; i < layers_number; i++)
     {
