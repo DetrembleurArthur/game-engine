@@ -31,6 +31,26 @@ namespace ge
             using Event::Event;
             MouseHoverEvent() = default;
         };
+
+        class MouseEnterEvent : public MouseHoverEvent
+        {
+        protected:
+            bool hover=false;
+            virtual bool is_append(GameObject& go);
+        public:
+            using MouseHoverEvent::MouseHoverEvent;
+            MouseEnterEvent() = default;
+        };
+
+        class MouseLeaveEvent : public MouseHoverEvent
+        {
+        protected:
+            bool hover=false;
+            virtual bool is_append(GameObject& go);
+        public:
+            using MouseHoverEvent::MouseHoverEvent;
+            MouseLeaveEvent() = default;
+        };
     }
 }
 

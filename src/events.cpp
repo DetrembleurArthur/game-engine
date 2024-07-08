@@ -37,3 +37,33 @@ bool ge::events::MouseHoverEvent::is_append(GameObject& go)
     mp = ge::MouseInput::get_position(app.get_scene_manager().get_current()->get_camera());
     return go.get_transform().contains(mp);
 }
+
+bool ge::events::MouseEnterEvent::is_append(GameObject &go)
+{
+    if(ge::events::MouseHoverEvent::is_append(go))
+    {
+        if(!hover)
+        {
+            hover = true;
+            return true;
+        }
+        return false;
+    }
+    hover = false;
+    return false;
+}
+
+bool ge::events::MouseLeaveEvent::is_append(GameObject &go)
+{
+    if(ge::events::MouseHoverEvent::is_append(go))
+    {
+        hover = true;
+        return false;
+    }
+    if(hover)
+    {
+        hover = false;
+        return true;
+    }
+    return false;
+}

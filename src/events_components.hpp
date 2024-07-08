@@ -36,6 +36,8 @@ namespace ge
             }
         }
         void on_mouse_hover(std::function<void(ge::events::MouseHoverEvent *event)> callback, ge::EventInfos infos={.priority=0});
+        void on_mouse_enter(std::function<void(ge::events::MouseEnterEvent *event)> callback, ge::EventInfos infos={.priority=0});
+        void on_mouse_leave(std::function<void(ge::events::MouseLeaveEvent *event)> callback, ge::EventInfos infos={.priority=0});
     };
 }
 

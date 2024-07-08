@@ -62,4 +62,18 @@ void ge::EventsComponent::on_mouse_hover(std::function<void(ge::events::MouseHov
     add_event(event, infos);
 }
 
+void ge::EventsComponent::on_mouse_enter(std::function<void(ge::events::MouseEnterEvent *event)> callback, ge::EventInfos infos)
+{
+    ge::events::MouseEnterEvent *event = new ge::events::MouseEnterEvent([callback](ge::events::Event *event) {
+        callback(dynamic_cast<events::MouseEnterEvent *>(event));
+    });
+    add_event(event, infos);
+}
 
+void ge::EventsComponent::on_mouse_leave(std::function<void(ge::events::MouseLeaveEvent *event)> callback, ge::EventInfos infos)
+{
+    ge::events::MouseLeaveEvent *event = new ge::events::MouseLeaveEvent([callback](ge::events::Event *event) {
+        callback(dynamic_cast<events::MouseLeaveEvent *>(event));
+    });
+    add_event(event, infos);
+}

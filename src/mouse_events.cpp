@@ -8,7 +8,7 @@ std::function<void(glm::vec2)> ge::MouseEvents::on_mouse_scroll_callback;
 
 void ge::MouseEvents::set_on_mouse_position_changed(GLFWwindow *win, double x, double y)
 {
-    log("position: (" + std::to_string(x) + ", " + std::to_string(y) + ")", LogLevels::MOUSE_EVENT);
+    //log("position: (" + std::to_string(x) + ", " + std::to_string(y) + ")", LogLevels::MOUSE_EVENT);
     if(on_mouse_position_callback)
     {
         glm::vec2 position(x, y);

@@ -37,9 +37,15 @@ public:
 
 
 		auto& ec = go->create_component<ge::EventsComponent>();
-		ec.on_mouse_hover([this](auto *event) {
-			get_camera()->get_position().x += 10;
-			bg->get_transform().set_position(get_camera()->get_position());
+		ec.on_mouse_leave([&](auto *event) {
+			std::cout << "Mouse leave" << std::endl;
+			ec.remove_event<ge::events::MouseLeaveEvent>();
+		});
+		ec.on_mouse_enter([](auto *event) {
+			std::cout << "Mouse enter" << std::endl;
+		});
+		ec.on_mouse_hover([](ge::events::MouseHoverEvent *event) {
+			std::cout << "Mouse hover" << std::endl;
 		});
 
 		bg = new ge::GameObject();
