@@ -68,7 +68,7 @@ void ge::Scene::draw(double dt)
         {
             GameObject *ptr = go.first;
             if(ptr->drawable())
-                renderer->draw(dt, *ptr);
+                renderer->draw(dt, ptr);
         }
     }
     renderer->end();

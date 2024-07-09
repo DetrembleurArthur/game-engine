@@ -8,7 +8,8 @@ public:
 
 
 	ge::GameObject *go;
-	ge::GameObject *bg;
+	ge::Text *text;
+	ge::Font *font;
 
 	void init() override
 	{
@@ -16,42 +17,22 @@ public:
 			.combine(GLFW_KEY_A)
 			.on_released([this](){app.get_window().close();}));
 		ge::Application::get().set_controller_update_state(false);
-
-
-
-		textures->load("./res/images/ge-logo.png", "logo");
-
-		go = new ge::GameObject();
-		go->get_transform().set_center_origin();
-		go->as_rect(textures->get("logo"));
-		go->set_color(ge::Colors::LIME);
-		ge::Transform& tr = *go;
-		tr.set_size(100, 100);
-
-		auto&& size = app.get_window().get_size();
-		tr.set_position(size.x/2, size.y/2);
-
-
-		auto& ec = go->create_component<ge::EventsComponent>();
-		ec.on_mouse_leave([&](auto *event) {
-			std::cout << "Mouse leave" << std::endl;
-			ec.remove_event<ge::events::MouseLeaveEvent>();
-		});
-		ec.on_mouse_enter([](auto *event) {
-			std::cout << "Mouse enter" << std::endl;
-		});
-		ec.on_mouse_hover([](ge::events::MouseHoverEvent *event) {
-			std::cout << "Mouse hover" << std::endl;
-		});
-
-		bg = new ge::GameObject();
 		
-		bg->get_transform().set_tl_position(glm::vec2(0, 0));
-		bg->set_color(ge::Colors::SILVER);
 
-		add(bg, ge::Layers::BG);
-		add(go, ge::Layers::MAIN);
+		font = new ge::Font("./res/fonts/vintage.ttf", 100);
 
+		text = new ge::Text("Magic Vintage Demo", font);
+		text->set_color(ge::Colors::BLUE);
+		text->get_transform().set_position(100, 100);
+		
+
+		add(text, ge::Layers::MAIN);
+
+		ge::KeyEvents::on_character([&](auto c) {
+			if(c == ":") text->set_text("");
+			else
+			text->set_text(text->get_text() + c);
+		});
 
 		
 
@@ -64,17 +45,8 @@ public:
 
 	void load() override
 	{
-		//ge::Application::get().get_window().set_clear_color(ge::Colors::GRAY);
 		app.resize(1400, 900);
-		app.get_window().set_clear_color(ge::Colors::BLACK);
-		auto size = app.get_window().get_size();
-
-		bg->as_rect(size.x, size.y);
-
-
-		
-
-		
+		app.get_window().set_clear_color(ge::Colors::CYAN);
 
 	}
 
@@ -88,6 +60,8 @@ public:
 
 int main(int argc, char const *argv[])
 {
+	
+
 	ge::Application app([]() {
 		//ge::Window::hint_transparent_framebuffer(true);
 	});

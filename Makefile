@@ -1,6 +1,6 @@
 
-LIBS=-L ./libs/glfw-3.4/lib-mingw-w64 -L ./libs/glew-2.1.0/lib/Release/x64 -L ./libs/glm/lib -lglfw3 -lglew32 -lopengl32 -lglm -lgdi32
-HEADERS= -I include/ -I ./libs/glfw-3.4/include -I ./libs/glew-2.1.0/include -I ./libs/glm/include -I ./libs/stb
+LIBS=-L ./libs/glfw-3.4/lib-mingw-w64 -L ./libs/glew-2.1.0/lib/Release/x64 -L ./libs/glm/lib -L ./libs/freetype-2.3.5-1/lib -lglfw3 -lglew32 -lfreetype -lopengl32 -lglm -lgdi32
+HEADERS= -I include/ -I ./libs/glfw-3.4/include -I ./libs/glew-2.1.0/include -I ./libs/glm/include -I ./libs/stb -I ./libs/freetype-2.3.5-1/include/freetype2 -I ./libs/freetype-2.3.5-1/include/
 
 # Nom de l'exécutable
 TARGET = ge.exe

@@ -27,7 +27,8 @@ namespace ge
         void set_uniform_model(const glm::mat4& model, const std::string& var_name="uModel");
         void set_uniform_view(const glm::mat4& view, const std::string& var_name="uView");
         void set_uniform_projection(const glm::mat4& projection, const std::string& var_name="uProjection");
-        void set_uniform_enable_texture(bool value, const std::string& var_name="uTexEnable");
+        // 0 = no tex, 1 = basic tex, 2 = vec font tex
+        void set_uniform_enable_texture(int value, const std::string& var_name="uTexEnable");
         void set_uniform_texture(int value=0, const std::string& var_name="texture1");
     };
 }

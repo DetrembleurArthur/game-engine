@@ -30,4 +30,6 @@
 #include <ge/entity/components/move_component.hpp>
 #include <ge/entity/components/events/events.hpp>
 #include <ge/entity/components/events_components.hpp>
+#include <ge/graphics/text/font.hpp>
+#include <ge/entity/text.hpp>
 #endif

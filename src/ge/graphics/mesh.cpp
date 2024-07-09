@@ -95,6 +95,13 @@ void ge::Mesh::fill(MeshAttribute *attributes, size_t esize, unsigned *elements,
     this->attributes = attributes->layers;
 }
 
+void ge::Mesh::update(void *vertices, size_t size)
+{
+    glBindBuffer(GL_ARRAY_BUFFER, vbo);
+    glBufferSubData(GL_ARRAY_BUFFER, 0, size, vertices);
+    glBindBuffer(GL_ARRAY_BUFFER, 0); 
+}
+
 void ge::Mesh::set_dynamic(bool value)
 {
     draw_policy = value ? GL_DYNAMIC_DRAW : GL_STATIC_DRAW;
@@ -219,5 +226,19 @@ ge::Mesh *ge::Mesh::create_circle(int points, bool textured)
     mesh->fill(&ma, points * 3 * 4, elements, textured); // *4 because it is in number of bytes
     delete[] vertices;
     delete[] elements;
+    return mesh;
+}
+
+ge::Mesh *ge::Mesh::create_text()
+{
+    MeshAttribute ma = {
+        .layers_ref=MeshLayer::DEFAULT_LAYERS,
+        .layers=2,
+        .vertices=Mesh::RECT_TEX_VERTICES,
+        .vertices_bytes=sizeof(Mesh::RECT_TEX_VERTICES)
+    };
+    Mesh *mesh = new Mesh();
+    mesh->set_dynamic(true);
+    mesh->fill(&ma, sizeof(Mesh::RECT_ELEMENTS), Mesh::RECT_ELEMENTS, true);
     return mesh;
 }

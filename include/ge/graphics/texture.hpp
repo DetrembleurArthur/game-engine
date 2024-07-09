@@ -11,6 +11,8 @@ namespace ge
         unsigned id=0;
     public:
         Texture(Image& image);
+        Texture(unsigned id=0);
+        Texture(int width, int height, unsigned char *buffer);
         ~Texture();
         void bind() const;
         void unbind() const;
@@ -25,6 +27,7 @@ namespace ge
         void enable_clamp_to_border();
         glm::uvec2 get_size() const;
         static Texture *load(const std::string& filename, bool rgb=false);
+        unsigned int get_id() const;
     };
 }
 

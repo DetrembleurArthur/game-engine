@@ -1,5 +1,6 @@
 #include "ge/entity/game_object.hpp"
 
+
 ge::GameObject::GameObject() : color(1, 1, 1, 1), flags({false, false})
 {
 
@@ -65,6 +66,16 @@ void ge::GameObject::as_circle(int points, const Texture *texture)
         glm::uvec2&& tex_size = texture->get_size();
         as_circle(points, (tex_size.x + tex_size.y) / 4);
     }
+}
+
+void ge::GameObject::as_text()
+{
+    if(mesh)
+    {
+        delete mesh;
+        mesh = nullptr;
+    }
+    mesh = Mesh::create_text();
 }
 
 void ge::GameObject::set_color(Color color)

@@ -46,6 +46,7 @@ namespace ge
         void unbind();
         void create();
         void fill(MeshAttribute *attributes, size_t esize, unsigned *elements, bool textured);
+        void update(void *vertices, size_t size);
         void set_dynamic(bool value=true);
         void draw();
         void as_triangles();
@@ -59,6 +60,7 @@ namespace ge
         bool is_textured() const;
         static Mesh *create_rect(bool textured=false);
         static Mesh *create_circle(int points=3, bool textured=false);
+        static Mesh *create_text();
     };
 }
 

@@ -10,6 +10,8 @@
 #include <ge/inputs/window_events.hpp>
 #include <ge/inputs/mouse_events.hpp>
 #include <ge/inputs/key_events.hpp>
+#include <ge/graphics/text/font.hpp>
+
 
 
 ge::Application *ge::Application::app=nullptr;
@@ -42,6 +44,7 @@ void ge::Application::loop()
 
 ge::Application::Application(void (*hint_callback)()) : hint_callback(hint_callback)
 {
+    srand(static_cast<unsigned int>(time(nullptr)));
     if(ge::Application::app)
     {
         log("only one application can run at a time", ge::LogLevels::ERROR);
@@ -55,6 +58,7 @@ ge::Application::~Application()
     scene_manager.delete_scenes();
     MouseInput::destroy_cursor();
     Shader::unload_default_shaders();
+    Font::done();
     if(window)
     {
         delete window;
@@ -78,6 +82,7 @@ void ge::Application::init(const std::string& title, unsigned width, unsigned he
         log("current monitor is '" + ge::Monitor::get_primary_monitor().get_name() + "'");
         log("hints configuration");
         hint_callback();
+        glfwWindowHint(GLFW_SAMPLES, 4);
         window = new Window(title, width, height);
         WindowEvents::init(window->get_pointer());
         KeyEvents::init(window->get_pointer());
@@ -112,11 +117,13 @@ void ge::Application::init(const std::string& title, unsigned width, unsigned he
     if(code == GLEW_OK)
     {
         log("glew initialization success");
+        glEnable(GL_CULL_FACE);
         glEnable(GL_BLEND);
         glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
         glEnable(GL_MULTISAMPLE);
         glEnable(GL_LINE_SMOOTH);
         Shader::load_default_shaders();
+        Font::init();
     }
     else
     {

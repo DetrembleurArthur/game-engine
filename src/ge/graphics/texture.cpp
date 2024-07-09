@@ -11,6 +11,33 @@ ge::Texture::Texture(Image &image)
     enable_nearest();
 }
 
+ge::Texture::Texture(unsigned id) : id(id)
+{
+}
+
+ge::Texture::Texture(int width, int height, unsigned char *buffer)
+{
+    glGenTextures(1, &id);
+
+    glBindTexture(GL_TEXTURE_2D, id);
+    glTexImage2D(
+        GL_TEXTURE_2D,
+        0,
+        GL_RED,
+        width,
+        height,
+        0,
+        GL_RED,
+        GL_UNSIGNED_BYTE,
+        buffer
+    );
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+    unbind();
+}
+
 ge::Texture::~Texture()
 {
     glDeleteTextures(1, &id);
@@ -93,4 +120,9 @@ ge::Texture *ge::Texture::load(const std::string &filename, bool rgb)
     img.load(rgb ? 3 : 4);
     Texture *texture = new Texture(img);
     return texture;
+}
+
+unsigned int ge::Texture::get_id() const
+{
+    return id;
 }
