@@ -1,17 +1,41 @@
-CPP = g++
-SRC = ./src/
-SOURCES = main.cpp events.cpp events_components.cpp move_component.cpp callback_component.cpp component.cpp game_object.cpp texture_manager.cpp texture.cpp utils.cpp transform.cpp camera2D.cpp renderer.cpp shader.cpp mesh.cpp colors.cpp application.cpp window.cpp log.cpp global_events.cpp monitor.cpp window_events.cpp image.cpp stb_image.cpp key_events.cpp key_input.cpp key_combo.cpp mouse_events.cpp mouse_input.cpp controller_input.cpp controller_events.cpp timing.cpp clipboard.cpp scene.cpp scene_manager.cpp
-OBJECTS = $(SOURCES:.cpp=.o)
-CFLAGS=
+
 LIBS=-L ./libs/glfw-3.4/lib-mingw-w64 -L ./libs/glew-2.1.0/lib/Release/x64 -L ./libs/glm/lib -lglfw3 -lglew32 -lopengl32 -lglm -lgdi32
-HEADERS= -I src/ -I ./libs/glfw-3.4/include -I ./libs/glew-2.1.0/include -I ./libs/glm/include -I ./libs/stb
+HEADERS= -I include/ -I ./libs/glfw-3.4/include -I ./libs/glew-2.1.0/include -I ./libs/glm/include -I ./libs/stb
 
-%.o: $(SRC)%.cpp
-	$(CPP) -o $@ -c $< $(HEADERS)
+# Nom de l'exécutable
+TARGET = ge.exe
 
-exe: $(OBJECTS)
-	$(CPP) $(CFLAGS) -o $@ $(OBJECTS) $(LIBS)
+# Compilateur et options de compilation
+CXX = g++
+CXXFLAGS = -std=c++17
 
+# Répertoires des fichiers source
+SRCDIR = src
+BUILDDIR = build
+SOURCES = $(shell powershell -Command "Get-ChildItem -Recurse -Filter '*.cpp' -Name -Path $(SRCDIR)")
+$(info SOURCES = $(SOURCES))
+OBJECTS = $(patsubst %.cpp, $(BUILDDIR)/%.o, $(SOURCES))
+$(info OBJECTS = $(OBJECTS))
+
+
+
+# Règle par défaut
+all: $(TARGET)
+
+# Règle pour créer l'exécutable
+$(TARGET): $(OBJECTS)
+	$(CXX) $(CXXFLAGS) -o $@ $^ $(LIBS)
+
+# Règle pour compiler les fichiers source en fichiers objets
+$(BUILDDIR)/%.o: $(SRCDIR)/%.cpp
+	@powershell -Command "if (!(Test-Path $(dir $@))) { New-Item -ItemType Directory -Path $(dir $@) }"
+	$(CXX) $(CXXFLAGS) -c -o $@ $< $(HEADERS)
+
+# Règle pour nettoyer les fichiers générés
 clean:
-	@rm -f exe.exe *.o
-	@echo "cleaning done"
+	powershell -Command "if (Test-Path '$(BUILDDIR)') { Remove-Item -Recurse -Force '$(BUILDDIR)' }"
+	powershell -Command "if (Test-Path '$(TARGET)') { Remove-Item -Force '$(TARGET)' }"
+
+.PHONY: all clean
+
+

@@ -1,10 +1,6 @@
-#include <ge.hpp>
+#include <ge/ge.hpp>
 
-/*
 
-dist = sqrt(2x^2)
-
-*/
 class MyScene : public ge::Scene
 {
 public:
