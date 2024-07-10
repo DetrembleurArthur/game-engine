@@ -20,7 +20,8 @@ namespace ge
         CLIPBOARD,
         SCENE,
         SHADER,
-        TEXTURE
+        TEXTURE,
+        FONT
     };
 
     void log(const std::string& msg, LogLevels level=LogLevels::INFO);

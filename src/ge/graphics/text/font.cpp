@@ -11,13 +11,13 @@ void ge::Font::init()
         log("font library initialisation failed", ge::LogLevels::ERROR);
         return;
     }
-    log("font library initialisation success", ge::LogLevels::INFO);
+    log("font library initialisation success", ge::LogLevels::FONT);
 }
 
 void ge::Font::done()
 {
     FT_Done_FreeType(ge::Font::ft);
-    log("font library done", ge::LogLevels::INFO);
+    log("font library done", ge::LogLevels::FONT);
 }
 
 ge::Font::Font(const std::string &filename, int font_size)
@@ -33,7 +33,7 @@ ge::Font::Font(const std::string &filename, int font_size)
     {
         if(FT_Load_Char(face, c, FT_LOAD_RENDER))
         {
-            log("can not load '" + std::to_string(c) + "' char", LogLevels::WARNING);
+            log("can not load '" + std::to_string(c) + "' char in font " + filename, LogLevels::WARNING);
             continue;
         }
         Glyph glyph = {
@@ -44,7 +44,7 @@ ge::Font::Font(const std::string &filename, int font_size)
         };
         glyphs.insert(std::pair<char, Glyph>(c, glyph));
     }
-    log("font '" + filename + "' loaded", ge::LogLevels::INFO);
+    log("font '" + filename + "' loaded", ge::LogLevels::FONT);
 }
 
 ge::Font::~Font()
@@ -59,7 +59,7 @@ ge::Font::~Font()
         }
     }
     FT_Done_Face(face);
-    log("font done", ge::LogLevels::INFO);
+    log("font done", ge::LogLevels::FONT);
 }
 
 void ge::Font::set_font_size(int size)

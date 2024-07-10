@@ -9,7 +9,6 @@ public:
 
 	ge::GameObject *go;
 	ge::Text *text;
-	ge::Font *font;
 
 	void init() override
 	{
@@ -18,12 +17,11 @@ public:
 			.on_released([this](){app.get_window().close();}));
 		ge::Application::get().set_controller_update_state(false);
 		
+		fonts->load("./res/fonts/vintage.ttf", "vintage", 200);
 
-		font = new ge::Font("./res/fonts/vintage.ttf", 100);
-
-		text = new ge::Text("Magic Vintage Demo", font);
+		text = new ge::Text("Magic Vintage Demo", fonts->get("vintage"));
 		text->set_color(ge::Colors::BLUE);
-		text->get_transform().set_position(100, 100);
+		text->get_transform().set_position(100, 300);
 		
 
 		add(text, ge::Layers::MAIN);

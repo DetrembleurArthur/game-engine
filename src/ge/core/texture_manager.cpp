@@ -39,8 +39,8 @@ void ge::TextureManager::unload(const std::string &name)
         if(texture)
         {
             delete texture;
-            textures.erase(name);
         }
+        textures.erase(name);
     }
 }
 

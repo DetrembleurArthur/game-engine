@@ -11,16 +11,17 @@ out vec4 FragColor;
 
 void main()
 {
-    if(uTexEnable == 1)
+    switch(uTexEnable)
     {
-        FragColor = texture(texture1, TexCoord) * uColor;
-    }
-    else if(uTexEnable == 2)
-    {
-        FragColor = uColor * vec4(1, 1, 1, texture(texture1, TexCoord).r);
-    }
-    else
-    {
-        FragColor = uColor;
+        case 1:
+            FragColor = texture(texture1, TexCoord) * uColor;
+            break;
+
+        case 2:
+            FragColor = uColor * vec4(1, 1, 1, texture(texture1, TexCoord).r);
+            break;
+        
+        default:
+            FragColor = uColor;
     }
 } 

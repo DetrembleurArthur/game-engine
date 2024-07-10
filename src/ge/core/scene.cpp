@@ -5,7 +5,12 @@
 #include <ge/core/application.hpp>
 
 
-ge::Scene::Scene(const std::string& name, int layers_number) : app(ge::Application::get()), name(name), camera(new Camera2D()), renderer(new Renderer(ge::Shader::DEFAULT, camera)), textures(new TextureManager())
+ge::Scene::Scene(const std::string& name, int layers_number) : app(ge::Application::get()),
+    name(name),
+    camera(new Camera2D()),
+    renderer(new Renderer(ge::Shader::DEFAULT, camera)),
+    textures(new TextureManager()),
+    fonts(new FontManager())
 {
     for(int i = 0; i < layers_number; i++)
     {
@@ -36,6 +41,8 @@ ge::Scene::~Scene()
         delete camera;
     if(textures)
         delete textures;
+    if(fonts)
+        delete fonts;
 }
 
 void ge::Scene::update(double dt)
