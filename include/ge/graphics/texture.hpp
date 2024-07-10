@@ -28,6 +28,8 @@ namespace ge
         glm::uvec2 get_size() const;
         static Texture *load(const std::string& filename, bool rgb=false);
         unsigned int get_id() const;
+        void save(const std::string& filename, size_t pixel_size=4, int format=GL_RGBA);
+        unsigned char *get_data(size_t pixel_size=4, int format=GL_RGBA);
     };
 }
 

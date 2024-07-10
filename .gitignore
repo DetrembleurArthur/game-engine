@@ -1,3 +1,8 @@
+*.pgm
+*.pnm
+*.otf
+*.ttf
+
 # Prerequisites
 *.d
 

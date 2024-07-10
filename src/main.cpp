@@ -19,18 +19,20 @@ public:
 		
 		fonts->load("./res/fonts/vintage.ttf", "vintage", 200);
 
-		text = new ge::Text("Magic Vintage Demo", fonts->get("vintage"));
+		text = new ge::Text("Bonjour\nJe suis\nArthur", fonts->get("vintage"));
 		text->set_color(ge::Colors::BLUE);
-		text->get_transform().set_position(100, 300);
+		text->get_transform().set_position(100, 100);
+
+		text->create_component<ge::CallbackComponent>().set([&](float dt) {
+			text->get_transform().set_position(ge::MouseInput::get_position(get_camera()));
+		});
+
+		text->get_transform().set_center_origin();
 		
 
 		add(text, ge::Layers::MAIN);
 
-		ge::KeyEvents::on_character([&](auto c) {
-			if(c == ":") text->set_text("");
-			else
-			text->set_text(text->get_text() + c);
-		});
+		
 
 		
 

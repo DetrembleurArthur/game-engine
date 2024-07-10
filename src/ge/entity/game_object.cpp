@@ -68,16 +68,6 @@ void ge::GameObject::as_circle(int points, const Texture *texture)
     }
 }
 
-void ge::GameObject::as_text()
-{
-    if(mesh)
-    {
-        delete mesh;
-        mesh = nullptr;
-    }
-    mesh = Mesh::create_text();
-}
-
 void ge::GameObject::set_color(Color color)
 {
     this->color = color;

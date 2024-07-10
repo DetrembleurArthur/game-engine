@@ -2,6 +2,8 @@
 #include <ge/core/application.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
+#include <sstream>
+#include <algorithm>
 
 std::pair<std::string, std::string> ge::utils::name_and_ext(const std::string &filename)
 {
@@ -28,3 +30,26 @@ glm::vec2 ge::utils::screen_to_world(glm::vec2 screen, Camera2D &camera)
     worldPos = glm::inverse(camera.get_view()) * worldPos;  
     return glm::vec2(worldPos.x, worldPos.y);
 }
+
+void ge::utils::reverse_words(std::string& sentence)
+{
+    std::vector<std::string> tokens;
+    std::istringstream iss(sentence);
+    std::string token;
+    while (std::getline(iss, token, '\n'))
+    {
+        tokens.push_back(token);
+    }
+    std::reverse(tokens.begin(), tokens.end());
+    std::ostringstream oss;
+    for (size_t i = 0; i < tokens.size(); ++i)
+    {
+        if (i != 0)
+        {
+            oss << '\n';
+        }
+        oss << tokens[i];
+    }
+    sentence = oss.str();
+}
+

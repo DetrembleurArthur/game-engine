@@ -1,5 +1,8 @@
 #include "ge/graphics/texture.hpp"
 #include <GL/glew.h>
+#include <stb_image.h>
+#include <stb_image_write.h>
+
 
 ge::Texture::Texture(Image &image)
 {
@@ -125,4 +128,33 @@ ge::Texture *ge::Texture::load(const std::string &filename, bool rgb)
 unsigned int ge::Texture::get_id() const
 {
     return id;
+}
+
+void ge::Texture::save(const std::string &filename, size_t pixel_size, int format)
+{
+    bind();
+    auto&& size = get_size();
+    unsigned char* data = new unsigned char[size.x * size.y * pixel_size];
+    glGetnTexImage(GL_TEXTURE_2D, 0, format, GL_UNSIGNED_BYTE, size.x * size.y * pixel_size, data);
+    if (!stbi_write_png(filename.c_str(), size.x, size.y, pixel_size, data, size.x * pixel_size))
+    {
+        std::cerr << "Failed to write image to file" << std::endl;
+    }
+    delete[] data;
+}
+
+unsigned char *ge::Texture::get_data(size_t pixel_size, int format)
+{
+    active();
+    bind();
+    auto&& size = get_size();
+    unsigned char* data = new unsigned char[size.x * size.y * pixel_size];
+    glGetTexImage(GL_TEXTURE_2D, 0, format, GL_UNSIGNED_BYTE, data);
+    GLenum error = glGetError();
+    if (error != GL_NO_ERROR)
+    {
+        std::cerr << "OpenGL Error after glGetTexImage: " << error << std::endl;
+    }
+    unbind();
+    return data;
 }

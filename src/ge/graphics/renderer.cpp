@@ -35,50 +35,18 @@ void ge::Renderer::draw(float dt, GameObject* go)
         shader->set_uniform_projection(camera->get_projection());
         if(mesh)
         {
+            const Texture *texture = go->get_texture();
             if(dynamic_cast<Text *>(go))
-            {
-                Text *text_object = dynamic_cast<Text *>(go);
-                std::string&& text = text_object->get_text();
-                Font *font = text_object->get_font();
-                float x = 0, y = 0, scale = 1;
-                for(auto it = text.begin(); it != text.end(); it++)
-                {
-                    char c = *it;
-                    Glyph& glyph = font->get_glyphs()[c];
-                    float xpos = x + glyph.bearing.x * scale;
-                    float ypos = y - glyph.bearing.y * scale;
-
-                    float w = glyph.size.x * scale;
-                    float h = glyph.size.y * scale;
-                    float vertices[4][5] = {
-                        { xpos,     ypos, 0,  0.0f, 0.0f },            
-                        { xpos,     ypos+h  , 0,    0.0f, 1.0f },
-                        { xpos + w, ypos+h,   0,    1.0f, 1.0f },
-                        { xpos + w, ypos,    0,   1.0f, 0.0f },   
-                    };
-                    Texture& texture = *glyph.texture;
-                    shader->set_uniform_enable_texture(2);
-                    texture.active();
-                    texture.bind();
-                    mesh->update(vertices, sizeof(vertices));
-                    shader->set_uniform_texture();
-                    mesh->draw();
-                    texture.unbind();
-                    x += (glyph.advance >> 6) * scale;
-                }
-                return;
-            }
+                shader->set_uniform_enable_texture(2);
             else
-            {
-                const Texture *texture = go->get_texture();
                 shader->set_uniform_enable_texture(texture && mesh->is_textured());
-                if(texture)
-                {
-                    texture->active();
-                    texture->bind();
-                    shader->set_uniform_texture();
-                }
+            if(texture)
+            {
+                texture->active();
+                texture->bind();
+                shader->set_uniform_texture();
             }
+
         }
     }
     if(mesh)

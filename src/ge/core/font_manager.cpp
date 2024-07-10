@@ -1,5 +1,5 @@
 #include "ge/core/font_manager.hpp"
-
+#include <fstream>
 
 ge::FontManager::~FontManager()
 {

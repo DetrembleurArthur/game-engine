@@ -60,7 +60,6 @@ namespace ge
         bool is_textured() const;
         static Mesh *create_rect(bool textured=false);
         static Mesh *create_circle(int points=3, bool textured=false);
-        static Mesh *create_text();
     };
 }
 

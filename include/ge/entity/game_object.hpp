@@ -17,7 +17,7 @@ namespace ge
 
     class GameObject
     {
-    private:
+    protected:
         Color color;
         Mesh *mesh=nullptr;
         const Texture *texture=nullptr;
@@ -31,7 +31,6 @@ namespace ge
         void as_rect(const Texture *texture);
         void as_circle(int points, float radius);
         void as_circle(int points, const Texture *texture);
-        void as_text();
         void set_color(Color color);
         Color& get_color();
         Mesh *get_mesh();

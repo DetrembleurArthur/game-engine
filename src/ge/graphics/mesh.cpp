@@ -229,16 +229,3 @@ ge::Mesh *ge::Mesh::create_circle(int points, bool textured)
     return mesh;
 }
 
-ge::Mesh *ge::Mesh::create_text()
-{
-    MeshAttribute ma = {
-        .layers_ref=MeshLayer::DEFAULT_LAYERS,
-        .layers=2,
-        .vertices=Mesh::RECT_TEX_VERTICES,
-        .vertices_bytes=sizeof(Mesh::RECT_TEX_VERTICES)
-    };
-    Mesh *mesh = new Mesh();
-    mesh->set_dynamic(true);
-    mesh->fill(&ma, sizeof(Mesh::RECT_ELEMENTS), Mesh::RECT_ELEMENTS, true);
-    return mesh;
-}
