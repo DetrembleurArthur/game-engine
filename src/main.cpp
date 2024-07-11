@@ -21,7 +21,8 @@ public:
 
 		text = new ge::Text("Bonjour les gars\nJe suis Arthur !", fonts->get("elden"), 20);
 		text->set_color(ge::Colors::BLACK);
-		text->get_transform().set_position(100, 100);
+		auto&& size = app.get_window().get_size();
+		text->get_transform().set_position(size.x/2, size.y/2);
 		text->set_text_align(ge::TextAlign::CENTER);
 		text->set_shadow_color(ge::Color(0, 0, 0, 0.25));
 		text->set_shadow_offset(glm::vec2(2, 2));

@@ -26,6 +26,7 @@ namespace ge
     struct LayerInfos
     {
         bool kill_enabled=false;
+        bool fixed=false;
     };
 
     using Layer=std::pair<std::vector<std::pair<GameObject *, GoInfos>>, LayerInfos>;
@@ -36,6 +37,7 @@ namespace ge
         Application& app;
         std::string name;
         Camera2D *camera = nullptr;
+        Camera2D *ui_camera = nullptr;
         Renderer *renderer = nullptr;
         TextureManager *textures = nullptr;
         FontManager *fonts = nullptr;

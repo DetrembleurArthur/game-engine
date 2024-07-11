@@ -8,6 +8,7 @@
 ge::Scene::Scene(const std::string& name, int layers_number) : app(ge::Application::get()),
     name(name),
     camera(new Camera2D()),
+    ui_camera(new Camera2D()),
     renderer(new Renderer(ge::Shader::DEFAULT, camera)),
     textures(new TextureManager()),
     fonts(new FontManager())
@@ -16,6 +17,7 @@ ge::Scene::Scene(const std::string& name, int layers_number) : app(ge::Applicati
     {
         layers.push_back(Layer());
     }
+    layers[Layers::UI].second.fixed = true;
 }
 
 ge::Scene::~Scene()
@@ -39,6 +41,8 @@ ge::Scene::~Scene()
     set_renderer(nullptr);
     if(camera)
         delete camera;
+    if(ui_camera)
+        delete ui_camera;
     if(textures)
         delete textures;
     if(fonts)
@@ -73,6 +77,10 @@ void ge::Scene::draw(double dt)
     {
         for(std::pair<GameObject *, GoInfos>& go : layer.first)
         {
+            if(layer.second.fixed)
+                renderer->set_camera(ui_camera);
+            else
+                renderer->set_camera(camera);
             GameObject *ptr = go.first;
             if(ptr->drawable())
                 renderer->draw(dt, ptr);
