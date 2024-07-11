@@ -1,6 +1,6 @@
 #ifndef __GE_TEXT_HPP__
 #define __GE_TEXT_HPP__
-#include <ge/entity/game_object.hpp>
+#include <ge/entity/drawable.hpp>
 #include <ge/graphics/text/font.hpp>
 
 namespace ge
@@ -12,7 +12,7 @@ namespace ge
         CENTER
     };
 
-    class Text : public GameObject
+    class Text : public Drawable
     {
     private:
         ge::Font *font=nullptr;
@@ -24,7 +24,7 @@ namespace ge
         glm::vec2 shadow_offset;
         Color shadow_color;
     public:
-        using GameObject::GameObject;
+        using Drawable::Drawable;
         Text(const std::string& text, ge::Font *font, int line_space=0);
         virtual ~Text();
         ge::Font *get_font();

@@ -194,8 +194,8 @@ ge::Mesh *ge::Mesh::create_circle(int points, bool textured)
     }
     for(int i = 0; i < points; i++)
     {
-        auto x = vertices[0] + (0.5 * std::sin(angle * i));
-        auto y = vertices[1] + (-0.5 * std::cos(angle * i));
+        float x = vertices[0] + (0.5 * std::sin(angle * i));
+        float y = vertices[1] + (-0.5 * std::cos(angle * i));
         vertices[vertex_offset++] = x;
         vertices[vertex_offset++] = y;
         vertices[vertex_offset++] = 0;
@@ -223,7 +223,7 @@ ge::Mesh *ge::Mesh::create_circle(int points, bool textured)
         .vertices_bytes=(points + 1) * (3 + 2 * textured) * sizeof(float)
     };
     Mesh *mesh = new Mesh();
-    mesh->fill(&ma, points * 3 * 4, elements, textured); // *4 because it is in number of bytes
+    mesh->fill(&ma, points * 3 * sizeof(unsigned), elements, textured); // *4 because it is in number of bytes
     delete[] vertices;
     delete[] elements;
     return mesh;

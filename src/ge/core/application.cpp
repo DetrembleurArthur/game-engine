@@ -117,7 +117,7 @@ void ge::Application::init(const std::string& title, unsigned width, unsigned he
     if(code == GLEW_OK)
     {
         log("glew initialization success");
-        glEnable(GL_CULL_FACE);
+        //glEnable(GL_CULL_FACE); !!!!!!!!! supprime les polygones pour la classe Circle
         glEnable(GL_BLEND);
         glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
         glEnable(GL_MULTISAMPLE);

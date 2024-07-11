@@ -7,7 +7,8 @@ public:
 	using ge::Scene::Scene;
 
 
-	ge::GameObject *go;
+	ge::Circle *go;
+	ge::Rect *rect;
 	ge::Text *text;
 
 	void init() override
@@ -16,10 +17,23 @@ public:
 			.combine(GLFW_KEY_A)
 			.on_released([this](){app.get_window().close();}));
 		ge::Application::get().set_controller_update_state(false);
+
+		textures->load("./res/images/ge-logo.png", "logo");
+
+		go = new ge::Circle(30, textures->get("logo"));
+		go->set_radius(100);
+		go->set_points(3);
+		go->get_transform().set_position(100, 100);
+		go->set_color(ge::Colors::RED);
+		go->get_transform().set_br_origin();
+		go->create_component<ge::CallbackComponent>().set([&](float dt) {
+			go->get_transform().set_position(ge::MouseInput::get_position(get_camera()));
+			std::cout << go->get_color().x << ", " << go->get_color().y << ", " << go->get_color().z << ", " << go->get_color().w << std::endl;
+		});
 		
 		fonts->load("./res/fonts/elden.otf", "elden", 50);
 
-		text = new ge::Text("Bonjour les gars\nJe suis Arthur !", fonts->get("elden"), 20);
+		text = new ge::Text("Elden Ring", fonts->get("elden"), 20);
 		text->set_color(ge::Colors::BLACK);
 		auto&& size = app.get_window().get_size();
 		text->get_transform().set_position(size.x/2, size.y/2);
@@ -28,14 +42,19 @@ public:
 		text->set_shadow_offset(glm::vec2(2, 2));
 		text->enable_shadow();
 
-		text->create_component<ge::CallbackComponent>().set([&](float dt) {
-			text->get_transform().set_position(ge::MouseInput::get_position(get_camera()));
+		
+
+		go->create_component<ge::CallbackComponent>().set([&](float dt) {
+			go->get_transform().set_position(ge::MouseInput::get_position(get_camera()));
 		});
+		//go->get_transform().set_center_origin();
 
 		text->get_transform().set_center_origin();
 		
 
 		add(text, ge::Layers::MAIN);
+		add(go, ge::Layers::MAIN);
+		
 
 		
 

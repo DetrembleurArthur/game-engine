@@ -43,7 +43,7 @@ void ge::Renderer::draw_text(float dt, ge::Text *go)
     mesh->draw();
 }
 
-void ge::Renderer::draw(float dt, GameObject* go)
+void ge::Renderer::draw(float dt, Drawable* go)
 {
     Mesh *mesh = go->get_mesh();
     if(camera)

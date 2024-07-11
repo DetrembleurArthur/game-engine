@@ -3,6 +3,7 @@
 #include <ge/graphics/shader.hpp>
 #include <algorithm>
 #include <ge/core/application.hpp>
+#include <ge/entity/drawable.hpp>
 
 
 ge::Scene::Scene(const std::string& name, int layers_number) : app(ge::Application::get()),
@@ -75,15 +76,17 @@ void ge::Scene::draw(double dt)
     renderer->begin();
     for(Layer& layer : layers)
     {
+        if(layer.second.fixed)
+            renderer->set_camera(ui_camera);
+        else
+            renderer->set_camera(camera);
         for(std::pair<GameObject *, GoInfos>& go : layer.first)
         {
-            if(layer.second.fixed)
-                renderer->set_camera(ui_camera);
-            else
-                renderer->set_camera(camera);
-            GameObject *ptr = go.first;
-            if(ptr->drawable())
+            Drawable *ptr = dynamic_cast<Drawable *>(go.first);
+            if(ptr)
+            {
                 renderer->draw(dt, ptr);
+            }
         }
     }
     renderer->end();

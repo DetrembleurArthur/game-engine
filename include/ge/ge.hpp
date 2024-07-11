@@ -32,4 +32,6 @@
 #include <ge/entity/components/events_components.hpp>
 #include <ge/graphics/text/font.hpp>
 #include <ge/entity/text.hpp>
+#include <ge/entity/circle.hpp>
+#include <ge/entity/rect.hpp>
 #endif

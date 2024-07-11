@@ -1,11 +1,11 @@
 #ifndef __GE_GAME_OBJECT_HPP__
 #define __GE_GAME_OBJECT_HPP__
-#include <ge/graphics/mesh.hpp>
-#include <ge/graphics/texture.hpp>
+
 #include <ge/entity/transform.hpp>
 #include <ge/entity/components/component.hpp>
 #include <vector>
-#include <ge/utils/colors.hpp>
+#include <ge/utils/log.hpp>
+
 
 namespace ge
 {
@@ -18,26 +18,14 @@ namespace ge
     class GameObject
     {
     protected:
-        Color color;
-        Mesh *mesh=nullptr;
-        const Texture *texture=nullptr;
         Transform transform;
         std::vector<Component *> components;
         GOFlags flags;
     public:
         GameObject();
         virtual ~GameObject();
-        void as_rect(float width, float height);
-        void as_rect(const Texture *texture);
-        void as_circle(int points, float radius);
-        void as_circle(int points, const Texture *texture);
-        void set_color(Color color);
-        Color& get_color();
-        Mesh *get_mesh();
-        const Texture *get_texture();
         Transform& get_transform();
         virtual void update(float dt);
-        bool drawable();
         GOFlags& get_flags();
         operator Transform&();
         template <typename T> T& create_component()
