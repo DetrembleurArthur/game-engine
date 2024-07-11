@@ -17,11 +17,12 @@ public:
 			.on_released([this](){app.get_window().close();}));
 		ge::Application::get().set_controller_update_state(false);
 		
-		fonts->load("./res/fonts/vintage.ttf", "vintage", 200);
+		fonts->load("./res/fonts/halo.otf", "halo", 50);
 
-		text = new ge::Text("Bonjour\nJe suis\nArthur", fonts->get("vintage"));
+		text = new ge::Text("Hello world\nGuys", fonts->get("halo"), 20);
 		text->set_color(ge::Colors::BLUE);
 		text->get_transform().set_position(100, 100);
+		text->set_text_align(ge::TextAlign::CENTER);
 
 		text->create_component<ge::CallbackComponent>().set([&](float dt) {
 			text->get_transform().set_position(ge::MouseInput::get_position(get_camera()));

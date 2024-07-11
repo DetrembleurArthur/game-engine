@@ -24,6 +24,7 @@ void ge::Font::done()
 
 ge::Font::Font(const std::string &filename, int font_size)
 {
+    const int padding=10;
     if(FT_New_Face(Font::ft, filename.c_str(), 0, &face))
     {
         log("font '" + filename + "' can not be loaded", ge::LogLevels::ERROR);
@@ -52,19 +53,17 @@ ge::Font::Font(const std::string &filename, int font_size)
         };
         buffers.push_back(std::pair<unsigned char *, Glyph>(buffer, glyph));
         glyphs.insert(std::pair<char, Glyph>(c, glyph));
-        offsets += glm::ivec2(glyph.size.x, 0);
+        offsets += glm::ivec2(glyph.size.x + padding, 0);
         max_size.x += glyph.size.x;
         max_size.y = std::max(max_size.y, glyph.size.y);
     }
-    unsigned char *texture_buffer = new unsigned char[max_size.x * max_size.y];
-    std::fill(texture_buffer, texture_buffer + max_size.x * max_size.y, 0);
+    max_size.x += padding * (buffers.size() - 1);
+    const int buffer_size = max_size.x * max_size.y;
+    unsigned char *texture_buffer = new unsigned char[buffer_size];
+    std::fill(texture_buffer, texture_buffer + buffer_size, 0);
     offsets.x = 0;
     offsets.y = 0;
-
-    /*std::ofstream file("./res/fonts/texture_map/"+ std::to_string(rand()) + "_map.pgm");
-    auto s = std::string("P2 ") + std::to_string(max_size.x) + " " + std::to_string(max_size.y) + " 255\n";
-    file.write(s.c_str(), s.size());*/
-
+    int buffer_counter = 0;
     for(std::pair<unsigned char *, Glyph>& pair : buffers)
     {
         unsigned char *buffer = pair.first;
@@ -73,20 +72,25 @@ ge::Font::Font(const std::string &filename, int font_size)
         {
             for(int j = offsets.x; j < offsets.x + glyph.size.x; j++)
             {
-                texture_buffer[i * max_size.x + j] = buffer[(i - offsets.y) * glyph.size.x + (j - offsets.x)];
+                texture_buffer[i * max_size.x + j + padding * buffer_counter] = buffer[(i - offsets.y) * glyph.size.x + (j - offsets.x)];
             }
         }
         offsets.x += glyph.size.x;
         delete[] buffer;
+        buffer_counter++;
     }
     texture = new Texture(max_size.x, max_size.y, texture_buffer);
-    /*for(int i = 0; i < max_size.x * max_size.y; i++)
+    /*std::ofstream file("./res/fonts/texture_map/"+ std::to_string(rand()) + "_map.pgm");
+    auto s = std::string("P2 ") + std::to_string(max_size.x) + " " + std::to_string(max_size.y) + " 255\n";
+    file.write(s.c_str(), s.size());
+    for(int i = 0; i < max_size.x * max_size.y; i++)
     {
         s = std::to_string((unsigned)texture_buffer[i]) + " ";
         file.write(s.c_str(), s.size());
-    }*/
+    }
+    file.close();*/
     delete[] texture_buffer;
-    //file.close();
+
 
     log("font '" + filename + "' loaded", ge::LogLevels::FONT);
 }

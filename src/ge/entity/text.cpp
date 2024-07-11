@@ -2,10 +2,11 @@
 #include <ge/utils/utils.hpp>
 
 
-ge::Text::Text(const std::string &text, ge::Font *font) : Text()
+ge::Text::Text(const std::string &text, ge::Font *font, int line_space) : Text()
 {
     this->font = font;
     this->texture = font->get_texture();
+    this->line_space = line_space;
     set_text(text);
 }
 
@@ -31,7 +32,7 @@ std::string ge::Text::get_text()
 
 void ge::Text::set_text(std::string text)
 {
-    this->text = "";
+    this->text = text;
     if(text.find('\n') != std::string::npos)
         ge::utils::reverse_words(text);
     float *vertices = new float[text.length() * 5 * 4]; // 5 données pour 4 vertex
@@ -52,18 +53,21 @@ void ge::Text::set_text(std::string text)
     float max_ypos = -10e100;
     float line_height_min = 10e100;
     float line_height_max = -10e100;
+    std::vector<std::pair<int, float>> lines_widths;
+    float width = -10e100;
     for(auto it = text.begin(); it != text.end(); it++)
     {
         if(*it == '\n')
         {
-            offsets.y -= line_height_max - line_height_min;
+            offsets.y -= line_height_max - line_height_min + line_space;
             line_height_min = 10e100;
             line_height_max = -10e100;
             offsets.x = 0;
+            lines_widths.push_back(std::pair<int, float>(i, width));
+            width = -10e100;
         }
         else if(font->get_glyphs().find(*it) != font->get_glyphs().end())
         {
-            this->text += *it;
             Glyph& glyph = font->get_glyphs()[*it];
             float posx = offsets.x + glyph.bearing.x;
             float posy = offsets.y - glyph.bearing.y;
@@ -73,7 +77,7 @@ void ge::Text::set_text(std::string text)
             max_ypos = std::max(max_ypos, posy + glyph.size.y);
             line_height_min = std::min(line_height_min, posy);
             line_height_max = std::max(line_height_max, posy + glyph.size.y);
-
+            width = std::max(width, posx + glyph.size.x);
             vertices[i++] = posx;
             vertices[i++] = posy;
             vertices[i++] = 0;
@@ -109,14 +113,43 @@ void ge::Text::set_text(std::string text)
             offsets.x += (glyph.advance >> 6);
         }
     }
+    lines_widths.push_back(std::pair<int, float>(i, width));
     max_text_size.x = max_xpos - min_xpos;
     max_text_size.y = max_ypos - min_ypos;
     for(int i = 0; i < text.length() * 5 * 4; i += 5)
     {
+        // normalisation
         vertices[i] /= max_text_size.x;
-        vertices[i+1] += max_text_size.y;
+        //vertices[i+1] += max_text_size.y;
         vertices[i+1] /= max_text_size.y;
+        vertices[i+1] += 1;
     }
+    if(align != TextAlign::LEFT)
+    {
+        int line_i = 0;
+        for(auto& pair : lines_widths)
+        {
+            float line_width = (pair.second - min_xpos) / max_text_size.x;
+            float padding_width = 1 - line_width;
+            float padding = 0;
+            int line_index = pair.first;
+            while(line_i < line_index)
+            {
+                switch(align)
+                {
+                    case TextAlign::RIGHT:
+                        padding = padding_width;
+                        break;
+                    case TextAlign::CENTER:
+                        padding = padding_width / 2.0;
+                        break;
+                }
+                vertices[line_i] += padding;
+                line_i += 5;
+            }
+        }
+    }
+    
     glm::vec2&& old_size = transform.get_size();
     transform.set_size(max_text_size.x, max_text_size.y);
     if(sticky_index == 0)
@@ -149,6 +182,12 @@ void ge::Text::set_text_height(float height)
     glm::vec2&& size = transform.get_size();
     transform.set_size(height * (size.x / size.y), height);
     sticky_index = 1;
+}
+
+void ge::Text::set_text_align(ge::TextAlign align)
+{
+    this->align = align;
+    set_text(text);
 }
 
 void ge::Text::set_dynamic_text_size()
