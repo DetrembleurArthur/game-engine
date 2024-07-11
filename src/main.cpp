@@ -17,12 +17,15 @@ public:
 			.on_released([this](){app.get_window().close();}));
 		ge::Application::get().set_controller_update_state(false);
 		
-		fonts->load("./res/fonts/halo.otf", "halo", 50);
+		fonts->load("./res/fonts/elden.otf", "elden", 50);
 
-		text = new ge::Text("Hello world\nGuys", fonts->get("halo"), 20);
-		text->set_color(ge::Colors::BLUE);
+		text = new ge::Text("Bonjour les gars\nJe suis Arthur !", fonts->get("elden"), 20);
+		text->set_color(ge::Colors::BLACK);
 		text->get_transform().set_position(100, 100);
 		text->set_text_align(ge::TextAlign::CENTER);
+		text->set_shadow_color(ge::Color(0, 0, 0, 0.25));
+		text->set_shadow_offset(glm::vec2(2, 2));
+		text->enable_shadow();
 
 		text->create_component<ge::CallbackComponent>().set([&](float dt) {
 			text->get_transform().set_position(ge::MouseInput::get_position(get_camera()));

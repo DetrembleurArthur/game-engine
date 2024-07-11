@@ -194,3 +194,33 @@ void ge::Text::set_dynamic_text_size()
 {
     sticky_index = -1;
 }
+
+void ge::Text::enable_shadow(bool value)
+{
+    shadow_enabled = value;
+}
+
+void ge::Text::set_shadow_offset(glm::vec2 offset)
+{
+    shadow_offset = offset;
+}
+
+void ge::Text::set_shadow_color(Color color)
+{
+    shadow_color = color;
+}
+
+bool ge::Text::is_shadow_enabled() const
+{
+    return shadow_enabled;
+}
+
+glm::vec2 ge::Text::get_shadow_offset() const
+{
+    return shadow_offset;
+}
+
+ge::Color ge::Text::get_shadow_color() const
+{
+    return shadow_color;
+}

@@ -74,11 +74,13 @@ void ge::Transform::set_position(glm::vec2 pos)
 void ge::Transform::set_x(float x)
 {
     position.x = x;
+    dirty = true;
 }
 
 void ge::Transform::set_y(float y)
 {
     position.y = y;
+    dirty = true;
 }
 
 glm::vec2 ge::Transform::get_position()

@@ -20,6 +20,9 @@ namespace ge
         int sticky_index = -1;
         int line_space=0;
         TextAlign align = TextAlign::LEFT;
+        bool shadow_enabled=false;
+        glm::vec2 shadow_offset;
+        Color shadow_color;
     public:
         using GameObject::GameObject;
         Text(const std::string& text, ge::Font *font, int line_space=0);
@@ -32,6 +35,12 @@ namespace ge
         void set_text_height(float height);
         void set_text_align(ge::TextAlign align);
         void set_dynamic_text_size();
+        void enable_shadow(bool value=true);
+        void set_shadow_offset(glm::vec2 offset);
+        void set_shadow_color(Color color);
+        bool is_shadow_enabled() const;
+        glm::vec2 get_shadow_offset() const;
+        Color get_shadow_color() const;
     };
 }
 

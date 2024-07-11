@@ -6,6 +6,7 @@
 #include <ge/entity/transform.hpp>
 #include <ge/graphics/texture.hpp>
 #include <ge/entity/game_object.hpp>
+#include <ge/entity/text.hpp>
 
 namespace ge
 {
@@ -18,6 +19,7 @@ namespace ge
         Renderer(Shader *shader, Camera2D *camera);
         void begin();
         void end();
+        void draw_text(float dt, Text *go);
         void draw(float dt, GameObject* go);
         void set_camera(Camera2D *camera);
     };
