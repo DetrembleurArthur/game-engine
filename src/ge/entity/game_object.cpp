@@ -14,6 +14,7 @@ ge::GameObject::~GameObject()
             delete c;
     }
     components.clear();
+    std::cerr << "go deleted" << std::endl;
 }
 
 

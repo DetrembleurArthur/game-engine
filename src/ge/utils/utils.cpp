@@ -53,3 +53,11 @@ void ge::utils::reverse_words(std::string& sentence)
     sentence = oss.str();
 }
 
+/*
+
+referentiel:
+node->get_transform().set_position(ge::MouseInput::get_position(camera));
+circle->get_transform().set_position(node->get_transform().get_position() + glm::vec2(200, 0));
+float dist = glm::distance(circle->get_transform().get_position(), node->get_transform().get_tl_position());
+circle->get_transform().set_angle(node->get_transform().get_tl_position(), circle->get_transform().get_angle(node->get_transform().get_tl_position())-90-node->get_transform().get_rotation(), dist);
+*/

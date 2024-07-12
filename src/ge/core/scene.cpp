@@ -3,7 +3,7 @@
 #include <ge/graphics/shader.hpp>
 #include <algorithm>
 #include <ge/core/application.hpp>
-#include <ge/entity/drawable.hpp>
+#include <ge/entity/node.hpp>
 
 
 ge::Scene::Scene(const std::string& name, int layers_number) : app(ge::Application::get()),
@@ -86,6 +86,13 @@ void ge::Scene::draw(double dt)
             if(ptr)
             {
                 renderer->draw(dt, ptr);
+            }
+            else if(dynamic_cast<Node *>(go.first))
+            {
+                for(Drawable *dr : dynamic_cast<Node *>(go.first)->get_drawable_cache())
+                {
+                    renderer->draw(dt, dr);
+                }
             }
         }
     }

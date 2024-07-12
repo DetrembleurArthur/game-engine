@@ -34,4 +34,5 @@
 #include <ge/entity/text.hpp>
 #include <ge/entity/circle.hpp>
 #include <ge/entity/rect.hpp>
+#include <ge/entity/node.hpp>
 #endif

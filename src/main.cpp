@@ -6,11 +6,6 @@ class MyScene : public ge::Scene
 public:
 	using ge::Scene::Scene;
 
-
-	ge::Circle *go;
-	ge::Rect *rect;
-	ge::Text *text;
-
 	void init() override
 	{
 		ge::KeyEvents::add_combo(ge::KeyCombo()
@@ -18,46 +13,51 @@ public:
 			.on_released([this](){app.get_window().close();}));
 		ge::Application::get().set_controller_update_state(false);
 
-		textures->load("./res/images/ge-logo.png", "logo");
+		ge::Node *node = new ge::Node();
+		node->get_transform().set_size(1, 1);
+		
 
-		go = new ge::Circle(30, textures->get("logo"));
-		go->set_radius(100);
-		go->set_points(3);
-		go->get_transform().set_position(100, 100);
-		go->set_color(ge::Colors::RED);
-		go->get_transform().set_br_origin();
-		go->create_component<ge::CallbackComponent>().set([&](float dt) {
-			go->get_transform().set_position(ge::MouseInput::get_position(get_camera()));
-			std::cout << go->get_color().x << ", " << go->get_color().y << ", " << go->get_color().z << ", " << go->get_color().w << std::endl;
+		ge::Circle *circle = new ge::Circle(6, 100);
+		circle->set_color(ge::Colors::LIME);
+		circle->get_transform().set_position(100, 100);
+		
+		ge::Rect *rect = new ge::Rect(100, 50);
+		rect->set_color(ge::Colors::LIME);
+		rect->get_transform().set_position(500, 100);
+
+
+		ge::Node *child = new ge::Node();
+
+		ge::Circle *circle2 = new ge::Circle(3, 50);
+		circle2->set_color(ge::Colors::RED);
+		circle2->get_transform().set_position(100, 350);
+		
+		ge::Rect *rect2 = new ge::Rect(50, 100);
+		rect2->set_color(ge::Colors::RED);
+		rect2->get_transform().set_position(500, 300);
+
+		child->add(circle2, true);
+		child->add(rect2, true);
+		
+
+		node->add(circle, true);
+		node->add(rect, true);
+		node->add(child, true);
+
+		add(node, ge::Layers::MAIN);
+
+		circle->get_transform().set_center_origin();
+
+		auto s = node->get_drawable_size();
+
+		node->get_transform().set_size(s.x, s.y);
+		node->get_transform().set_center_origin();
+
+		node->create_component<ge::CallbackComponent>().set([node, this, circle](float dt) {
+			node->get_transform().set_position(ge::MouseInput::get_position(camera));
+			node->get_transform().set_rotation(node->get_transform().get_rotation() + 30 *dt);
+			
 		});
-		
-		fonts->load("./res/fonts/elden.otf", "elden", 50);
-
-		text = new ge::Text("Elden Ring", fonts->get("elden"), 20);
-		text->set_color(ge::Colors::BLACK);
-		auto&& size = app.get_window().get_size();
-		text->get_transform().set_position(size.x/2, size.y/2);
-		text->set_text_align(ge::TextAlign::CENTER);
-		text->set_shadow_color(ge::Color(0, 0, 0, 0.25));
-		text->set_shadow_offset(glm::vec2(2, 2));
-		text->enable_shadow();
-
-		
-
-		go->create_component<ge::CallbackComponent>().set([&](float dt) {
-			go->get_transform().set_position(ge::MouseInput::get_position(get_camera()));
-		});
-		//go->get_transform().set_center_origin();
-
-		text->get_transform().set_center_origin();
-		
-
-		add(text, ge::Layers::MAIN);
-		add(go, ge::Layers::MAIN);
-		
-
-		
-
 		
 
 	}

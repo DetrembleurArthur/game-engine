@@ -58,6 +58,7 @@ namespace ge
         void set_dirty(bool value=true);
         bool is_dirty() const;
         bool contains(glm::vec2 point);
+        glm::vec2 get_origin();
     };
 }
 

@@ -275,3 +275,8 @@ bool ge::Transform::contains(glm::vec2 point)
     auto&& tl = get_tl_position();
     return point.x >= tl.x && point.x <= tl.x + size.x and point.y >= tl.y && point.y <= tl.y + size.y;
 }
+
+glm::vec2 ge::Transform::get_origin()
+{
+    return glm::vec2(origin);
+}
