@@ -51,11 +51,10 @@ namespace ge
             {
                 if(dynamic_cast<T *>(c))
                 {
-                    return *c;
+                    return *dynamic_cast<T *>(c);
                 }
             }
-            log("component does not exists", LogLevels::ERROR);
-            return Component();
+            return create_component<T>();
         }
 
         template <typename T> void remove_component()

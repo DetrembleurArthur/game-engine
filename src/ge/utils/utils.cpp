@@ -53,6 +53,14 @@ void ge::utils::reverse_words(std::string& sentence)
     sentence = oss.str();
 }
 
+glm::vec2 ge::utils::rotate_around(glm::vec2 rotable, glm::vec2 rot_point, float angle)
+{
+    angle = glm::radians(angle);
+    rotable -= rot_point;
+    rotable = glm::vec2(rotable.x * cos(angle) - rotable.y * sin(angle), rotable.x * sin(angle) + rotable.y * cos(angle));
+    rotable  += rot_point;
+    return rotable;
+}
 /*
 
 referentiel:
