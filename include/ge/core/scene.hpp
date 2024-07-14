@@ -5,6 +5,7 @@
 #include <ge/graphics/renderer.hpp>
 #include <ge/core/texture_manager.hpp>
 #include <ge/core/font_manager.hpp>
+#include <ge/core/spritesheet_manager.hpp>
 #include <vector>
 #include <ge/entity/game_object.hpp>
 
@@ -41,6 +42,7 @@ namespace ge
         Renderer *renderer = nullptr;
         TextureManager *textures = nullptr;
         FontManager *fonts = nullptr;
+        SpritesheetManager *spritesheets=nullptr;
         std::vector<Layer> layers;
     public:
         Scene(const std::string& name, int layers_number=3);

@@ -21,7 +21,8 @@ namespace ge
         SCENE,
         SHADER,
         TEXTURE,
-        FONT
+        FONT,
+        SPRITESHEET
     };
 
     void log(const std::string& msg, LogLevels level=LogLevels::INFO);

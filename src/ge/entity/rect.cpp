@@ -46,7 +46,7 @@ void ge::Rect::set_texture(const ge::Texture *texture)
     ge::Drawable::set_texture(texture);
 }
 
-void ge::Rect::update_rect_uvs(glm::vec2 uvs_origin, glm::vec2 size)
+void ge::Rect::update_uvs(glm::vec2 uvs_origin, glm::vec2 size)
 {
     glBindBuffer(GL_ARRAY_BUFFER, mesh->get_vbo());
     float uvs[2] = {uvs_origin.x, uvs_origin.y};

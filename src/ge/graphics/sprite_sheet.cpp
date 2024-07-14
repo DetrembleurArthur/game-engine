@@ -1,14 +1,14 @@
 #include "ge/graphics/sprite_sheet.hpp"
 
-ge::SpriteSheet::SpriteSheet(const ge::Texture *texture, int rows, int cols, int paddx, int paddy) : texture(texture), rows(rows), cols(cols), paddx(paddx), paddy(paddy)
+ge::SpriteSheet::SpriteSheet(const ge::Texture *texture, int rows, int cols, int paddx, int paddy, bool last_padded) : texture(texture), rows(rows), cols(cols), paddx(paddx), paddy(paddy)
 {
     glm::uvec2&& tex_size = texture->get_size();
-    sprite_size.x = tex_size.x / (float)cols - paddx * ((float)cols - 1);
-    sprite_size.y = tex_size.y / (float)rows - paddy * ((float)rows - 1);
+    sprite_size.x = (tex_size.x - paddx * ((float)cols - !last_padded)) / (float)cols;
+    sprite_size.y = (tex_size.y - paddy * ((float)rows - !last_padded)) / (float)rows;
     uvs_size.x = sprite_size.x / tex_size.x;
     uvs_size.y = sprite_size.y / tex_size.y;
-    uvs_padd_size.x = paddx / tex_size.x;
-    uvs_padd_size.y = paddy / tex_size.y;
+    uvs_padd_size.x = (float)paddx / tex_size.x;
+    uvs_padd_size.y = (float)paddy / tex_size.y;
 }
 
 void ge::SpriteSheet::define_sprite_set(const std::string &name, int begin_index, int end_index)
@@ -23,6 +23,14 @@ void ge::SpriteSheet::define_sprite_set(const std::string &name, int begin_index
             begin_index++;
         }
         sprite_sets[name] = sprites;
+    }
+}
+
+void ge::SpriteSheet::define_sprite_set(const std::string &name, int row)
+{
+    if(row >= 0)
+    {
+        define_sprite_set(name, row * cols, row * cols + cols - 1);
     }
 }
 

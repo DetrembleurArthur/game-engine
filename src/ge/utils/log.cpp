@@ -47,6 +47,9 @@ void ge::log(const std::string &msg, LogLevels level)
         case LogLevels::FONT:
             level_str = "[FONT]";
             break;
+        case LogLevels::SPRITESHEET:
+            level_str = "[SPRITESHEET]";
+            break;
         default:
             level_str = "[UNKNOWN]";
     }

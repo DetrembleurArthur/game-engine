@@ -13,7 +13,7 @@ namespace ge
         Rect(float width, float height, bool tex=false, bool dynamic=false);
         Rect(ge::Texture *texture, bool dynamic=false);
         void set_texture(const ge::Texture *texture) override;
-        void update_rect_uvs(glm::vec2 uvs_origin, glm::vec2 size);
+        void update_uvs(glm::vec2 uvs_origin, glm::vec2 size) override;
     };
 }
 

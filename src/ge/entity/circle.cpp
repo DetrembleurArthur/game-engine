@@ -54,7 +54,7 @@ float ge::Circle::get_radius()
     return (size.x + size.y) / 4.0;
 }
 
-void ge::Circle::update_circle_uvs(glm::vec2 uvs_origin, glm::vec2 size)
+void ge::Circle::update_uvs(glm::vec2 uvs_origin, glm::vec2 size)
 {
     glBindBuffer(GL_ARRAY_BUFFER, mesh->get_vbo());
     float angle = glm::radians(360.0 / points);

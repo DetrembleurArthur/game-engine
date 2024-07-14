@@ -17,7 +17,7 @@ namespace ge
         void set_radius(float radius);
         int get_points() const;
         float get_radius();
-        void update_circle_uvs(glm::vec2 uvs_origin, glm::vec2 size);
+        void update_uvs(glm::vec2 uvs_origin, glm::vec2 size) override;
         void set_texture(const ge::Texture *texture) override;
     };
 }

@@ -37,3 +37,8 @@ void ge::Drawable::set_texture(const ge::Texture *texture)
 {
     this->texture = texture;
 }
+
+void ge::Drawable::update_uvs(glm::vec2 uvs_origin, glm::vec2 size)
+{
+    log("unimplemented for this class...", LogLevels::WARNING);
+}

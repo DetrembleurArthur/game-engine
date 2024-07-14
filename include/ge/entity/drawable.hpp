@@ -21,6 +21,7 @@ namespace ge
         Mesh *get_mesh();
         const Texture *get_texture();
         virtual void set_texture(const Texture *texture);
+        virtual void update_uvs(glm::vec2 uvs_origin, glm::vec2 size);
     };
 }
 
