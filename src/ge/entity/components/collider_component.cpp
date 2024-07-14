@@ -59,7 +59,7 @@ void ge::ColliderComponent::normalize_collider()
 
 ge::Rect *ge::ColliderComponent::create_rendered_collider()
 {
-    ge::Rect *rect = new ge::Rect(collider.wf * owner->get_transform().get_width(), collider.hf * owner->get_transform().get_width());
+    ge::Rect *rect = new ge::Rect(collider.wf * owner->get_transform().get_width(), collider.hf * owner->get_transform().get_width(), false);
     rect->get_transform().set_position(collider.x, collider.y);
     rect->get_transform().set_rotation(collider.angle);
     rect->set_color(glm::vec4(1, 0, 0, 0.3));

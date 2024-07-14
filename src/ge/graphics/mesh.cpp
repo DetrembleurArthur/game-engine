@@ -165,7 +165,17 @@ bool ge::Mesh::is_textured() const
     return textured;
 }
 
-ge::Mesh *ge::Mesh::create_rect(bool textured)
+bool ge::Mesh::is_dynamic() const
+{
+    return draw_policy == GL_DYNAMIC_DRAW;
+}
+
+int ge::Mesh::get_vbo()
+{
+    return vbo;
+}
+
+ge::Mesh *ge::Mesh::create_rect(bool textured, bool dynamic)
 {
     MeshAttribute ma = {
         .layers_ref=MeshLayer::DEFAULT_LAYERS,
@@ -174,11 +184,12 @@ ge::Mesh *ge::Mesh::create_rect(bool textured)
         .vertices_bytes=textured ? sizeof(Mesh::RECT_TEX_VERTICES) : sizeof(Mesh::RECT_VERTICES)
     };
     Mesh *mesh = new Mesh();
+    mesh->set_dynamic(dynamic);
     mesh->fill(&ma, sizeof(Mesh::RECT_ELEMENTS), Mesh::RECT_ELEMENTS, textured);
     return mesh;
 }
 
-ge::Mesh *ge::Mesh::create_circle(int points, bool textured)
+ge::Mesh *ge::Mesh::create_circle(int points, bool textured, bool dynamic)
 {
     points = points > 3 ? points : 3;
     float angle = glm::radians(360.0 / points);
@@ -223,6 +234,7 @@ ge::Mesh *ge::Mesh::create_circle(int points, bool textured)
         .vertices_bytes=(points + 1) * (3 + 2 * textured) * sizeof(float)
     };
     Mesh *mesh = new Mesh();
+    mesh->set_dynamic(dynamic);
     mesh->fill(&ma, points * 3 * sizeof(unsigned), elements, textured); // *4 because it is in number of bytes
     delete[] vertices;
     delete[] elements;

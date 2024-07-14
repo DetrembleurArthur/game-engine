@@ -20,7 +20,7 @@ namespace ge
         Color& get_color();
         Mesh *get_mesh();
         const Texture *get_texture();
-        void set_texture(const Texture *texture);
+        virtual void set_texture(const Texture *texture);
     };
 }
 

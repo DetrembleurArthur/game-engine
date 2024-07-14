@@ -13,56 +13,37 @@ public:
 			.on_released([this](){app.get_window().close();}));
 		ge::Application::get().set_controller_update_state(false);
 
-		ge::Rect *rect = new ge::Rect(100, 200);
+		ge::Rect *rect = new ge::Rect(100, 100, true, true);
 		rect->get_transform().set_position(300, 300);
 		rect->get_transform().set_center_origin();
+		rect->set_color(ge::Colors::LIME);
+		textures->load("./res/images/ge-logo.png", "logo");
+		textures->load("./res/images/blob-standart.png", "blob");
+		rect->set_texture(textures->get("blob"));
 
-		auto& cc = rect->create_component<ge::ColliderComponent>();
-		cc.fit_collider(glm::vec2(0.75, 0.75), glm::vec2(0.5, 0.5));
-		ge::Rect *collider = cc.create_rendered_collider();
+		ge::SpriteSheet ss(textures->get("blob"), 4, 4);
+		ss.define_sprite_set("down", 0, 3);
+		ss.define_sprite_set("right", 4, 7);
+		ss.define_sprite_set("left", 8, 11);
+		ss.define_sprite_set("up", 12, 15);
+
+		rect->update_rect_uvs(ss.get_sprite_set("down")[0].uvs, ss.get_uvs_size());
 
 
-		ge::Rect *rect2 = new ge::Rect(100, 200);
-		rect2->get_transform().set_position(700, 300);
-		rect2->get_transform().set_center_origin();
-
-		auto& cc2 = rect2->create_component<ge::ColliderComponent>();
-		cc2.fit_collider(glm::vec2(1, 1), glm::vec2(0.5, 0.5));
-		ge::Rect *collider2 = cc2.create_rendered_collider();
 		
-
-		//cc.normalize_collider();
-		rect->get_component<ge::CallbackComponent>().set([rect, this, collider, rect2](float dt) {
-			auto& cc = rect->get_component<ge::ColliderComponent>();
-			//rect->get_transform().set_position(ge::MouseInput::get_position(get_camera()));
-			rect->get_transform().set_rotation(rect->get_transform().get_rotation() + 20 * dt);
-			cc.update_rendered_collider(collider);
-			if(cc.contains(rect2->get_component<ge::ColliderComponent>()))
-			{
-				collider->set_color(ge::Color(0, 1, 0, 0.5));
-			}
-			else
-			{
-				collider->set_color(ge::Color(1, 0, 0, 0.5));
-			}
+		rect->get_component<ge::CallbackComponent>().set([rect, this](float dt) {
+			rect->get_transform().set_position(ge::MouseInput::get_position(get_camera()));
 		});
 
-		rect2->get_component<ge::CallbackComponent>().set([rect2, this, collider2](float dt) {
-			auto& cc2 = rect2->get_component<ge::ColliderComponent>();
-			rect2->get_transform().set_position(ge::MouseInput::get_position(get_camera()));
-			//rect2->get_transform().set_rotation(rect2->get_transform().get_rotation() + 20 * dt);
-			cc2.update_rendered_collider(collider2);
-		});
-
+		ge::Circle *circle = new ge::Circle(30, textures->get("blob"), true);
+		circle->set_radius(100);
+		circle->set_color(ge::Colors::RED);
+		circle->update_circle_uvs(ss.get_sprite_set("right")[0].uvs, ss.get_uvs_size());
 
 		
 
 		add(rect, ge::Layers::MAIN);
-		add(collider, ge::Layers::MAIN);
-
-		add(rect2, ge::Layers::MAIN);
-		add(collider2, ge::Layers::MAIN);
-
+		add(circle, ge::Layers::MAIN);
 		
 
 	}

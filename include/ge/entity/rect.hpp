@@ -7,11 +7,13 @@ namespace ge
     class Rect : public ge::Drawable
     {
     private:
-        void init_rect_mesh(float width, float height);
+        void init_rect_mesh(float width, float height, bool tex=false, bool dynamic=false);
     public:
         using Drawable::Drawable;
-        Rect(float width, float height);
-        Rect(ge::Texture *texture);
+        Rect(float width, float height, bool tex=false, bool dynamic=false);
+        Rect(ge::Texture *texture, bool dynamic=false);
+        void set_texture(const ge::Texture *texture) override;
+        void update_rect_uvs(glm::vec2 uvs_origin, glm::vec2 size);
     };
 }
 

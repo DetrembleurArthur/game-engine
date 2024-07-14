@@ -36,4 +36,5 @@
 #include <ge/entity/circle.hpp>
 #include <ge/entity/rect.hpp>
 #include <ge/entity/node.hpp>
+#include <ge/graphics/sprite_sheet.hpp>
 #endif

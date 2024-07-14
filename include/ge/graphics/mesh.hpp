@@ -58,8 +58,10 @@ namespace ge
         void as_triangle_fan();
         void set_weight(int weight);
         bool is_textured() const;
-        static Mesh *create_rect(bool textured=false);
-        static Mesh *create_circle(int points=3, bool textured=false);
+        bool is_dynamic() const;
+        int get_vbo();
+        static Mesh *create_rect(bool textured=false, bool dynamic=false);
+        static Mesh *create_circle(int points=3, bool textured=false, bool dynamic=false);
     };
 }
 
