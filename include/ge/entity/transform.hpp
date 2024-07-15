@@ -7,13 +7,13 @@ namespace ge
     class Transform
     {
     private:
+        glm::mat4 model;
+        bool dirty=true;
+    public:
         glm::vec3 position;
         glm::vec3 size;
         glm::vec3 rotation;
         glm::vec3 origin;
-        glm::mat4 model;
-        bool dirty=true;
-    public:
         Transform();
         glm::mat4 get_model();
         void set_size(float width, float height);

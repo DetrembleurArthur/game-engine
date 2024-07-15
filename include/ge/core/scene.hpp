@@ -58,10 +58,11 @@ namespace ge
         virtual void update(double dt);
         virtual void draw(double dt);
         void set_renderer(ge::Renderer *renderer);
-        void kill(GameObject& go, int layer_id=0);
-        void kill(GameObject* go=nullptr, int layer_id=0);
+        void kill(GameObject& go, int layer_id=Layers::MAIN);
+        void kill(GameObject* go=nullptr, int layer_id=Layers::MAIN);
         std::string get_name();
         Camera2D *get_camera();
+        glm::vec2 get_mp();
         void add(GameObject& go, int layer_id=0, GoInfos infos={false});
         void add(GameObject* go, int layer_id=0, GoInfos infos={true});
     };

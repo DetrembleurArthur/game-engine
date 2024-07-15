@@ -4,6 +4,7 @@
 #include <algorithm>
 #include <ge/core/application.hpp>
 #include <ge/entity/node.hpp>
+#include <ge/inputs/mouse_input.hpp>
 
 
 ge::Scene::Scene(const std::string& name, int layers_number) : app(ge::Application::get()),
@@ -133,6 +134,11 @@ std::string ge::Scene::get_name()
 ge::Camera2D *ge::Scene::get_camera()
 {
     return camera;
+}
+
+glm::vec2 ge::Scene::get_mp()
+{
+    return ge::MouseInput::get_position(camera);
 }
 
 void ge::Scene::add(GameObject& go, int layer_id, GoInfos infos)

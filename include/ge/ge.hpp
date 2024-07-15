@@ -39,4 +39,6 @@
 #include <ge/entity/rect.hpp>
 #include <ge/entity/node.hpp>
 #include <ge/graphics/sprite_sheet.hpp>
+#include <ge/binding/property.hpp>
+#include <ge/binding/notify_property.hpp>
 #endif
