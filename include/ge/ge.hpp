@@ -32,6 +32,8 @@
 #include <ge/entity/components/events_components.hpp>
 #include <ge/entity/components/collider_component.hpp>
 #include <ge/entity/components/sprite_component.hpp>
+#include <ge/entity/components/shape_properties_component.hpp>
+#include <ge/entity/components/color_properties_component.hpp>
 #include <ge/core/spritesheet_manager.hpp>
 #include <ge/graphics/text/font.hpp>
 #include <ge/entity/text.hpp>

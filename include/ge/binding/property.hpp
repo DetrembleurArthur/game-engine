@@ -3,6 +3,7 @@
 #include <glm/glm.hpp>
 #include <string>
 #include <functional>
+#include <ge/utils/colors.hpp>
 
 namespace ge
 {
@@ -68,6 +69,7 @@ namespace ge
     typedef Property<glm::ivec2> IVec2Property;
     typedef Property<glm::uvec2> UVec2Property;
     typedef Property<std::string> StrProperty;
+    typedef Property<Color> ColorProperty;
 }
 
 

@@ -1,7 +1,7 @@
 #ifndef __GE_COLLIDER_COMPONENT_HPP__
 #define __GE_COLLIDER_COMPONENT_HPP__
 #include <ge/entity/components/component.hpp>
-#include <ge/entity/rect.hpp>
+#include <ge/entity/transform.hpp>
 
 namespace ge
 {
@@ -33,8 +33,8 @@ namespace ge
         void update_collider();
         Collider& get_collider();
         void normalize_collider();
-        ge::Rect *create_rendered_collider();
-        void update_rendered_collider(ge::Rect *rect);
+        ge::Transform create_rendered_collider();
+        void update_rendered_collider(ge::Transform *rect);
         bool contains(glm::vec2 pos);
         bool contains(ColliderComponent& other);
         void fit_collider(glm::vec2 factors, glm::vec2 dfactors=glm::vec2(0.5, 0.5));

@@ -100,6 +100,7 @@ namespace ge
     typedef NotifyProperty<glm::ivec2> IVec2NotifyProperty;
     typedef NotifyProperty<glm::uvec2> UVec2NotifyProperty;
     typedef NotifyProperty<std::string> StrNotifyProperty;
+    typedef NotifyProperty<Color> ColorNotifyProperty;
 }
 
 #endif
