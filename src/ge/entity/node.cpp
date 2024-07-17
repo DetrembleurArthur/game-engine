@@ -40,7 +40,7 @@ void ge::Node::update(float dt)
             pos = glm::vec2(pos.x * cos(angle) - pos.y * sin(angle), pos.x * sin(angle) + pos.y * cos(angle));
             pos += tr.get_position();
             go.first->get_transform().set_position(pos);
-            go.first->get_transform().set_rotation(tr.get_rotation() + rot);
+            go.first->get_transform().set_rotation(tr.get_rotation() + rot + go.first->get_transform().get_rotation());
         }
         go.first->update(dt);
     }

@@ -1,6 +1,6 @@
 #include "ge/entity/drawable.hpp"
 
-ge::Drawable::Drawable() : ge::GameObject(), color(0, 0, 0, 1)
+ge::Drawable::Drawable() : ge::GameObject(), color(1, 1, 1, 1)
 {
 }
 
