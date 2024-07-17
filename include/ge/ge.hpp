@@ -44,4 +44,6 @@
 #include <ge/graphics/sprite_sheet.hpp>
 #include <ge/binding/property.hpp>
 #include <ge/binding/notify_property.hpp>
+#include <ge/timer/timer.hpp>
+#include <ge/entity/components/timer_component.hpp>
 #endif
