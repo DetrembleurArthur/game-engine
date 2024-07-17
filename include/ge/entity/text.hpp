@@ -40,7 +40,7 @@ namespace ge
         void set_shadow_color(Color color);
         bool is_shadow_enabled() const;
         glm::vec2 get_shadow_offset() const;
-        Color get_shadow_color() const;
+        Color& get_shadow_color();
     };
 }
 

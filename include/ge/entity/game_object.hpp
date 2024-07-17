@@ -3,13 +3,6 @@
 
 #include <ge/entity/transform.hpp>
 #include <ge/entity/components/component.hpp>
-#include <ge/entity/components/callback_component.hpp>
-#include <ge/entity/components/collider_component.hpp>
-#include <ge/entity/components/color_properties_component.hpp>
-#include <ge/entity/components/shape_properties_component.hpp>
-#include <ge/entity/components/events_components.hpp>
-#include <ge/entity/components/move_component.hpp>
-#include <ge/entity/components/sprite_component.hpp>
 #include <vector>
 #include <ge/utils/log.hpp>
 
@@ -35,13 +28,6 @@ namespace ge
         virtual void update(float dt);
         GOFlags& get_flags();
         operator Transform&();
-        ge::CallbackComponent& c_callback();
-        ge::ColliderComponent& c_collider();
-        ge::MoveComponent& c_move();
-        ge::EventsComponent& c_event();
-        ge::SpriteComponent& c_sprite();
-        ge::ShapePropertiesComponent& c_props();
-        ge::ColorPropertiesComponent& c_color_props();
         template <typename T> T& create_component()
         {
             static_assert(std::is_base_of<Component, T>::value, "T must be derived from Component");

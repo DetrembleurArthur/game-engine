@@ -6,13 +6,6 @@
 
 namespace ge
 {
-    
-
-    namespace events
-    {
-        
-    }
-
     struct EventInfos
     {
         int priority=0;

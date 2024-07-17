@@ -4,9 +4,9 @@
 ge::ColorPropertiesComponent::ColorPropertiesComponent(ge::GameObject *owner) : Component(owner)
 {
     Drawable *dr = dynamic_cast<Drawable *>(owner);
-    Color* color = &dr->get_color();
     if(dr)
     {
+        Color* color = &dr->get_color();
         red_property.on_change([color](float red) {
             color->r = red;
         });

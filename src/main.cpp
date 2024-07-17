@@ -6,8 +6,9 @@ class MyScene : public ge::Scene
 public:
 	using ge::Scene::Scene;
 
-	ge::Rect *r1;
-	ge::Rect *r2;
+	ge::Text *text;
+	ge::Vec2NotifyProperty snp;
+	ge::Node *node;
 
 	void init() override
 	{
@@ -16,27 +17,26 @@ public:
 			.on_released([this](){app.get_window().close();}));
 		ge::Application::get().set_controller_update_state(false);
 
+		fonts->load("./res/fonts/atop.ttf", "atop", 100);
 
-		r1 = new ge::Rect(100, 100);
-		r1->get_transform().set_position(100, 100);
-		r1->set_color(ge::Colors::LIME);
-		r1->get_transform().set_center_origin();
+		text = new ge::Text("test", fonts->get("atop"));
+		text->get_transform().set_center_position(glm::vec2(500, 300));
 
-		r2 = new ge::Rect(50, 50);
-		r2->get_transform().set_position(250, 250);
-		r2->set_color(ge::Colors::GOLD);
-		r2->get_transform().set_center_origin();
-
-		r1->c_props().x().link(r2->c_props().p_x());
-		r1->c_color_props().color().link(r2->c_color_props().p_color());
-		r1->c_color_props().color().set(ge::Colors::MAGENTA);
-
-		r1->c_callback().set([this](float dt) {
-			r1->c_props().position().set(get_mp());
+		snp.link<std::string>(text->get_component<ge::TextPropertiesComponent>().p_text(), [](glm::vec2 mp) {
+			return std::to_string((int)mp.x) +", " + std::to_string((int)mp.y);
 		});
 
-		add(r1);
-		add(r2);
+		node = new ge::Node();
+		node->get_component<ge::CallbackComponent>().set([this](float dt) {
+			auto&& mp = get_mp();
+			snp.set(mp);
+		});
+
+
+		add(text);
+		add(node);
+
+
 	}
 
 	void destroy() override

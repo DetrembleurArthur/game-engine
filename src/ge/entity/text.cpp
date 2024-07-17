@@ -220,7 +220,7 @@ glm::vec2 ge::Text::get_shadow_offset() const
     return shadow_offset;
 }
 
-ge::Color ge::Text::get_shadow_color() const
+ge::Color& ge::Text::get_shadow_color()
 {
     return shadow_color;
 }
