@@ -69,18 +69,18 @@ public:
 
 		fonts->load("./res/fonts/halo.otf", "atop", 100);
 		time_text = new ge::Text("...", fonts->get("atop"));
-		time_text->get_transform().set_position(20, 20);
+		time_text->get_transform().set_position(15, 15);
 		time_text->get_transform().set_tl_origin();
 		time_text->set_text_align(ge::TextAlign::LEFT);
-		time_text->set_text_height(30);
-		time_text->set_color(ge::Colors::BLACK);
-
+		time_text->set_text_height(18);
+		
 		clock->add(outer, true);
 		clock->add(hour, true);
 		clock->add(minute, true);
 		clock->add(seconde, true);
 		clock->add(center, true);
 		clock->add(time_text, false);
+
 
 		hour_property.set(0);
 		minute_property.set(0);
@@ -110,7 +110,14 @@ public:
 			seconde_property.set(s);
 			time_text->get_component<ge::TextPropertiesComponent>().text()
 				.set(std::to_string(h) + "h " + std::to_string(m) + "m " + std::to_string(s) + "s");
+			if(ge::MouseInput::get_state("left") == ge::ButtonState::PressedBtn)
+			{
+				auto&& s = ge::Application::get().get_window().get_size();
+				auto&& pos = ge::MouseInput::get_position() + ge::Application::get().get_window().get_position();
+				ge::Application::get().get_window().set_position(pos - glm::vec2(s.x/2, s.y/2));
+			}
 		});
+
 
 		add(clock);
 	}
@@ -122,8 +129,8 @@ public:
 
 	void load() override
 	{
-		app.resize(1400, 900);
-		app.get_window().set_clear_color(ge::Colors::CYAN);
+		//app.resize(1400, 900);
+		//app.get_window().set_clear_color(ge::Colors::CYAN);
 
 	}
 
@@ -140,10 +147,13 @@ int main(int argc, char const *argv[])
 	
 
 	ge::Application app([]() {
-		//ge::Window::hint_transparent_framebuffer(true);
+		ge::Window::hint_floating(true);
+		ge::Window::hint_decorated(false);
+		ge::Window::hint_transparent_framebuffer(true);
 	});
-	app.init("Test app", 1400, 800);
+	app.init("Test app", 520, 520);
 	app.get_window().set_icon("./res/images/ge-logo.png");
+	app.get_window().set_clear_color(ge::Colors::BLACK);
 	app.set_target_fps(0);
 	
 	app.get_scene_manager().create<MyScene>("arthur");

@@ -23,6 +23,7 @@ $(info OBJECTS = $(OBJECTS))
 all: $(TARGET)
 
 # Règle pour créer l'exécutable
+ #-mwindows => pour faire un exe sans console
 $(TARGET): $(OBJECTS)
 	$(CXX) $(CXXFLAGS) -o $@ $^ $(LIBS)
 

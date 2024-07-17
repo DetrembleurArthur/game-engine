@@ -81,8 +81,14 @@ void ge::Application::init(const std::string& title, unsigned width, unsigned he
         log("glfw initialization success");
         log("current monitor is '" + ge::Monitor::get_primary_monitor().get_name() + "'");
         log("hints configuration");
-        hint_callback();
+        
         glfwWindowHint(GLFW_SAMPLES, 4);
+        glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
+        glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
+        glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
+        glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
+        glfwWindowHint(GLFW_ALPHA_BITS, 8);
+        hint_callback();
         window = new Window(title, width, height);
         WindowEvents::init(window->get_pointer());
         KeyEvents::init(window->get_pointer());

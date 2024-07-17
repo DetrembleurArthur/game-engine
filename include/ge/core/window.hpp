@@ -14,7 +14,7 @@ namespace ge
     {
     private:
         GLFWwindow *window=nullptr;
-        glm::vec3 clear_color;
+        glm::vec4 clear_color;
         float aspect_ratio=1.0f;
     public:
         Window(const std::string& title="Untitled", unsigned width=640, unsigned height=480);
@@ -43,7 +43,7 @@ namespace ge
         std::string get_title();
         float get_opacity();
         Monitor get_monitor();
-        glm::vec3& get_clear_color();
+        glm::vec4& get_clear_color();
         bool is_iconified();
         bool is_maximized();
         bool is_visible();
@@ -62,7 +62,7 @@ namespace ge
         void resizeable(bool value=true);
         void floated(bool value=true);
         void set_icon(const std::string& icon_path="");
-        void set_clear_color(glm::vec3 color);
+        void set_clear_color(glm::vec4 color);
         static void hint_resizable(bool value=true);
         static void hint_visible(bool value=true);
         static void hint_decorated(bool value=true);

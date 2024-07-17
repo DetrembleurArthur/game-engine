@@ -1,6 +1,6 @@
 #include "ge/core/window.hpp"
 
-ge::Window::Window(const std::string &title, unsigned width, unsigned height) : clear_color(0, 0.5 , 1.0)
+ge::Window::Window(const std::string &title, unsigned width, unsigned height) : clear_color(0, 0.5 , 1.0, 1.0)
 {
     log("window creation: " + title + " (" + std::to_string(width) + "x" + std::to_string(height) + ")");
     window = glfwCreateWindow(width, height, title.c_str(), nullptr, nullptr);
@@ -41,8 +41,8 @@ bool ge::Window::must_be_closed() const
 
 void ge::Window::clear()
 {
-    glClearColor(clear_color.r, clear_color.g, clear_color.b, 1.0);
-    glClear(GL_COLOR_BUFFER_BIT);
+    glClearColor(clear_color.r, clear_color.g, clear_color.b, clear_color.a);
+    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 }
 
 void ge::Window::swap()
@@ -167,7 +167,7 @@ ge::Monitor ge::Window::get_monitor()
     return ge::Monitor(glfwGetWindowMonitor(window));
 }
 
-glm::vec3 &ge::Window::get_clear_color()
+glm::vec4 &ge::Window::get_clear_color()
 {
     return clear_color;
 }
@@ -272,7 +272,7 @@ void ge::Window::set_icon(const std::string &icon_path)
     }
 }
 
-void ge::Window::set_clear_color(glm::vec3 color)
+void ge::Window::set_clear_color(glm::vec4 color)
 {
     clear_color = color;
 }
