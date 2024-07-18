@@ -1,4 +1,6 @@
 #include "ge/entity/components/animation_component.hpp"
+#include "ge/entity/components/shape_properties_component.hpp"
+#include <ge/entity/game_object.hpp>
 
 ge::AnimationComponent::~AnimationComponent()
 {
@@ -47,4 +49,11 @@ ge::Animation &ge::AnimationComponent::create(float duration, FloatProperty *tar
     waiting_animations.push_back(animation);
     animation_required = true;
     return *animation;
+}
+
+ge::Animation &ge::AnimationComponent::to_x(float duration, float to, float from, int period, bool backward)
+{
+    ge::Animation& animation = create(duration, owner->get_component<ge::ShapePropertiesComponent>().p_x(), period, backward);
+    animation.get_tween().from(from == std::numeric_limits<float>::max() ? owner->get_transform().get_x() : from).to(to);
+    return animation;
 }

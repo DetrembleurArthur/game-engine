@@ -23,9 +23,9 @@ public:
 		rect->set_color(ge::Colors::RED);
 		rect->get_transform().set_center_origin();
 
-		rect->get_component<ge::AnimationComponent>().create(0.5, rect->get_component<ge::ShapePropertiesComponent>().p_rotation(), -1, true)
+		rect->get_component<ge::AnimationComponent>().to_x(1.0, 600)
 			.on_ending([](){std::cout << "end animation" << std::endl;})
-			.get_tween().from(-45).to(45).func(ge::tweenf::ease_in_out_bounce);
+			.get_tween().func(ge::tweenf::ease_in_out_bounce);
 
 		add(rect);
 	}

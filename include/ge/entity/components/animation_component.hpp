@@ -3,6 +3,7 @@
 #include <ge/entity/components/component.hpp>
 #include <ge/tween/animation.hpp>
 #include <vector>
+#include <limits>
 
 namespace ge
 {
@@ -17,7 +18,8 @@ namespace ge
         using UpdatableComponent::UpdatableComponent;
         virtual ~AnimationComponent();
         virtual void update(float dt) override;
-        Animation& create(float duration, FloatProperty *target, int period=0, bool backward=false);
+        Animation& create(float duration, FloatProperty *target, int period=1, bool backward=false);
+        Animation& to_x(float duration, float to, float from=std::numeric_limits<float>::max(), int period=1, bool backward=false);
     };
 }
 
