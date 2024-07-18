@@ -9,12 +9,15 @@ namespace ge
     class TimerComponent : public UpdatableComponent
     {
     private:
+        bool cleanup_required=false;
+        bool timer_required=false;
         std::vector<Timer *> timers;
+        std::vector<Timer *> waiting_timers;
     public:
         using UpdatableComponent::UpdatableComponent;
         virtual ~TimerComponent();
         virtual void update(float dt) override;
-        ge::Timer& create(float duration_sec);
+        ge::Timer& create(float duration_sec, int period=0);
     };
 }
 

@@ -23,11 +23,13 @@ public:
 		rect->set_color(ge::Colors::BLACK);
 		rect->get_transform().set_center_origin();
 
-		rect->get_component<ge::TimerComponent>().create(3.0).on_during([this](float elapsed){
+		auto &timer = rect->get_component<ge::TimerComponent>().create(3.0, 3);
+		timer.on_during([this](float elapsed){
 			std::cout << elapsed << std::endl;
 			rect->get_transform().set_rotation(rect->get_transform().get_rotation() + 360.0*ge::Timing::get_delta());
-		}).on_ending([this](float elapsed) {
+		}).on_ending([this, &timer](float elapsed) {
 			rect->get_transform().set_size(200, 200);
+			timer.abort();
 		});
 
 		add(rect);
