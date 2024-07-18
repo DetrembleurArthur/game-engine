@@ -17,11 +17,13 @@ namespace ge
         std::function<void(float)> during_callback;
         std::function<void(float)> ending_callback;
     public:
+        static const int INF;
         Timer(float max_duration, int period=0);
         bool is_timeout();
         void start();
         void run();
         void abort();
+        float get_progression();
         FloatNotifyProperty& max_duration();
         FloatNotifyProperty& elapsed_time();
         BoolNotifyProperty& timeout();

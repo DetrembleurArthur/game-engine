@@ -2,6 +2,9 @@
 #include <ge/core/timing.hpp>
 #include <iostream>
 
+
+const int ge::Timer::INF = -1;
+
 ge::Timer::Timer(float max_duration_tm, int period) : period(period)
 {
     max_duration_property.link<float>(&elapsed_time_property, [](const float& duration) {
@@ -21,7 +24,7 @@ ge::Timer::Timer(float max_duration_tm, int period) : period(period)
             }
             if(period)
             {
-                if((period > 0 && period_counter_property.get() < period) || period == -1)
+                if((period > 0 && period_counter_property.get() < period) || period < 0)
                 {
                     period_counter_property.set(period_counter_property.get() + 1);
                     start();
@@ -41,7 +44,9 @@ ge::Timer::Timer(float max_duration_tm, int period) : period(period)
 
 bool ge::Timer::is_timeout()
 {
-    return timeout_property.get() && (period_counter_property.get() >= period || period == -1);
+    if(period < 0)
+        return false;
+    return timeout_property.get() && (period_counter_property.get() >= period);
 }
 
 void ge::Timer::start()
@@ -54,6 +59,8 @@ void ge::Timer::run()
 {
     if(!is_timeout())
     {
+        if(t0 == 0)
+            start();
         t1 = Timing::get_sec();
         elapsed_time_property.set(t1 - t0);
     }
@@ -65,6 +72,11 @@ void ge::Timer::abort()
     period=0;
     during_callback = [](float){};
     ending_callback = [](float){};
+}
+
+float ge::Timer::get_progression()
+{
+    return elapsed_time_property.get() / max_duration_property.get();
 }
 
 ge::FloatNotifyProperty &ge::Timer::max_duration()

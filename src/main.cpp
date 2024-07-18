@@ -20,24 +20,18 @@ public:
 
 		rect = new ge::Rect(100, 100);
 		rect->get_transform().set_position(300, 300);
-		rect->set_color(ge::Colors::BLACK);
+		rect->set_color(ge::Colors::RED);
 		rect->get_transform().set_center_origin();
 
-		auto &timer = rect->get_component<ge::TimerComponent>().create(3.0, 3);
-		timer.on_during([this](float elapsed){
-			std::cout << elapsed << std::endl;
-			rect->get_transform().set_rotation(rect->get_transform().get_rotation() + 360.0*ge::Timing::get_delta());
-		}).on_ending([this, &timer](float elapsed) {
-			rect->get_transform().set_size(200, 200);
-			timer.abort();
-		});
+		rect->get_component<ge::AnimationComponent>().create(0.5, rect->get_component<ge::ShapePropertiesComponent>().p_rotation(), -1, true)
+			.on_ending([](){std::cout << "end animation" << std::endl;})
+			.get_tween().from(-45).to(45).func(ge::tweenf::ease_in_out_bounce);
 
 		add(rect);
 	}
 
 	void destroy() override
 	{
-		
 	}
 
 	void load() override

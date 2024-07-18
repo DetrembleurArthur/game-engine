@@ -46,4 +46,8 @@
 #include <ge/binding/notify_property.hpp>
 #include <ge/timer/timer.hpp>
 #include <ge/entity/components/timer_component.hpp>
+#include <ge/tween/tween_functions.hpp>
+#include <ge/tween/tween.hpp>
+#include <ge/tween/animation.hpp>
+#include <ge/entity/components/animation_component.hpp>
 #endif
