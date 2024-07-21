@@ -5,21 +5,27 @@
 
 namespace ge
 {
-    class Tween
+    class TweenAbstract
     {
-    private:
-        float from_value;
-        float to_value;
-        std::function<float(float)> tween_function=tweenf::linear;
-        FloatProperty *target=nullptr;
     public:
-        Tween(FloatProperty *target);
-        Tween(FloatProperty *target, float from, float to, std::function<float(float)> tween_function=tweenf::linear);
-        void set_progression(float perc);
-        Tween& from(float value);
-        Tween& to(float value);
-        Tween& func(std::function<float(float)> tween_function);
+        virtual void set_progression(float perc) = 0;
+    };
+
+    template <typename T> class Tween : public TweenAbstract
+    {
+    protected:
+        T from_value;
+        T to_value;
+        std::function<float(float)> tween_function=tweenf::linear;
+        Property<T> *target=nullptr;
+    public:
+        Tween(Property<T> *target);
+        Tween(Property<T> *target, T from, T to, std::function<float(float)> tween_function=tweenf::linear);
+        Tween<T>& from(T value);
+        Tween<T>& to(T value);
+        Tween<T>& func(std::function<float(float)> tween_function);
         void swap();
+        virtual void set_progression(float perc) override;
     };
 }
 

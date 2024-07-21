@@ -32,6 +32,7 @@ void ge::GameObject::update(float dt)
         {
             if(dynamic_cast<UpdatableComponent *>(c))
             {
+                //std::cout << "update " << typeid(*c).name() << std::endl;
                 dynamic_cast<UpdatableComponent *>(c)->update(dt);
             }
         }

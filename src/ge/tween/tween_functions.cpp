@@ -39,7 +39,7 @@ float ge::tweenf::ease_in_quint(float x)
 
 float ge::tweenf::ease_out_quint(float x)
 {
-    1 - pow(1 - x, 5);
+    return 1 - pow(1 - x, 5);
 }
 
 float ge::tweenf::ease_in_out_quint(float x)

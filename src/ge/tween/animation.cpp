@@ -1,6 +1,6 @@
 #include "ge/tween/animation.hpp"
-#include <iostream>
-ge::Animation::Animation(float duration, FloatProperty *target, int period, bool backward) : timer(duration, backward ? period * 2 : period), tween(target), backward(backward)
+
+template <typename T> ge::Animation<T>::Animation(float duration, ge::Property<T> *target, int period, bool backward) : timer(duration, backward ? period * 2 : period), tween(target), backward(backward)
 {
     timer.on_during([this](float elapsed) {
         if(backward_index == 1)
@@ -16,14 +16,14 @@ ge::Animation::Animation(float duration, FloatProperty *target, int period, bool
     });
 }
 
-void ge::Animation::start()
+template <typename T> void ge::Animation<T>::start()
 {
     timer.period_counter().set(0);
     timer.start();
     backward_index = 1;
 }
 
-void ge::Animation::update()
+template <typename T> void ge::Animation<T>::update()
 {
     if(!timer.is_timeout())
     {
@@ -40,18 +40,23 @@ void ge::Animation::update()
     }
 }
 
-ge::Tween& ge::Animation::get_tween()
+template <typename T> ge::Tween<T>& ge::Animation<T>::get_tween()
 {
     return tween;
 }
 
-ge::Timer& ge::Animation::get_timer()
+template <typename T> ge::Timer& ge::Animation<T>::get_timer()
 {
     return timer;
 }
 
-ge::Animation &ge::Animation::on_ending(std::function<void()> on_ending_callback)
+template <typename T> ge::Animation<T> &ge::Animation<T>::on_ending(std::function<void()> on_ending_callback)
 {
     this->on_ending_callback = on_ending_callback;
     return *this;
 }
+
+template class ge::Animation<float>;
+template class ge::Animation<glm::vec2>;
+template class ge::Animation<glm::vec3>;
+template class ge::Animation<glm::vec4>;

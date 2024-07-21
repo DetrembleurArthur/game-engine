@@ -23,9 +23,13 @@ public:
 		rect->set_color(ge::Colors::RED);
 		rect->get_transform().set_center_origin();
 
-		rect->get_component<ge::AnimationComponent>().to_x(1.0, 600)
-			.on_ending([](){std::cout << "end animation" << std::endl;})
-			.get_tween().func(ge::tweenf::ease_in_out_bounce);
+		rect->get_component<ge::AnimationComponent>()
+			.to_position(3, glm::vec2(1000, 800), glm::vec2(100, 100), -1, true, ge::tweenf::ease_in_out_cubic);
+		rect->get_component<ge::AnimationComponent>()
+			.to_size(3, glm::vec2(300, 300), glm::vec2(100, 100), -1, true, ge::tweenf::ease_in_out_cubic);
+		rect->get_component<ge::AnimationComponent>()
+			.to_color(3, ge::Colors::LIME, ge::Colors::RED, -1, true, ge::tweenf::ease_in_out_circ);
+		
 
 		add(rect);
 	}
