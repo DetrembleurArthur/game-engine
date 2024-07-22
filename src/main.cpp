@@ -11,16 +11,16 @@ public:
 	using ge::Scene::Scene;
 
 	ge::Text *text;
+	ge::Rect *collider;
 
 	void init() override
 	{
-		srand(NULL);
 		ge::KeyEvents::add_combo(ge::KeyCombo()
 			.combine(GLFW_KEY_A)
 			.on_released([this](){app.get_window().close();}));
 		ge::Application::get().set_controller_update_state(false);
 
-		fonts->load("./res/fonts/atop.ttf", "atop", 120);
+		fonts->load("./res/fonts/atop.ttf", "atop", 100);
 
 		text = new ge::Text("Hello world !", fonts->get("atop"));
 		text->get_transform().set_position(700, 450);
@@ -30,11 +30,25 @@ public:
 		text->set_shadow_color(glm::vec4(0, 0, 0, 0.5));
 		text->set_shadow_offset(glm::vec2(2, 2));
 
-		text->get_component<ge::AnimationComponent>().to_text_height(1.6, 100, 30, -1, true, ge::tweenf::ease_in_out_bounce);
-		text->get_component<ge::AnimationComponent>().to_rotation(1.2, 360, 0, -1, false);
-		text->get_component<ge::AnimationComponent>().to_text_offset(1.5, glm::vec2(-10, -10), glm::vec2(10, 10), -1, true);
-		text->get_component<ge::AnimationComponent>().to_color(0.5, ge::Colors::GOLD, ge::Colors::PURPLE, -1, true);
+
+		collider = new ge::Rect();
+		collider->set_color(ge::Color(1, 0, 0, 0.4));
+
+		text->get_component<ge::ColliderComponent>().fit_collider(glm::vec2(1, 1));
+
+		text->get_component<ge::CallbackComponent>().set([this](float dt) {
+			text->get_component<ge::ColliderComponent>().update_rendered_collider(&collider->get_transform());
+			if(text->get_component<ge::ColliderComponent>().contains(get_mp()))
+				text->set_color(ge::Colors::GREEN);
+			else
+				text->set_color(ge::Colors::RED);
+		});
+
+		text->get_component<ge::EventsComponent>().dragging();
+		text->get_component<ge::AnimationComponent>().to_rotation(5, 360, 0, -1, true, ge::tweenf::ease_in_out_quad);
+
 		add(text);
+		add(collider);
 	}
 
 	void destroy() override

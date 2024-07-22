@@ -1,12 +1,15 @@
 #include "ge/entity/rect.hpp"
 
+ge::Rect::Rect() : Rect(1, 1, false, false)
+{
+}
 
-ge::Rect::Rect(float width, float height, bool tex, bool dynamic) : Rect() 
+ge::Rect::Rect(float width, float height, bool tex, bool dynamic) : Drawable() 
 {
     init_rect_mesh(width, height, tex, dynamic);
 }
 
-ge::Rect::Rect(ge::Texture *texture, bool dynamic) : Rect()
+ge::Rect::Rect(ge::Texture *texture, bool dynamic) : Drawable()
 {
     if(texture)
     {

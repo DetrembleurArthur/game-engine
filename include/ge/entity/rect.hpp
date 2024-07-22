@@ -9,7 +9,7 @@ namespace ge
     private:
         void init_rect_mesh(float width, float height, bool tex=false, bool dynamic=false);
     public:
-        using Drawable::Drawable;
+        Rect();
         Rect(float width, float height, bool tex=false, bool dynamic=false);
         Rect(ge::Texture *texture, bool dynamic=false);
         void set_texture(const ge::Texture *texture) override;

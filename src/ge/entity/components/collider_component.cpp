@@ -57,16 +57,6 @@ void ge::ColliderComponent::normalize_collider()
     collider.hf = collider.height / tr.get_height();
 }
 
-ge::Transform ge::ColliderComponent::create_rendered_collider()
-{
-    ge::Transform transform;
-    transform.set_size(collider.wf * owner->get_transform().get_width(), collider.hf * owner->get_transform().get_width());
-    transform.set_position(collider.x, collider.y);
-    transform.set_rotation(collider.angle);
-    return transform;
-
-}
-
 void ge::ColliderComponent::update_rendered_collider(ge::Transform *rect)
 {
     Collider& collider = get_collider();

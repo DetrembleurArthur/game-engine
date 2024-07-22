@@ -33,7 +33,6 @@ namespace ge
         void update_collider();
         Collider& get_collider();
         void normalize_collider();
-        ge::Transform create_rendered_collider();
         void update_rendered_collider(ge::Transform *rect);
         bool contains(glm::vec2 pos);
         bool contains(ColliderComponent& other);
