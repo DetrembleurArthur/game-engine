@@ -10,6 +10,8 @@ public:
 	using ge::Scene::Scene;
 
 	ge::Rect *rect;
+	ge::Rect *x_axis;
+	ge::Rect *y_axis;
 
 	void init() override
 	{
@@ -23,14 +25,26 @@ public:
 		rect->set_color(ge::Colors::RED);
 		rect->get_transform().set_center_origin();
 
-		rect->get_component<ge::AnimationComponent>()
-			.to_position(3, glm::vec2(1000, 800), glm::vec2(100, 100), -1, true, ge::tweenf::ease_in_out_cubic);
-		rect->get_component<ge::AnimationComponent>()
-			.to_size(3, glm::vec2(300, 300), glm::vec2(100, 100), -1, true, ge::tweenf::ease_in_out_cubic);
-		rect->get_component<ge::AnimationComponent>()
-			.to_color(3, ge::Colors::LIME, ge::Colors::RED, -1, true, ge::tweenf::ease_in_out_circ);
-		
+		x_axis = new ge::Rect(30, 30);
+		x_axis->get_transform().set_position(0, 100);
+		x_axis->set_color(ge::Colors::BLUE);
+		x_axis->get_transform().set_center_origin();
 
+		y_axis = new ge::Rect(30, 30);
+		y_axis->get_transform().set_position(100, 0);
+		y_axis->set_color(ge::Colors::BLUE);
+		y_axis->get_transform().set_center_origin();
+
+		rect->get_component<ge::ShapePropertiesComponent>().x().link(x_axis->get_component<ge::ShapePropertiesComponent>().p_x());
+		rect->get_component<ge::ShapePropertiesComponent>().y().link(y_axis->get_component<ge::ShapePropertiesComponent>().p_y());
+
+		rect->get_component<ge::EventsComponent>().dragging(ge::DragMode::TWO_AXIS, true).use_collider();
+
+		rect->get_component<ge::MoveComponent>().rotation_speed = 45;
+
+
+		add(x_axis);
+		add(y_axis);
 		add(rect);
 	}
 

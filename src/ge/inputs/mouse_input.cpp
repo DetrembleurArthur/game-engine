@@ -95,3 +95,28 @@ void ge::MouseInput::normal()
 {
     glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_NORMAL);
 }
+
+bool ge::MouseInput::is_button(int btn, ge::ButtonState state)
+{
+    return get_state(btn) == state;
+}
+
+bool ge::MouseInput::is_left_button(ge::ButtonState state)
+{
+    return is_button(GLFW_MOUSE_BUTTON_LEFT, state);
+}
+
+bool ge::MouseInput::is_right_button(ge::ButtonState state)
+{
+    return is_button(GLFW_MOUSE_BUTTON_RIGHT, state);
+}
+
+bool ge::MouseInput::is_middle_button(ge::ButtonState state)
+{
+    return is_button(GLFW_MOUSE_BUTTON_MIDDLE, state);
+}
+
+bool ge::MouseInput::is_any_button(ge::ButtonState state)
+{
+    return is_left_button(state) || is_right_button(state) || is_middle_button(state);
+}

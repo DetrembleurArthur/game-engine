@@ -51,6 +51,11 @@ namespace ge
         static bool hovered();
         static ge::ButtonState get_state(int btn);
         static ge::ButtonState get_state(const std::string& btn);
+        static bool is_button(int btn, ge::ButtonState state=ge::ButtonState::PressedBtn);
+        static bool is_left_button(ge::ButtonState state=ge::ButtonState::PressedBtn);
+        static bool is_right_button(ge::ButtonState state=ge::ButtonState::PressedBtn);
+        static bool is_middle_button(ge::ButtonState state=ge::ButtonState::PressedBtn);
+        static bool is_any_button(ge::ButtonState state=ge::ButtonState::PressedBtn);
     };
 }
 

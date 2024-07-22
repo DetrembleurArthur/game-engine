@@ -72,6 +72,19 @@ namespace ge
             if(i < components.size())
                 components.erase(components.begin() + i);
         }
+
+        template <typename T> bool has_component()
+        {
+            static_assert(std::is_base_of<Component, T>::value, "T must be derived from Component");
+            for(Component *c : components)
+            {
+                if(dynamic_cast<T *>(c))
+                {
+                    return true;
+                }
+            }
+            return false;
+        }
     };
 }
 
