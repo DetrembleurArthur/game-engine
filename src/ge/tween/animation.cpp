@@ -34,7 +34,8 @@ template <typename T> void ge::Animation<T>::update()
                 tween.set_progression(1.0);
             else
                 tween.set_progression(0.0);
-            on_ending_callback();
+            if(on_ending_callback)
+                on_ending_callback();
             on_ending_callback = [](){};
         }
     }

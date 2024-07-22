@@ -86,6 +86,10 @@ ge::TextPropertiesComponent::TextPropertiesComponent(ge::GameObject *owner) : Co
             text->set_text_height(height);
         });
     }
+    else
+    {
+        log("object must be ge::Text to use TextPropertiesComponent", ge::LogLevels::WARNING);
+    }
 }
 
 ge::StrNotifyProperty& ge::TextPropertiesComponent::text()

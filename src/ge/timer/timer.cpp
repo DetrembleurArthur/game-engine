@@ -15,16 +15,18 @@ ge::Timer::Timer(float max_duration_tm, int period) : period(period)
     elapsed_time_property.link<bool>(&timeout_property, [this](float delta) {
         return delta >= max_duration_property.get();
     });
-    timeout_property.on_change([&](bool timeout_value) {
+
+    timeout_property.on_change([this](bool timeout_value) {
         if(timeout_value)
         {
             if(ending_callback)
             {
                 ending_callback(elapsed_time_property.get());
             }
-            if(period)
+            if(this->period)
             {
-                if((period > 0 && period_counter_property.get() < period) || period < 0)
+
+                if((this->period > 0 && period_counter_property.get() < this->period) || this->period < 0)
                 {
                     period_counter_property.set(period_counter_property.get() + 1);
                     start();

@@ -30,6 +30,16 @@ namespace ge
         Animation<float>& to_b(float duration, float to, float from, int period=1, bool backward=false, std::function<float(float)> ftween=ge::tweenf::linear);
         Animation<float>& to_a(float duration, float to, float from, int period=1, bool backward=false, std::function<float(float)> ftween=ge::tweenf::linear);
         Animation<glm::vec4>& to_color(float duration, glm::vec4 to, glm::vec4 from, int period=1, bool backward=false, std::function<float(float)> ftween=ge::tweenf::linear);
+        Animation<float>& to_text_width(float duration, float to, float from, int period=1, bool backward=false, std::function<float(float)> ftween=ge::tweenf::linear);
+        Animation<float>& to_text_height(float duration, float to, float from, int period=1, bool backward=false, std::function<float(float)> ftween=ge::tweenf::linear);
+        Animation<float>& to_text_shadow_r(float duration, float to, float from, int period=1, bool backward=false, std::function<float(float)> ftween=ge::tweenf::linear);
+        Animation<float>& to_text_shadow_g(float duration, float to, float from, int period=1, bool backward=false, std::function<float(float)> ftween=ge::tweenf::linear);
+        Animation<float>& to_text_shadow_b(float duration, float to, float from, int period=1, bool backward=false, std::function<float(float)> ftween=ge::tweenf::linear);
+        Animation<float>& to_text_shadow_a(float duration, float to, float from, int period=1, bool backward=false, std::function<float(float)> ftween=ge::tweenf::linear);
+        Animation<glm::vec4>& to_text_shadow_color(float duration, glm::vec4 to, glm::vec4 from, int period=1, bool backward=false, std::function<float(float)> ftween=ge::tweenf::linear);
+        Animation<float>& to_text_offset_x(float duration, float to, float from, int period=1, bool backward=false, std::function<float(float)> ftween=ge::tweenf::linear);
+        Animation<float>& to_text_offset_y(float duration, float to, float from, int period=1, bool backward=false, std::function<float(float)> ftween=ge::tweenf::linear);
+        Animation<glm::vec2>& to_text_offset(float duration, glm::vec2 to, glm::vec2 from, int period=1, bool backward=false, std::function<float(float)> ftween=ge::tweenf::linear);
     };
 }
 
