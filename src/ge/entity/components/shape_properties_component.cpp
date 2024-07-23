@@ -29,6 +29,7 @@ ge::ShapePropertiesComponent::ShapePropertiesComponent(ge::GameObject *owner) : 
         [owner](const float& y) {
             return glm::vec2(owner->get_transform().get_x(), y);
     });
+    position_property.set(owner->get_transform().get_position());
     width_property.on_change([owner](float width) {
         ge::Transform& tr = *owner;
         tr.set_width(width);
@@ -55,9 +56,11 @@ ge::ShapePropertiesComponent::ShapePropertiesComponent(ge::GameObject *owner) : 
         [owner](const float& height) {
             return glm::vec2(owner->get_transform().get_width(), height);
     });
+    size_property.set(owner->get_transform().get_size());
     rotation_property.on_change([owner](float rotation) {
         owner->get_transform().set_rotation(rotation);
     });
+    rotation_property.set(owner->get_transform().get_rotation());
 }
 
 ge::FloatNotifyProperty &ge::ShapePropertiesComponent::x()

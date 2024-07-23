@@ -1,6 +1,7 @@
 #ifndef __GE_NODE_HPP__
 #define __GE_NODE_HPP__
 #include <ge/entity/drawable.hpp>
+#include <functional>
 
 namespace ge
 {
@@ -29,6 +30,7 @@ namespace ge
         std::vector<Drawable *>& get_drawable_cache();
         int count();
         glm::vec2 get_drawable_size();
+        void apply(std::function<void(GameObject *)> callback);
     };
 }
 

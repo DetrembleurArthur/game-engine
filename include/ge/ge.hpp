@@ -52,4 +52,5 @@
 #include <ge/entity/components/animation_component.hpp>
 #include <ge/entity/components/renderer_component.hpp>
 #include <ge/entity/ui/button.hpp>
+#include <ge/entity/ui/progress_bar.hpp>
 #endif

@@ -1,5 +1,6 @@
 #include "ge/entity/node.hpp"
 #include <algorithm>
+#include <ge/entity/components/shape_properties_component.hpp>
 
 ge::Node::~Node()
 {
@@ -39,8 +40,8 @@ void ge::Node::update(float dt)
             float angle = glm::radians(tr.get_rotation());
             pos = glm::vec2(pos.x * cos(angle) - pos.y * sin(angle), pos.x * sin(angle) + pos.y * cos(angle));
             pos += tr.get_position();
-            go.first->get_transform().set_position(pos);
-            go.first->get_transform().set_rotation(tr.get_rotation() + rot + go.first->get_transform().get_rotation());
+            go.first->get_component<ge::ShapePropertiesComponent>().position().set(pos);
+            go.first->get_component<ge::ShapePropertiesComponent>().rotation().set(tr.get_rotation() + rot);
         }
         go.first->update(dt);
     }
@@ -129,3 +130,13 @@ glm::vec2 ge::Node::get_drawable_size()
     return size;
 }
 
+void ge::Node::apply(std::function<void(GameObject *)> callback)
+{
+    for(auto &pair : sub_objects)
+    {
+        if(pair.first)
+        {
+            callback(pair.first);
+        }
+    }
+}

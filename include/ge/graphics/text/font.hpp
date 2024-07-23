@@ -24,7 +24,7 @@ namespace ge
         const std::string lchars=" abcdefghijklmnopqrstuvwxyz";
         const std::string uchars=" ABCDEFGHIJKLMNOPQRSTUVWXYZ";
         const std::string chars=" abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
-        const std::string alphanum=" 0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ!$:/;.,?*-+()[]{}";
+        const std::string alphanum=" 0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ!$:/;.,?*-+()[]{}%";
     }
 
     class Font
