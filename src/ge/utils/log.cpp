@@ -50,6 +50,9 @@ void ge::log(const std::string &msg, LogLevels level)
         case LogLevels::SPRITESHEET:
             level_str = "[SPRITESHEET]";
             break;
+        case LogLevels::RENDERER:
+            level_str = "[RENDERER]";
+            break;
         default:
             level_str = "[UNKNOWN]";
     }

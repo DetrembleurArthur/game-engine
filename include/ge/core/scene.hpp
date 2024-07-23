@@ -2,7 +2,7 @@
 #define __GE_SCENE_HPP__
 #include <string>
 #include <ge/graphics/mesh.hpp>
-#include <ge/graphics/renderer.hpp>
+#include <ge/core/renderer_manager.hpp>
 #include <ge/core/texture_manager.hpp>
 #include <ge/core/font_manager.hpp>
 #include <ge/core/spritesheet_manager.hpp>
@@ -19,6 +19,13 @@ namespace ge
         UI=2
     };
 
+    namespace rend
+    {
+        const std::string basic = "default";
+        const std::string tex = "tex";
+        const std::string text = "text";
+    }
+
     struct GoInfos
     {
         bool freeable=true;
@@ -27,7 +34,6 @@ namespace ge
     struct LayerInfos
     {
         bool kill_enabled=false;
-        bool fixed=false;
     };
 
     using Layer=std::pair<std::vector<std::pair<GameObject *, GoInfos>>, LayerInfos>;
@@ -39,7 +45,7 @@ namespace ge
         std::string name;
         Camera2D *camera = nullptr;
         Camera2D *ui_camera = nullptr;
-        Renderer *renderer = nullptr;
+        RendererManager *renderers=nullptr;
         TextureManager *textures = nullptr;
         FontManager *fonts = nullptr;
         SpritesheetManager *spritesheets=nullptr;
@@ -57,11 +63,11 @@ namespace ge
         virtual void unload() = 0;
         virtual void update(double dt);
         virtual void draw(double dt);
-        void set_renderer(ge::Renderer *renderer);
         void kill(GameObject& go, int layer_id=Layers::MAIN);
         void kill(GameObject* go=nullptr, int layer_id=Layers::MAIN);
         std::string get_name();
         Camera2D *get_camera();
+        Camera2D *get_ui_camera();
         glm::vec2 get_mp();
         void add(GameObject& go, int layer_id=0, GoInfos infos={false});
         void add(GameObject* go, int layer_id=0, GoInfos infos={true});

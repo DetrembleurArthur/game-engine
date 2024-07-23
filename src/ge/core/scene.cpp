@@ -5,13 +5,14 @@
 #include <ge/core/application.hpp>
 #include <ge/entity/node.hpp>
 #include <ge/inputs/mouse_input.hpp>
+#include <ge/entity/components/renderer_component.hpp>
 
 
 ge::Scene::Scene(const std::string& name, int layers_number) : app(ge::Application::get()),
     name(name),
     camera(new Camera2D()),
     ui_camera(new Camera2D()),
-    renderer(new Renderer(ge::Shader::DEFAULT, camera)),
+    renderers(new RendererManager(new ge::BasicRenderer(ge::Shader::BASIC, camera))),
     textures(new TextureManager()),
     fonts(new FontManager()),
     spritesheets(new SpritesheetManager())
@@ -20,7 +21,11 @@ ge::Scene::Scene(const std::string& name, int layers_number) : app(ge::Applicati
     {
         layers.push_back(Layer());
     }
-    layers[Layers::UI].second.fixed = true;
+    renderers->set("ui", new ge::BasicRenderer(ge::Shader::BASIC, get_ui_camera()));
+    renderers->set("tex", new ge::TexRenderer(ge::Shader::TEX, get_camera()));
+    renderers->set("tex_ui", new ge::TexRenderer(ge::Shader::TEX, get_ui_camera()));
+    renderers->set("text", new ge::TextRenderer(ge::Shader::TEXT, get_camera()));
+    renderers->set("text_ui", new ge::TextRenderer(ge::Shader::TEXT, get_ui_camera()));
 }
 
 ge::Scene::~Scene()
@@ -41,11 +46,12 @@ ge::Scene::~Scene()
         layer.first.clear();
     }
     layers.clear();
-    set_renderer(nullptr);
     if(camera)
         delete camera;
     if(ui_camera)
         delete ui_camera;
+    if(renderers)
+        delete renderers;
     if(textures)
         delete textures;
     if(fonts)
@@ -77,40 +83,45 @@ void ge::Scene::update(double dt)
 
 void ge::Scene::draw(double dt)
 {
-    renderer->begin();
+    Renderer *renderer = nullptr;
     for(Layer& layer : layers)
     {
-        if(layer.second.fixed)
-            renderer->set_camera(ui_camera);
-        else
-            renderer->set_camera(camera);
         for(std::pair<GameObject *, GoInfos>& go : layer.first)
         {
             Drawable *ptr = dynamic_cast<Drawable *>(go.first);
             if(ptr)
             {
+                if(ptr->has_component<ge::RendererComponent>())
+                {
+                    renderer = ptr->get_component<ge::RendererComponent>().get_renderer();
+                }
+                else
+                {
+                    renderer = renderers->get_default();
+                }
+                renderer->begin();
                 renderer->draw(dt, ptr);
+                renderer->end();
             }
             else if(dynamic_cast<Node *>(go.first))
             {
                 for(Drawable *dr : dynamic_cast<Node *>(go.first)->get_drawable_cache())
                 {
+                    if(dr->has_component<ge::RendererComponent>())
+                    {
+                        renderer = dr->get_component<ge::RendererComponent>().get_renderer();
+                    }
+                    else
+                    {
+                        renderer = renderers->get_default();
+                    }
+                    renderer->begin();
                     renderer->draw(dt, dr);
+                    renderer->end();
                 }
             }
         }
     }
-    renderer->end();
-}
-
-void ge::Scene::set_renderer(ge::Renderer *renderer)
-{
-    if(this->renderer)
-    {
-        delete this->renderer;
-        this->renderer = nullptr;
-    }
-    this->renderer = renderer;
 }
 
 void ge::Scene::kill(GameObject &go, int layer_id)
@@ -134,6 +145,11 @@ std::string ge::Scene::get_name()
 ge::Camera2D *ge::Scene::get_camera()
 {
     return camera;
+}
+
+ge::Camera2D *ge::Scene::get_ui_camera()
+{
+    return ui_camera;
 }
 
 glm::vec2 ge::Scene::get_mp()

@@ -12,16 +12,36 @@ namespace ge
 {
     class Renderer
     {
-    private:
+    protected:
         Shader *shader;
         Camera2D *camera;
     public:
         Renderer(Shader *shader, Camera2D *camera);
         void begin();
         void end();
-        void draw_text(float dt, Text *go);
-        void draw(float dt, Drawable* go);
+        virtual void draw(float dt, Drawable* go) = 0;
         void set_camera(Camera2D *camera);
+    };
+
+    class BasicRenderer : public Renderer
+    {
+    public:
+        using Renderer::Renderer;
+        virtual void draw(float dt, Drawable *go) override;
+    };
+
+    class TexRenderer : public Renderer
+    {
+    public:
+        using Renderer::Renderer;
+        virtual void draw(float dt, Drawable *go) override;
+    };
+
+    class TextRenderer : public Renderer
+    {
+    public:
+        using Renderer::Renderer;
+        virtual void draw(float dt, Drawable *go) override;
     };
 }
 

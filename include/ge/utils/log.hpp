@@ -22,7 +22,8 @@ namespace ge
         SHADER,
         TEXTURE,
         FONT,
-        SPRITESHEET
+        SPRITESHEET,
+        RENDERER
     };
 
     void log(const std::string& msg, LogLevels level=LogLevels::INFO);

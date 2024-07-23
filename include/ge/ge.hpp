@@ -50,4 +50,6 @@
 #include <ge/tween/tween.hpp>
 #include <ge/tween/animation.hpp>
 #include <ge/entity/components/animation_component.hpp>
+#include <ge/entity/components/renderer_component.hpp>
+#include <ge/entity/ui/button.hpp>
 #endif

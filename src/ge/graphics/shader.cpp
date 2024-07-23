@@ -4,20 +4,36 @@
 #include <sstream>
 #include <glm/gtc/type_ptr.hpp>
 
-ge::Shader *ge::Shader::DEFAULT = nullptr;
+ge::Shader *ge::Shader::BASIC = nullptr;
+ge::Shader *ge::Shader::TEX = nullptr;
+ge::Shader *ge::Shader::TEXT = nullptr;
 
 void ge::Shader::load_default_shaders()
 {
-    ge::Shader::DEFAULT = new Shader();
-    ge::Shader::DEFAULT->load_from_file("./res/shaders/vertex.glsl", "./res/shaders/fragment.glsl");
+    ge::Shader::BASIC = new Shader();
+    ge::Shader::BASIC->load_from_file("./res/shaders/basic/vertex.glsl", "./res/shaders/basic/fragment.glsl");
+    ge::Shader::TEX = new Shader();
+    ge::Shader::TEX->load_from_file("./res/shaders/tex/vertex.glsl", "./res/shaders/tex/fragment.glsl");
+    ge::Shader::TEXT = new Shader();
+    ge::Shader::TEXT->load_from_file("./res/shaders/text/vertex.glsl", "./res/shaders/text/fragment.glsl");
 }
 
 void ge::Shader::unload_default_shaders()
 {
-    if(ge::Shader::DEFAULT)
+    if(ge::Shader::BASIC)
     {
-        delete ge::Shader::DEFAULT;
-        ge::Shader::DEFAULT = nullptr;
+        delete ge::Shader::BASIC;
+        ge::Shader::BASIC = nullptr;
+    }
+    if(ge::Shader::TEX)
+    {
+        delete ge::Shader::TEX;
+        ge::Shader::TEX = nullptr;
+    }
+    if(ge::Shader::TEXT)
+    {
+        delete ge::Shader::TEXT;
+        ge::Shader::TEXT = nullptr;
     }
 }
 

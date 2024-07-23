@@ -13,7 +13,9 @@ namespace ge
         unsigned fragment_shader=0;
         unsigned program=0;
     public:
-        static Shader *DEFAULT;
+        static Shader *BASIC;
+        static Shader *TEX;
+        static Shader *TEXT;
         static void load_default_shaders();
         static void unload_default_shaders();
         Shader();

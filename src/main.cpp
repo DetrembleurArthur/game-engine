@@ -23,12 +23,15 @@ public:
 		fonts->load("./res/fonts/atop.ttf", "atop", 100);
 
 		text = new ge::Text("Hello world !", fonts->get("atop"));
+		text->get_component<ge::RendererComponent>().set_renderer(renderers->get(ge::rend::text));
 		text->get_transform().set_position(700, 450);
 		text->get_transform().set_center_origin();
 		text->set_color(ge::Colors::PURPLE);
 		text->enable_shadow();
 		text->set_shadow_color(glm::vec4(0, 0, 0, 0.5));
 		text->set_shadow_offset(glm::vec2(2, 2));
+
+		
 
 
 		collider = new ge::Rect();
