@@ -14,13 +14,13 @@ ge::FontManager::~FontManager()
     }
 }
 
-void ge::FontManager::load(const std::string &filename, const std::string &name, int font_size)
+void ge::FontManager::load(const std::string &filename, const std::string &name, int font_size, const std::string& charset)
 {
     if(!filename.empty() && !name.empty())
     {
         if(fonts.find(name) == fonts.end())
         {
-            ge::Font *font = new ge::Font(filename, font_size);
+            ge::Font *font = new ge::Font(filename, font_size, charset);
             fonts[name] = font;
             log("font '" + name + "' => '" + filename + "' registered in the FontManager", LogLevels::FONT);
         }

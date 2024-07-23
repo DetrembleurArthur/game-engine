@@ -18,6 +18,15 @@ namespace ge
         glm::ivec2 tex_offset;
     };
 
+    namespace charsets
+    {
+        const std::string numeric=" 0123456789";
+        const std::string lchars=" abcdefghijklmnopqrstuvwxyz";
+        const std::string uchars=" ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+        const std::string chars=" abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
+        const std::string alphanum=" 0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ!$:/;.,?*-+()[]{}";
+    }
+
     class Font
     {
     private:
@@ -26,10 +35,13 @@ namespace ge
         Texture *texture = nullptr;
         int font_size=0;
         std::map<char, Glyph> glyphs;
+        std::string filename;
+        std::string charset;
     public:
         static void init();
         static void done();
-        Font(const std::string& filename, int font_size=48);
+        void load();
+        Font(const std::string& filename, int font_size=48, std::string charset=charsets::alphanum);
         ~Font();
         void set_font_size(int size);
         std::map<char, Glyph>& get_glyphs();

@@ -22,8 +22,20 @@ void ge::Font::done()
     log("font library done", ge::LogLevels::FONT);
 }
 
-ge::Font::Font(const std::string &filename, int font_size)
+ge::Font::Font(const std::string &filename, int font_size, std::string charset) : filename(filename), font_size(font_size), charset(charset)
 {
+    load();
+}
+
+void ge::Font::load()
+{
+    glyphs.clear();
+    if(texture)
+    {
+        delete texture;
+        texture = nullptr;
+        FT_Done_Face(face);
+    }
     const int padding=10;
     if(FT_New_Face(Font::ft, filename.c_str(), 0, &face))
     {
@@ -35,7 +47,7 @@ ge::Font::Font(const std::string &filename, int font_size)
     std::vector<std::pair<unsigned char *, Glyph>> buffers;
     glm::ivec2 offsets(0, 0);
     glm::ivec2 max_size(0, 0);
-    for(unsigned char c = 0; c < 128; c++)
+    for(unsigned char c : charset)
     {
         if(FT_Load_Char(face, c, FT_LOAD_RENDER))
         {
@@ -45,7 +57,6 @@ ge::Font::Font(const std::string &filename, int font_size)
         unsigned char *buffer = new unsigned char[face->glyph->bitmap.rows * face->glyph->bitmap.width];
         std::memcpy(buffer, face->glyph->bitmap.buffer,face->glyph->bitmap.rows * face->glyph->bitmap.width);
         Glyph glyph = {
-            //.texture=new Texture(face->glyph->bitmap.width, face->glyph->bitmap.rows, face->glyph->bitmap.buffer),
             .size=glm::ivec2(face->glyph->bitmap.width, face->glyph->bitmap.rows),
             .bearing=glm::ivec2(face->glyph->bitmap_left, face->glyph->bitmap_top),
             .advance=static_cast<unsigned>(face->glyph->advance.x),
@@ -80,18 +91,7 @@ ge::Font::Font(const std::string &filename, int font_size)
         buffer_counter++;
     }
     texture = new Texture(max_size.x, max_size.y, texture_buffer);
-    /*std::ofstream file("./res/fonts/texture_map/"+ std::to_string(rand()) + "_map.pgm");
-    auto s = std::string("P2 ") + std::to_string(max_size.x) + " " + std::to_string(max_size.y) + " 255\n";
-    file.write(s.c_str(), s.size());
-    for(int i = 0; i < max_size.x * max_size.y; i++)
-    {
-        s = std::to_string((unsigned)texture_buffer[i]) + " ";
-        file.write(s.c_str(), s.size());
-    }
-    file.close();*/
     delete[] texture_buffer;
-
-
     log("font '" + filename + "' loaded", ge::LogLevels::FONT);
 }
 
@@ -100,6 +100,7 @@ ge::Font::~Font()
     glyphs.clear();
     if(texture)
         delete texture;
+    texture = nullptr;
     FT_Done_Face(face);
     log("font done", ge::LogLevels::FONT);
 }

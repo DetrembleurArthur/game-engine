@@ -2,6 +2,7 @@
 #define __GE_TEXT_HPP__
 #include <ge/entity/drawable.hpp>
 #include <ge/graphics/text/font.hpp>
+#include <limits>
 
 namespace ge
 {
@@ -23,6 +24,7 @@ namespace ge
         bool shadow_enabled=false;
         glm::vec2 shadow_offset;
         Color shadow_color;
+        int max_chars=std::numeric_limits<int>::max();
     public:
         using Drawable::Drawable;
         Text(const std::string& text, ge::Font *font, int line_space=0);
@@ -41,6 +43,7 @@ namespace ge
         bool is_shadow_enabled() const;
         glm::vec2 get_shadow_offset() const;
         Color& get_shadow_color();
+        void set_max_char(int mc);
     };
 }
 

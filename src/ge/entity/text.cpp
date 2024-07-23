@@ -32,6 +32,11 @@ std::string ge::Text::get_text()
 
 void ge::Text::set_text(std::string text)
 {
+    if(text.size() > max_chars)
+    {
+        int to_remove = text.size() - max_chars;
+        text.erase(text.size() - to_remove, to_remove);
+    }
     this->text = text;
     if(text.find('\n') != std::string::npos)
         ge::utils::reverse_words(text);
@@ -223,4 +228,9 @@ glm::vec2 ge::Text::get_shadow_offset() const
 ge::Color& ge::Text::get_shadow_color()
 {
     return shadow_color;
+}
+
+void ge::Text::set_max_char(int mc)
+{
+    this->max_chars = mc;
 }
