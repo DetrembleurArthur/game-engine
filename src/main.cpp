@@ -2,8 +2,6 @@
 #include <chrono>
 #include <ctime>
 
-//shell:startup
-
 
 class MyScene : public ge::Scene
 {
@@ -18,6 +16,7 @@ public:
 			.combine(GLFW_KEY_A)
 			.on_released([this](){app.get_window().close();}));
 		ge::Application::get().set_controller_update_state(false);
+
 
 
 
