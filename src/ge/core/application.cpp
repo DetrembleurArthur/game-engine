@@ -11,6 +11,7 @@
 #include <ge/inputs/mouse_events.hpp>
 #include <ge/inputs/key_events.hpp>
 #include <ge/graphics/text/font.hpp>
+#include <ge/audio/audio_listener.hpp>
 
 
 
@@ -64,6 +65,7 @@ ge::Application::~Application()
         delete window;
     }
     glfwTerminate();
+    Audio::destroy();
     log("application terminated");
 }
 
@@ -130,6 +132,8 @@ void ge::Application::init(const std::string& title, unsigned width, unsigned he
         glEnable(GL_LINE_SMOOTH);
         Shader::load_default_shaders();
         Font::init();
+        Audio::init();
+        AudioListener::init();
     }
     else
     {

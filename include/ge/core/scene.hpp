@@ -7,6 +7,7 @@
 #include <ge/core/font_manager.hpp>
 #include <ge/core/spritesheet_manager.hpp>
 #include <vector>
+#include <ge/core/sound_manager.hpp>
 #include <ge/entity/game_object.hpp>
 
 namespace ge
@@ -49,6 +50,7 @@ namespace ge
         TextureManager *textures = nullptr;
         FontManager *fonts = nullptr;
         SpritesheetManager *spritesheets=nullptr;
+        SoundManager *sounds=nullptr;
         std::vector<Layer> layers;
     public:
         Scene(const std::string& name, int layers_number=3);

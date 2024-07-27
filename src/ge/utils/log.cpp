@@ -53,6 +53,9 @@ void ge::log(const std::string &msg, LogLevels level)
         case LogLevels::RENDERER:
             level_str = "[RENDERER]";
             break;
+        case LogLevels::AUDIO:
+            level_str = "[AUDIO]";
+            break;
         default:
             level_str = "[UNKNOWN]";
     }

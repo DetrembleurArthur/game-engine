@@ -1,4 +1,5 @@
 #include "ge/core/scene_manager.hpp"
+#include <ge/audio/audio_listener.hpp>
 
 void ge::SceneManager::set_current(const std::string &name)
 {
@@ -12,6 +13,7 @@ void ge::SceneManager::set_current(const std::string &name)
         }
         current = scenes[name];
         current->load();
+        AudioListener::position().set(current->get_camera()->get_position());
         log("load " + name, LogLevels::SCENE);
     }
 }

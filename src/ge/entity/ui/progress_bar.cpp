@@ -93,6 +93,7 @@ void ge::ProgressBar::set_size(float width, float height)
 {
     background->get_component<ge::ShapePropertiesComponent>().size().set(glm::vec2(width, height));
     background->get_component<ge::ShapePropertiesComponent>().position().notify();
+    progress_value.notify();
 }
 
 void ge::ProgressBar::set_border(float xb, float yb)

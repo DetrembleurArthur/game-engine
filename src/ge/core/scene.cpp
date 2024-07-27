@@ -15,7 +15,8 @@ ge::Scene::Scene(const std::string& name, int layers_number) : app(ge::Applicati
     renderers(new RendererManager(new ge::BasicRenderer(ge::Shader::BASIC, camera))),
     textures(new TextureManager()),
     fonts(new FontManager()),
-    spritesheets(new SpritesheetManager())
+    spritesheets(new SpritesheetManager()),
+    sounds(new SoundManager())
 {
     for(int i = 0; i < layers_number; i++)
     {
@@ -58,6 +59,8 @@ ge::Scene::~Scene()
         delete fonts;
     if(spritesheets)
         delete spritesheets;
+    if(sounds)
+        delete sounds;
 }
 
 void ge::Scene::update(double dt)

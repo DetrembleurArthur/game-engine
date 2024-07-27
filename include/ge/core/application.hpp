@@ -3,6 +3,7 @@
 #include <iostream>
 #include <ge/core/window.hpp>
 #include <ge/core/scene_manager.hpp>
+#include <ge/audio/audio.hpp>
 
 
 namespace ge

@@ -23,7 +23,8 @@ namespace ge
         TEXTURE,
         FONT,
         SPRITESHEET,
-        RENDERER
+        RENDERER,
+        AUDIO
     };
 
     void log(const std::string& msg, LogLevels level=LogLevels::INFO);
