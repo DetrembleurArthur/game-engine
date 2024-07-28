@@ -115,6 +115,9 @@ void ge::Application::init(const std::string& title, unsigned width, unsigned he
             viewport = glm::vec4(vpx, vpy, aspect_width, aspect_height);
             loop();
         });
+        WindowEvents::on_window_position_changed([this](const glm::vec2& pos){
+            loop();
+        });
     }
     else
     {
@@ -227,6 +230,7 @@ void ge::Application::adapt_viewport()
     viewport = glm::vec4(0, 0, window->get_size().x, window->get_size().y);
     window->reset_vp_aspect_ratio();
     get_scene_manager().get_current()->get_camera()->update_ortho();
+    //get_scene_manager().get_current()->get_ui_camera()->update_ortho();
 }
 
 void ge::Application::resize(float width, float height)

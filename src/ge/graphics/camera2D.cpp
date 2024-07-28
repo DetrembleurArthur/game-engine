@@ -10,7 +10,7 @@ ge::Camera2D::Camera2D() : Camera2D(Ortho())
     log("camera setup: " + std::to_string(ortho.left) + " " + std::to_string(ortho.right) + " " + std::to_string(ortho.bottom) + " " + std::to_string(ortho.up));
 }
 
-ge::Camera2D::Camera2D(const Ortho &ortho) : zoom(1, 1, 1), ortho(ortho), projection(1), view(1)
+ge::Camera2D::Camera2D(const Ortho &ortho) : zoom(1, 1, 1), ortho(ortho), projection(1), view(1), position(0, 0)
 {
 }
 
@@ -44,9 +44,11 @@ void ge::Camera2D::update_view()
 
 }
 
-void ge::Camera2D::focus(glm::vec2 focus_position)
+glm::vec2 ge::Camera2D::focus(glm::vec2 focus_position)
 {
+    glm::vec2 old = position;
     position = focus_position - glm::vec2(ortho.right / 2, ortho.bottom / 2);
+    return position-old;
 }
 
 void ge::Camera2D::set_rotation(float angle)

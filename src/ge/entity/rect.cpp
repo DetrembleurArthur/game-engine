@@ -62,3 +62,23 @@ void ge::Rect::update_uvs(glm::vec2 uvs_origin, glm::vec2 size)
     glBufferSubData(GL_ARRAY_BUFFER, (3 * 5 + 3) * sizeof(float), sizeof(float) * 2, (const void *)uvs);
     glBindBuffer(GL_ARRAY_BUFFER, 0); 
 }
+
+void ge::Rect::move_tex(glm::vec2 delta, bool normalized)
+{
+    if(!normalized)
+    {
+        delta.x = delta.x / transform.get_width();
+        delta.y = delta.y / transform.get_height();
+    }
+    float uvs[2] = {0};
+    glBindBuffer(GL_ARRAY_BUFFER, mesh->get_vbo());
+    for(int i = 0; i < 4; i++)
+    {
+        glGetBufferSubData(GL_ARRAY_BUFFER, (i * 5 + 3) * sizeof(float), sizeof(float) * 2, (void *)uvs);
+        uvs[0] += delta.x;
+        uvs[1] += delta.y;
+        glBufferSubData(GL_ARRAY_BUFFER, (i * 5 + 3) * sizeof(float), sizeof(float) * 2, (const void *)uvs);
+    }
+    glBindBuffer(GL_ARRAY_BUFFER, 0);
+}
+

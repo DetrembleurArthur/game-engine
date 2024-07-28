@@ -28,7 +28,7 @@ namespace ge
         void update_ortho();
         void update_projection();
         void update_view();
-        void focus(glm::vec2 focus_position);
+        glm::vec2 focus(glm::vec2 focus_position);
         void set_rotation(float angle);
         glm::mat4& get_projection();
         glm::mat4& get_view();

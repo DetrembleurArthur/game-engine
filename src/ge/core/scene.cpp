@@ -91,6 +91,7 @@ void ge::Scene::draw(double dt)
     {
         for(std::pair<GameObject *, GoInfos>& go : layer.first)
         {
+
             Drawable *ptr = dynamic_cast<Drawable *>(go.first);
             if(ptr)
             {
@@ -163,7 +164,9 @@ glm::vec2 ge::Scene::get_mp()
 void ge::Scene::add(GameObject& go, int layer_id, GoInfos infos)
 {
     if(layers.size() > layer_id)
+    {
         layers[layer_id].first.push_back(std::pair<GameObject *, GoInfos>(&go, infos));
+    }
 }
 
 void ge::Scene::add(GameObject *go, int layer_id, GoInfos infos)

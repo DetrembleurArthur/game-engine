@@ -18,6 +18,7 @@ public:
 
 	ge::ProgressBar *hp;
 	ge::Rect *bloc;
+	ge::Rect *bg;
 
 	void init() override
 	{
@@ -29,8 +30,8 @@ public:
 		sounds->load("./res/sounds/blob.ogg", "blob");
 		sounds->load("./res/sounds/blob2.ogg", "blob2");
 		sounds->load("./res/sounds/music.ogg", "music");
-		sounds->as_music("music")->play();
 
+		textures->load("./res/images/floor.png", "bloc");
 		textures->load("./res/images/blob-standart-padd4.png", "blob");
 		spritesheets->load(textures->get("blob"), 4, 4, 4, 4, true, "blob");
 		spritesheets->get("blob")->define_sprite_set("down", 0);
@@ -38,6 +39,17 @@ public:
 		spritesheets->get("blob")->define_sprite_set("left", 2);
 		spritesheets->get("blob")->define_sprite_set("up", 3);
 	
+		
+
+	}
+
+	void destroy() override
+	{
+	}
+
+	void load() override
+	{
+		//sounds->as_music("music")->play();
 		player = new ge::Rect(100, 100, true, true);
 		player->set_color(ge::Colors::GREEN);
 		player->get_transform().set_center_origin();
@@ -58,14 +70,15 @@ public:
 		right.combine("right");
 
 		player->get_component<ge::CallbackComponent>().set([this](float dt) {
-			//get_camera()->focus(player->get_transform().get_center_position());
 			bool multiple_keys = false;
 			glm::vec2 pos = player->get_transform().get_center_position();
+			glm::vec2 old = pos;
+			glm::vec2 speed(0, 0);
 			up.run();
 			if(up.is_pressed(true))
 			{
 				player->get_component<ge::SpriteComponent>().set_sprite_set("up");
-				pos.y += -200 * dt;
+				speed.y += -200 * dt;
 				multiple_keys = true;
 			}
 			down.run();
@@ -73,7 +86,7 @@ public:
 			{
 				if(!multiple_keys)
 					player->get_component<ge::SpriteComponent>().set_sprite_set("down");
-				pos.y += 200 * dt;
+				speed.y += 200 * dt;
 				multiple_keys = true;
 			}
 			left.run();
@@ -81,7 +94,7 @@ public:
 			{
 				if(!multiple_keys)
 					player->get_component<ge::SpriteComponent>().set_sprite_set("left");
-				pos.x += -200 * dt;
+				speed.x += -200 * dt;
 				multiple_keys = true;
 			}
 			right.run();
@@ -89,7 +102,7 @@ public:
 			{
 				if(!multiple_keys)
 					player->get_component<ge::SpriteComponent>().set_sprite_set("right");
-				pos.x +=  200 * dt;
+				speed.x +=  200 * dt;
 				multiple_keys = true;
 			}
 			if(multiple_keys)
@@ -105,14 +118,18 @@ public:
 			if(player->get_component<ge::ColliderComponent>().straight_contains(bloc->get_component<ge::ColliderComponent>()))
 			{
 				glm::vec2 vec = player->get_component<ge::ColliderComponent>().resolve_straight_collision(bloc->get_component<ge::ColliderComponent>());
-				pos += vec;
+				pos +=vec;
+				
 				bloc->set_color(ge::Colors::RED);
 			}
 			else
 			{
-				bloc->set_color(ge::Colors::WHITE);
+				bloc->set_color(ge::Colors::BLUE);
 			}
-			player->get_transform().set_center_position(pos);
+			player->get_transform().set_center_position(pos+speed);
+			
+			glm::vec2&& delta = get_camera()->focus(player->get_transform().get_center_position());
+			bg->move_tex(delta * glm::vec2(get_camera()->get_zoom().x));
 		});
 
 		hp = new ge::ProgressBar(0, 100, 1.0f, false, false);
@@ -125,7 +142,6 @@ public:
 			hp->set_position(pos.x, pos.y - 45);
 		});
 
-		textures->load("./res/images/floor.png", "bloc");
 		bloc = new ge::Rect(textures->get("bloc"));
 		bloc->create_component<ge::RendererComponent>().set_renderer(renderers->get("tex"));
 		bloc->get_transform().set_size(64, 64);
@@ -133,19 +149,18 @@ public:
 		bloc->get_component<ge::ColliderComponent>().fit_collider();
 		player->get_component<ge::ColliderComponent>().fit_collider(glm::vec2(0.8, 0.5), glm::vec2(0.5, 1));
 
-		add(bloc);
-		add(player);
-		add(hp);
-	}
+		bg = new ge::Rect(textures->get("bloc"), true);
+		bg->create_component<ge::RendererComponent>().set_renderer(renderers->get("tex_ui"));
+		bg->get_transform().set_size(1400, 787);
+		bg->get_transform().set_position(0, 0);
+		bg->set_color(ge::Colors::WHITE);
 
-	void destroy() override
-	{
-	}
+		get_camera()->get_zoom() = glm::vec3(0.8);
 
-	void load() override
-	{
-		//app.resize(1400, 900);
-
+		add(bg, ge::Layers::BG);
+		add(bloc, ge::Layers::MAIN);
+		add(player, ge::Layers::MAIN);
+		add(hp, ge::Layers::MAIN);
 	}
 
 	void unload() override
@@ -165,8 +180,9 @@ int main(int argc, char const *argv[])
 	});
 	app.init("Test app", 1400, 900);
 	app.get_window().set_icon("./res/images/ge-logo.png");
-	app.get_window().set_clear_color(ge::Colors::CYAN);
+	app.get_window().set_clear_color(ge::Colors::BLACK);
 	app.set_target_fps(0);
+	app.get_window().set_aspect_ratio(16, 9);
 	
 	app.get_scene_manager().create<MyScene>("arthur");
 	app.get_scene_manager().set_current("arthur");

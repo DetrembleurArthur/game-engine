@@ -9,6 +9,7 @@
 #include <ge/inputs/key_combo.hpp>
 #include <ge/inputs/key_events.hpp>
 #include <ge/inputs/key_input.hpp>
+#include <ge/inputs/window_events.hpp>
 #include <ge/utils/log.hpp>
 #include <ge/inputs/monitor.hpp>
 #include <ge/inputs/mouse_events.hpp>

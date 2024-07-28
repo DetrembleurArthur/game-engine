@@ -52,6 +52,7 @@ void ge::TexRenderer::draw(float dt, Drawable *go)
         texture->bind();
         shader->set_uniform_texture();
         mesh->draw();
+        texture->unbind();
     }
 }
 
