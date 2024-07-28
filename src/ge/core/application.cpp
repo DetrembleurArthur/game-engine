@@ -73,6 +73,7 @@ void ge::Application::init(const std::string& title, unsigned width, unsigned he
 {
     log("initializing");
     log("GLFW version: " + std::string(glfwGetVersionString()));
+    srand(time(nullptr));
     initialized = glfwInit();
     if(initialized)
     {

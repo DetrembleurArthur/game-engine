@@ -59,4 +59,5 @@
 #include <ge/audio/audio_source.hpp>
 #include <ge/entity/components/sound_component.hpp>
 #include <ge/audio/audio_listener.hpp>
+#include <ge/level/map.hpp>
 #endif

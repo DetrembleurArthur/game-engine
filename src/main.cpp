@@ -17,8 +17,8 @@ public:
 	ge::KeyCombo right;
 
 	ge::ProgressBar *hp;
-	ge::Rect *bloc;
 	ge::Rect *bg;
+	ge::Map *map;
 
 	void init() override
 	{
@@ -32,6 +32,7 @@ public:
 		sounds->load("./res/sounds/music.ogg", "music");
 
 		textures->load("./res/images/floor.png", "bloc");
+		textures->load("./res/images/wall.png", "wall");
 		textures->load("./res/images/blob-standart-padd4.png", "blob");
 		spritesheets->load(textures->get("blob"), 4, 4, 4, 4, true, "blob");
 		spritesheets->get("blob")->define_sprite_set("down", 0);
@@ -39,12 +40,14 @@ public:
 		spritesheets->get("blob")->define_sprite_set("left", 2);
 		spritesheets->get("blob")->define_sprite_set("up", 3);
 	
-		
+		map = new ge::Map("./res/map/test.txt", glm::vec2(128));
+		map->load();
 
 	}
 
 	void destroy() override
 	{
+		delete map;
 	}
 
 	void load() override
@@ -78,7 +81,7 @@ public:
 			if(up.is_pressed(true))
 			{
 				player->get_component<ge::SpriteComponent>().set_sprite_set("up");
-				speed.y += -200 * dt;
+				speed.y += -300 * dt;
 				multiple_keys = true;
 			}
 			down.run();
@@ -86,7 +89,7 @@ public:
 			{
 				if(!multiple_keys)
 					player->get_component<ge::SpriteComponent>().set_sprite_set("down");
-				speed.y += 200 * dt;
+				speed.y += 300 * dt;
 				multiple_keys = true;
 			}
 			left.run();
@@ -94,7 +97,7 @@ public:
 			{
 				if(!multiple_keys)
 					player->get_component<ge::SpriteComponent>().set_sprite_set("left");
-				speed.x += -200 * dt;
+				speed.x += -300 * dt;
 				multiple_keys = true;
 			}
 			right.run();
@@ -102,7 +105,7 @@ public:
 			{
 				if(!multiple_keys)
 					player->get_component<ge::SpriteComponent>().set_sprite_set("right");
-				speed.x +=  200 * dt;
+				speed.x +=  300 * dt;
 				multiple_keys = true;
 			}
 			if(multiple_keys)
@@ -115,20 +118,10 @@ public:
 				player->get_component<ge::SpriteComponent>().set_frequency(3);
 				player->get_component<ge::SoundComponent>().get("blob2")->stop();
 			}
-			if(player->get_component<ge::ColliderComponent>().straight_contains(bloc->get_component<ge::ColliderComponent>()))
-			{
-				glm::vec2 vec = player->get_component<ge::ColliderComponent>().resolve_straight_collision(bloc->get_component<ge::ColliderComponent>());
-				pos +=vec;
-				
-				bloc->set_color(ge::Colors::RED);
-			}
-			else
-			{
-				bloc->set_color(ge::Colors::BLUE);
-			}
+			
 			player->get_transform().set_center_position(pos+speed);
 			
-			glm::vec2&& delta = get_camera()->focus(player->get_transform().get_center_position());
+			glm::vec2&& delta = get_camera()->focus(pos);
 			bg->move_tex(delta * glm::vec2(get_camera()->get_zoom().x));
 		});
 
@@ -140,13 +133,9 @@ public:
 		hp->get_component<ge::CallbackComponent>().set([this](float dt) {
 			glm::vec2 pos = player->get_transform().get_center_position();
 			hp->set_position(pos.x, pos.y - 45);
+			hp->set_value(hp->get_value() + 10*dt);
 		});
 
-		bloc = new ge::Rect(textures->get("bloc"));
-		bloc->create_component<ge::RendererComponent>().set_renderer(renderers->get("tex"));
-		bloc->get_transform().set_size(64, 64);
-		bloc->get_transform().set_position(glm::vec2(200, 200));
-		bloc->get_component<ge::ColliderComponent>().fit_collider();
 		player->get_component<ge::ColliderComponent>().fit_collider(glm::vec2(0.8, 0.5), glm::vec2(0.5, 1));
 
 		bg = new ge::Rect(textures->get("bloc"), true);
@@ -157,8 +146,40 @@ public:
 
 		get_camera()->get_zoom() = glm::vec3(0.8);
 
+		map->foreach([this](int type, glm::vec2 pos, glm::vec2 size) {
+			ge::Rect *wall=nullptr;
+			switch(type)
+			{
+				case 1:
+					wall = new ge::Rect(textures->get("wall"));
+					wall->create_component<ge::RendererComponent>().set_renderer(renderers->get("tex"));
+					wall->get_transform().set_size(size.x, size.y);
+					wall->get_transform().set_tl_position(pos);
+					wall->get_transform().set_center_origin();
+					wall->set_color(ge::Colors::rand());
+					wall->get_component<ge::ColliderComponent>().fit_collider();
+					wall->get_component<ge::CallbackComponent>().set([this, wall](float dt) {
+						glm::vec2 pos = player->get_transform().get_center_position();
+						if(player->get_component<ge::ColliderComponent>().straight_contains(wall->get_component<ge::ColliderComponent>()))
+						{
+							glm::vec2 vec = player->get_component<ge::ColliderComponent>().resolve_straight_collision(wall->get_component<ge::ColliderComponent>());
+							pos += vec;
+							player->get_transform().set_center_position(pos);
+							hp->set_value(hp->get_value() - 30*dt);
+						}
+					});
+					if(rand()%2)wall->get_component<ge::AnimationComponent>().to_size(1.5, glm::vec2(128, 128), glm::vec2(0, 0), -1, true, ge::tweenf::ease_in_out_quad);
+					
+					wall->get_component<ge::EventsComponent>().dragging();
+					add(wall, ge::Layers::MAIN);
+					break;
+				case 2:
+					player->get_transform().set_center_position(pos);
+					break;
+			}
+		});
+
 		add(bg, ge::Layers::BG);
-		add(bloc, ge::Layers::MAIN);
 		add(player, ge::Layers::MAIN);
 		add(hp, ge::Layers::MAIN);
 	}

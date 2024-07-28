@@ -28,6 +28,8 @@ namespace ge
         const Color SILVER(0.75f, 0.75f, 0.75f, 1.0f);
         const Color GOLD(1.0f, 0.84f, 0.0f, 1.0f);
         const Color TRANSPARENT(0, 0, 0, 0);
+        Color rand();
+        Color randa();
     }
 }
 
