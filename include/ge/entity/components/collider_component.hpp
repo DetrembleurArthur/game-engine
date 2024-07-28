@@ -36,7 +36,10 @@ namespace ge
         void update_rendered_collider(ge::Transform *rect);
         bool contains(glm::vec2 pos);
         bool contains(ColliderComponent& other);
-        void fit_collider(glm::vec2 factors, glm::vec2 dfactors=glm::vec2(0.5, 0.5));
+        bool straight_contains(ColliderComponent& other);
+        void fit_collider(glm::vec2 factors=glm::vec2(1, 1), glm::vec2 dfactors=glm::vec2(0.5, 0.5));
+        glm::vec2 get_collider_size();
+        glm::vec2 resolve_straight_collision(ColliderComponent& other);
     };
 }
 

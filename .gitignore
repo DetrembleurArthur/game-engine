@@ -2,6 +2,10 @@
 *.pnm
 *.otf
 *.ttf
+*.wav
+*.mp3
+*.mp4
+*.ogg
 
 # Prerequisites
 *.d

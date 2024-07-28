@@ -78,9 +78,20 @@ bool ge::ColliderComponent::contains(ColliderComponent &other)
     float width =  collider.wf * owner->get_transform().get_width();
     float height = collider.hf * owner->get_transform().get_height();
     Collider& other_collider = other.get_collider();
-
     return other.contains(collider.tl) || other.contains(collider.tr) || other.contains(collider.br) || other.contains(collider.bl) ||
-           contains(other_collider.tl) || contains(other_collider.tr) || contains(other_collider.br) || contains(other_collider.bl);
+        contains(other_collider.tl) || contains(other_collider.tr) || contains(other_collider.br) || contains(other_collider.bl);
+}
+
+bool ge::ColliderComponent::straight_contains(ColliderComponent &other)
+{
+    Collider& rect1 = get_collider();
+    glm::vec2&& size1 = get_collider_size();
+    Collider& rect2 = other.get_collider();
+    glm::vec2&& size2 = other.get_collider_size();
+    return (rect1.x < rect2.x + size2.x && 
+        rect1.x + size1.x > rect2.x && 
+        rect1.y < rect2.y + size2.y && 
+        rect1.y + size1.y > rect2.y);
 }
 
 void ge::ColliderComponent::fit_collider(glm::vec2 factors, glm::vec2 dfactors)
@@ -91,4 +102,48 @@ void ge::ColliderComponent::fit_collider(glm::vec2 factors, glm::vec2 dfactors)
     collider.dy = (owner->get_transform().get_height() - collider.height) * dfactors.y;
     normalize_collider();
     update_collider();
+}
+
+glm::vec2 ge::ColliderComponent::get_collider_size()
+{
+    Collider& collider = get_collider();
+    float width =  collider.wf * owner->get_transform().get_width();
+    float height = collider.hf * owner->get_transform().get_height();
+    return glm::vec2(width, height);
+}
+
+glm::vec2 ge::ColliderComponent::resolve_straight_collision(ColliderComponent &other)
+{
+    Collider& collider = get_collider();
+    glm::vec2&& size = get_collider_size();
+    Collider& other_collider = other.get_collider();
+    glm::vec2&& other_size = other.get_collider_size();
+    float overlapX1 = collider.x + size.x - other_collider.x;
+    float overlapX2 = other_collider.x + other_size.x - collider.x;
+    float overlapY1 = collider.y + size.y - other_collider.y;
+    float overlapY2 = other_collider.y + other_size.y - collider.y;
+
+    float overlapX = std::min(overlapX1, overlapX2);
+    float overlapY = std::min(overlapY1, overlapY2);
+    glm::vec2 move(0, 0);
+    if (overlapX < overlapY)
+    {
+        if (overlapX1 < overlapX2)
+        {
+            move.x = -overlapX;
+        } else
+        {
+            move.x = overlapX;
+        }
+    } else
+    {
+        if (overlapY1 < overlapY2)
+        {
+            move.y = -overlapY;
+        } else
+        {
+            move.y = overlapY;
+        }
+    }
+    return move;
 }

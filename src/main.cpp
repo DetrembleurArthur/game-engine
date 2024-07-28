@@ -17,6 +17,7 @@ public:
 	ge::KeyCombo right;
 
 	ge::ProgressBar *hp;
+	ge::Rect *bloc;
 
 	void init() override
 	{
@@ -91,7 +92,6 @@ public:
 				pos.x +=  200 * dt;
 				multiple_keys = true;
 			}
-			player->get_transform().set_center_position(pos);
 			if(multiple_keys)
 			{
 				player->get_component<ge::SoundComponent>().play("blob2", true);
@@ -102,6 +102,17 @@ public:
 				player->get_component<ge::SpriteComponent>().set_frequency(3);
 				player->get_component<ge::SoundComponent>().get("blob2")->stop();
 			}
+			if(player->get_component<ge::ColliderComponent>().straight_contains(bloc->get_component<ge::ColliderComponent>()))
+			{
+				glm::vec2 vec = player->get_component<ge::ColliderComponent>().resolve_straight_collision(bloc->get_component<ge::ColliderComponent>());
+				pos += vec;
+				bloc->set_color(ge::Colors::RED);
+			}
+			else
+			{
+				bloc->set_color(ge::Colors::WHITE);
+			}
+			player->get_transform().set_center_position(pos);
 		});
 
 		hp = new ge::ProgressBar(0, 100, 1.0f, false, false);
@@ -114,6 +125,15 @@ public:
 			hp->set_position(pos.x, pos.y - 45);
 		});
 
+		textures->load("./res/images/floor.png", "bloc");
+		bloc = new ge::Rect(textures->get("bloc"));
+		bloc->create_component<ge::RendererComponent>().set_renderer(renderers->get("tex"));
+		bloc->get_transform().set_size(64, 64);
+		bloc->get_transform().set_position(glm::vec2(200, 200));
+		bloc->get_component<ge::ColliderComponent>().fit_collider();
+		player->get_component<ge::ColliderComponent>().fit_collider(glm::vec2(0.8, 0.5), glm::vec2(0.5, 1));
+
+		add(bloc);
 		add(player);
 		add(hp);
 	}
