@@ -20,6 +20,7 @@ public:
 	ge::Rect *bg;
 	ge::Map *map;
 
+	ge::Slider *slider;
 
 	void init() override
 	{
@@ -68,7 +69,6 @@ public:
 		player->get_component<ge::SoundComponent>().add("blob", sounds->get("blob"), true);
 		player->get_component<ge::SoundComponent>().add("blob2", sounds->get("blob2"), true);
 		player->get_component<ge::SoundComponent>().get("blob2")->loop();
-		player->get_transform().set_center_origin();
 
 		up.combine("up");
 		down.combine("down");
@@ -122,7 +122,7 @@ public:
 				player->get_component<ge::SoundComponent>().get("blob2")->stop();
 			}
 			
-			player->get_component<ge::ShapePropertiesComponent>().position().set(pos+speed);
+			player->get_transform().set_center_position(pos+speed);
 			
 			glm::vec2&& delta = get_camera()->focus(pos);
 			bg->move_tex(delta * glm::vec2(get_camera()->get_zoom().x));
@@ -155,22 +155,11 @@ public:
 			{
 				case 1:
 					wall = new ge::Rect(textures->get("wall"));
-					wall->create_component<ge::RendererComponent>().set_renderer(renderers->get("tex_light"));
+					wall->create_component<ge::RendererComponent>().set_renderer(renderers->get("tex"));
 					wall->get_transform().set_size(size.x, size.y);
 					wall->get_transform().set_tl_position(pos);
 					wall->get_transform().set_center_origin();
-					/*player->get_component<ge::ShapePropertiesComponent>().position()
-						.link<ge::Color>(wall->get_component<ge::ColorPropertiesComponent>().p_color(), [this, wall](glm::vec2 pos) {
-							glm::vec2 center = player->get_transform().get_center_position();
-							glm::vec2 wcenter = wall->get_transform().get_center_position();
-							float limit = 300;
-							float dist = glm::distance(center, wcenter);
-							float factor = dist / limit;
-							if(factor > 1)
-								factor = 1;
-							factor = 1 - factor;
-							return ge::Color(factor, factor, factor, 1);
-						});*/
+					wall->set_color(ge::Colors::rand());
 					wall->get_component<ge::ColliderComponent>().fit_collider();
 					wall->get_component<ge::CallbackComponent>().set([this, wall](float dt) {
 						glm::vec2 pos = player->get_transform().get_center_position();
@@ -178,23 +167,29 @@ public:
 						{
 							glm::vec2 vec = player->get_component<ge::ColliderComponent>().resolve_straight_collision(wall->get_component<ge::ColliderComponent>());
 							pos += vec;
-							player->get_component<ge::ShapePropertiesComponent>().position().set(pos);
+							player->get_transform().set_center_position(pos);
 							hp->set_value(hp->get_value() - 30*dt);
 						}
 					});
+					//if(rand()%2)wall->get_component<ge::AnimationComponent>().to_size(1.5, glm::vec2(128, 128), glm::vec2(0, 0), -1, true, ge::tweenf::ease_in_out_quad);
+					
+					wall->get_component<ge::EventsComponent>().dragging();
 					add(wall, ge::Layers::MAIN);
 					break;
 				case 2:
-					player->get_component<ge::ShapePropertiesComponent>().position().set(pos);
+					player->get_transform().set_center_position(pos);
 					break;
 			}
 		});
 
+		slider = new ge::Slider(200, 5, 50, 150, 75);
+		slider->set_position(700, 450);
 
 
-		//add(bg, ge::Layers::BG);
+		add(bg, ge::Layers::BG);
 		add(player, ge::Layers::MAIN);
 		add(hp, ge::Layers::MAIN);
+		add(slider, ge::Layers::UI);
 	}
 
 	void unload() override

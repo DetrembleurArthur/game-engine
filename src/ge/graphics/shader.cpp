@@ -6,6 +6,7 @@
 
 ge::Shader *ge::Shader::BASIC = nullptr;
 ge::Shader *ge::Shader::TEX = nullptr;
+ge::Shader *ge::Shader::TEX_LIGHT = nullptr;
 ge::Shader *ge::Shader::TEXT = nullptr;
 
 void ge::Shader::load_default_shaders()
@@ -14,6 +15,8 @@ void ge::Shader::load_default_shaders()
     ge::Shader::BASIC->load_from_file("./res/shaders/basic/vertex.glsl", "./res/shaders/basic/fragment.glsl");
     ge::Shader::TEX = new Shader();
     ge::Shader::TEX->load_from_file("./res/shaders/tex/vertex.glsl", "./res/shaders/tex/fragment.glsl");
+    ge::Shader::TEX = new Shader();
+    ge::Shader::TEX->load_from_file("./res/shaders/tex_light/vertex.glsl", "./res/shaders/tex_light/fragment.glsl");
     ge::Shader::TEXT = new Shader();
     ge::Shader::TEXT->load_from_file("./res/shaders/text/vertex.glsl", "./res/shaders/text/fragment.glsl");
 }
@@ -29,6 +32,11 @@ void ge::Shader::unload_default_shaders()
     {
         delete ge::Shader::TEX;
         ge::Shader::TEX = nullptr;
+    }
+    if(ge::Shader::TEX_LIGHT)
+    {
+        delete ge::Shader::TEX_LIGHT;
+        ge::Shader::TEX_LIGHT = nullptr;
     }
     if(ge::Shader::TEXT)
     {
@@ -152,6 +160,12 @@ void ge::Shader::use()
 void ge::Shader::unuse()
 {
     glUseProgram(0);
+}
+
+void ge::Shader::set_uniform_vec2(const glm::vec2 &v, const std::string &var_name)
+{
+    int loc = glGetUniformLocation(program, var_name.c_str());
+    glUniform2fv(loc, 1, &v[0]);
 }
 
 void ge::Shader::set_uniform_color(const glm::vec4 &color, const std::string &var_name)

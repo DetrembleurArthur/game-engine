@@ -24,6 +24,7 @@ ge::Scene::Scene(const std::string& name, int layers_number) : app(ge::Applicati
     }
     renderers->set("ui", new ge::BasicRenderer(ge::Shader::BASIC, get_ui_camera()));
     renderers->set("tex", new ge::TexRenderer(ge::Shader::TEX, get_camera()));
+    renderers->set("tex_light", new ge::TexRenderer(ge::Shader::TEX, get_camera()));
     renderers->set("tex_ui", new ge::TexRenderer(ge::Shader::TEX, get_ui_camera()));
     renderers->set("text", new ge::TextRenderer(ge::Shader::TEXT, get_camera()));
     renderers->set("text_ui", new ge::TextRenderer(ge::Shader::TEXT, get_ui_camera()));

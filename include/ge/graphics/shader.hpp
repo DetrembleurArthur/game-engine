@@ -15,6 +15,7 @@ namespace ge
     public:
         static Shader *BASIC;
         static Shader *TEX;
+        static Shader *TEX_LIGHT;
         static Shader *TEXT;
         static void load_default_shaders();
         static void unload_default_shaders();
@@ -25,6 +26,7 @@ namespace ge
         void load_from_file(const std::string& vfilename, const std::string& ffilename);
         void use();
         void unuse();
+        void set_uniform_vec2(const glm::vec2& v, const std::string& var_name);
         void set_uniform_color(const glm::vec4& color, const std::string& var_name="uColor");
         void set_uniform_model(const glm::mat4& model, const std::string& var_name="uModel");
         void set_uniform_view(const glm::mat4& view, const std::string& var_name="uView");
