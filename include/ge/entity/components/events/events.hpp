@@ -132,6 +132,7 @@ namespace ge
         class MouseDragEvent : public MouseLeftClickEvent
         {
         protected:
+            static GameObject *go_dragging_ptr;
             bool dragging=false;
             virtual bool is_append(GameObject& go);
         public:

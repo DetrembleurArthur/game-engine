@@ -54,6 +54,7 @@
 #include <ge/entity/components/renderer_component.hpp>
 #include <ge/entity/ui/button.hpp>
 #include <ge/entity/ui/progress_bar.hpp>
+#include <ge/entity/ui/slider.hpp>
 #include <ge/audio/audio_buffer.hpp>
 #include <ge/audio/audio_loader.hpp>
 #include <ge/audio/audio_source.hpp>

@@ -153,13 +153,15 @@ ge::events::MouseMiddleReleaseEvent::MouseMiddleReleaseEvent(std::function<void(
 {
 }
 
+ge::GameObject *ge::events::MouseDragEvent::go_dragging_ptr=nullptr;
 
 bool ge::events::MouseDragEvent::is_append(GameObject &go)
 {
-    if(ge::events::MouseLeftClickEvent::is_append(go) || (dragging && ge::MouseInput::is_left_button()))
+    if((!go_dragging_ptr || &go == go_dragging_ptr) && (ge::events::MouseLeftClickEvent::is_append(go) || (dragging && ge::MouseInput::is_left_button())))
     {
         if(!dragging)
         {
+            go_dragging_ptr = &go;
             dragging = true;
             delta = mp - go.get_transform().get_position();
         }
@@ -168,6 +170,8 @@ bool ge::events::MouseDragEvent::is_append(GameObject &go)
     }
     else
     {
+        if(&go == go_dragging_ptr)
+            go_dragging_ptr = nullptr;
         dragging = false;
     }
     return false;

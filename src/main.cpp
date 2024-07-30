@@ -20,6 +20,8 @@ public:
 	ge::Rect *bg;
 	ge::Map *map;
 
+	ge::Slider *slider;
+
 	void init() override
 	{
 		ge::KeyEvents::add_combo(ge::KeyCombo()
@@ -168,7 +170,7 @@ public:
 							hp->set_value(hp->get_value() - 30*dt);
 						}
 					});
-					if(rand()%2)wall->get_component<ge::AnimationComponent>().to_size(1.5, glm::vec2(128, 128), glm::vec2(0, 0), -1, true, ge::tweenf::ease_in_out_quad);
+					//if(rand()%2)wall->get_component<ge::AnimationComponent>().to_size(1.5, glm::vec2(128, 128), glm::vec2(0, 0), -1, true, ge::tweenf::ease_in_out_quad);
 					
 					wall->get_component<ge::EventsComponent>().dragging();
 					add(wall, ge::Layers::MAIN);
@@ -179,9 +181,14 @@ public:
 			}
 		});
 
+		slider = new ge::Slider(200, 5, 50, 150, 75);
+		slider->set_position(700, 450);
+
+
 		add(bg, ge::Layers::BG);
 		add(player, ge::Layers::MAIN);
 		add(hp, ge::Layers::MAIN);
+		add(slider, ge::Layers::UI);
 	}
 
 	void unload() override

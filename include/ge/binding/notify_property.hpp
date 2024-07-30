@@ -14,6 +14,7 @@ namespace ge
     public:
         using Property<T>::Property;
         void set(const T& value) override;
+        void set_no_notify(const T& value);
         void notify();
         template <typename U> void link(Property<U> *other);
         template <typename U> void bilink(NotifyProperty<U> *other);
@@ -39,6 +40,11 @@ namespace ge
             pair.second();
         }
         notifying = false;
+    }
+
+    template <typename T> inline void ge::NotifyProperty<T>::set_no_notify(const T &value)
+    {
+        Property<T>::set(value);
     }
 
     template <typename T> template <typename U> inline void NotifyProperty<T>::link(Property<U> *other)
